@@ -119,12 +119,15 @@ healthcare-genai-fullstack/
 ├── Makefile                           ← top-level: orchestrates per-layer
 │
 ├── docs/                              ← read these for "why each layer + who owns it"
-│   ├── 00_mission.md                     mission contracts between layers
+│   ├── 00_mission.md                     Layer 1=trusted data · Layer 2=useful AI ·
+│   │                                      Layer 3=safe AI (15-second pitch)
 │   ├── 01_layer_purpose_and_ownership.md why each layer · audience · ownership ·
 │   │                                      role-to-folder map (RECRUITER ENTRY POINT)
 │   ├── 02_operational_realism.md          retry · timeout · fallback · audit ·
-│   │                                      escalation · observability
-│   └── 03_implementation_phases.md        what's shipped vs scaffold vs queued
+│   │                                      AI Crime Report (13 named failure modes)
+│   ├── 03_implementation_phases.md        what's shipped vs scaffold vs queued
+│   └── 04_why_three_layers.md            architect vs junior split — the line
+│                                          that wins interviews
 │
 ├── diagrams/                          ← ASCII architecture (no external image deps)
 │   ├── full_system_flow.md               patient → triage → ops → dashboard → audit

@@ -199,6 +199,7 @@ Per-layer internal structure              diagrams/layer_diagrams.md
 
 ## Cross-references
 
+- **Why three layers (the architect/junior split — interview ammo):** [`../docs/04_why_three_layers.md`](../docs/04_why_three_layers.md)
 - **Per-layer detail diagrams:** [`layer_diagrams.md`](layer_diagrams.md)
 - **Patient lifecycle (12 written-out steps + failure scenarios):** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
 - **Why each layer exists + ownership:** [`../docs/01_layer_purpose_and_ownership.md`](../docs/01_layer_purpose_and_ownership.md)
