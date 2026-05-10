@@ -83,20 +83,17 @@ layer1-data-backbone/
 │
 ├── openapi_snapshot.json               ✅ valid OAS 3.1.0 · 11 paths · matches main.py
 │
-├── headhunter_ready/                   recruiter-facing artifacts (markdown)
-├── screenshots/                        visual proof (markdown index in SCREENSHOTS.md)
-├── outputs/                            mostly markdown "proof" docs · 1 historical
-│                                        dbt_run_results JSON (8 KB, dated)
-├── inputs/                             API export contexts + ML training snapshot
-│                                        (NB: training snapshot files are 0 bytes —
-│                                         placeholders, not actual data)
-├── scripts/                            13 utility scripts (proof rendering, etc.)
-├── fabric_april/                        Microsoft Fabric proof-of-work (markdown)
-│
-└── SPEC.md                             deeper engineering spec (legacy detail)
-    DASHBOARD.md / SCREENSHOTS.md       legacy overview docs
-    sla.md / sla_all_roles.md           SLA bullets · claim-to-code traceability
-    README.legacy.md                    pre-monorepo standalone README (preserved)
+├── outputs/                            real ML artifacts + dbt run results
+│                                        (the legacy markdown 'proofs' moved to
+│                                         ../_archive/layer1/outputs_md_proofs/)
+└── inputs/                             API export contexts + ML training snapshot
+                                         (NB: some snapshot files are 0 bytes —
+                                          placeholders, not actual data)
+
+(Pre-monorepo legacy: SPEC · DASHBOARD · SCREENSHOTS · sla · README.legacy ·
+ fabric_april/ · headhunter_ready/ · screenshots/ · scripts (proof renderers) ·
+ .github/ Spec-Kit junk — all live in ../_archive/layer1/. Preserved, out of
+ the active code path.)
 ```
 
 ---
@@ -218,6 +215,4 @@ BI Analyst                        powerbi-model/  (note: needs Fabric to render)
 - **Layer 1 detailed diagram:** [`../diagrams/layer_diagrams.md`](../diagrams/layer_diagrams.md)
 - **Implementation phases (incl. queued ML features):** [`../docs/03_implementation_phases.md`](../docs/03_implementation_phases.md)
 - **Layer 2 (downstream consumer):** [`../layer2-ai-application/`](../layer2-ai-application/)
-- **Deeper engineering spec:** [`SPEC.md`](SPEC.md)
-- **SLA + claim-to-code traceability:** [`sla.md`](sla.md)
-- **Old standalone README:** [`README.legacy.md`](README.legacy.md)
+- **Pre-monorepo legacy docs (SPEC · sla · DASHBOARD · README.legacy · etc.):** [`../_archive/layer1/`](../_archive/layer1/)
