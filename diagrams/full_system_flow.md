@@ -189,8 +189,8 @@ This top-to-bottom view is the steady-state happy path. Two things complicate it
 ```
 COMPLICATION                              SEE
 ─────────────────────────────────────────────────────────────────────
-ESI tier 1 escalation (red flags)         flows/patient_lifecycle.md §6 (decision fork)
-Failure modes (LLM timeout, PII miss)     flows/patient_lifecycle.md §"Failure scenarios"
+ESI tier 1 escalation (red flags)         docs/05_patient_lifecycle.md §6 (decision fork)
+Failure modes (LLM timeout, PII miss)     docs/05_patient_lifecycle.md §"Failure scenarios"
                                           + docs/02_operational_realism.md
 Per-layer internal structure              diagrams/layer_diagrams.md
 ```
@@ -201,6 +201,6 @@ Per-layer internal structure              diagrams/layer_diagrams.md
 
 - **Why three layers (the architect/junior split — interview ammo):** [`../docs/04_why_three_layers.md`](../docs/04_why_three_layers.md)
 - **Per-layer detail diagrams:** [`layer_diagrams.md`](layer_diagrams.md)
-- **Patient lifecycle (12 written-out steps + failure scenarios):** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
+- **Patient lifecycle (12 written-out steps + failure scenarios):** [`../docs/05_patient_lifecycle.md`](../docs/05_patient_lifecycle.md)
 - **Why each layer exists + ownership:** [`../docs/01_layer_purpose_and_ownership.md`](../docs/01_layer_purpose_and_ownership.md)
 - **What we DON'T add (no K8s, no event bus):** [`../docs/02_operational_realism.md`](../docs/02_operational_realism.md)

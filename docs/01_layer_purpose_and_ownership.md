@@ -132,4 +132,4 @@ This repo is the second mindset, made visible at the folder level. You can scrol
 - **Operational realism (retry · audit · escalation):** [`02_operational_realism.md`](02_operational_realism.md)
 - **Implementation phases (what's shipped vs queued):** [`03_implementation_phases.md`](03_implementation_phases.md)
 - **Architecture diagrams:** [`../diagrams/`](../diagrams/)
-- **Patient lifecycle flow:** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
+- **Patient lifecycle flow:** [`../docs/05_patient_lifecycle.md`](../docs/05_patient_lifecycle.md)

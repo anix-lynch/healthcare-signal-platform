@@ -275,5 +275,5 @@ One folder per role. 30 seconds to land.
 
 - **The architect/junior framing in full:** [`../docs/04_why_three_layers.md`](../docs/04_why_three_layers.md)
 - **End-to-end flow combining all three layers:** [`full_system_flow.md`](full_system_flow.md)
-- **Patient lifecycle written-out:** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
+- **Patient lifecycle written-out:** [`../docs/05_patient_lifecycle.md`](../docs/05_patient_lifecycle.md)
 - **Why each layer exists + ownership:** [`../docs/01_layer_purpose_and_ownership.md`](../docs/01_layer_purpose_and_ownership.md)

@@ -109,5 +109,5 @@ Numbers + scripts + corpus + adversarial prompts — every claim in the README h
 ## Cross-references
 
 - **Eval methodology behind the JSON baselines:** [`../layer2-ai-application/apps/er-triage/docs/05_seven_lens_dashboard.md`](../layer2-ai-application/apps/er-triage/docs/05_seven_lens_dashboard.md)
-- **Patient flow that demos illustrate:** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
+- **Patient flow that demos illustrate:** [`../docs/05_patient_lifecycle.md`](../docs/05_patient_lifecycle.md)
 - **Operational behaviors demos should show:** [`../docs/02_operational_realism.md`](../docs/02_operational_realism.md)

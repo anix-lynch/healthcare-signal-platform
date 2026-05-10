@@ -354,5 +354,5 @@ The principle: **production-realistic ≠ FAANG-scale.** A 50-bed hospital doesn
 ## Cross-references
 
 - **Per-pattern eval methodology:** [`../layer2-ai-application/apps/er-triage/docs/05_seven_lens_dashboard.md`](../layer2-ai-application/apps/er-triage/docs/05_seven_lens_dashboard.md)
-- **Patient lifecycle flow (where these behaviors fire):** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
+- **Patient lifecycle flow (where these behaviors fire):** [`../docs/05_patient_lifecycle.md`](../docs/05_patient_lifecycle.md)
 - **Architecture diagrams:** [`../diagrams/`](../diagrams/)

@@ -129,4 +129,4 @@ That's the elevator pitch. Memorize it.
 - **Operational realism (retry · timeout · audit · escalation):** [`02_operational_realism.md`](02_operational_realism.md)
 - **What's shipped vs scaffold vs queued:** [`03_implementation_phases.md`](03_implementation_phases.md)
 - **Architecture diagrams:** [`../diagrams/`](../diagrams/)
-- **Patient lifecycle (12-step walkthrough):** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
+- **Patient lifecycle (12-step walkthrough):** [`../docs/05_patient_lifecycle.md`](../docs/05_patient_lifecycle.md)

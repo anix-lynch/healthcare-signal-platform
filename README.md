@@ -133,13 +133,9 @@ healthcare-genai-fullstack/
 │   ├── full_system_flow.md               patient → triage → ops → dashboard → audit
 │   └── layer_diagrams.md                  per-layer internal structure (3 diagrams)
 │
-├── flows/                             ← operational walkthroughs
-│   └── patient_lifecycle.md              12 steps from arrival to audit-write,
-│                                          with failure scenarios per step
-│
-├── demos/                             ← evidence + screenshots (Phase 5)
-│   └── README.md                          what's planned + what's already
-│                                          available (JSON baselines)
+│   ├── 05_patient_lifecycle.md            12-step operational walkthrough +
+│   │                                      failure scenarios per step
+│   └── 06_demos_planned.md                evidence + screenshots scaffold
 │
 ├── layer1-data-backbone/              🟦 dbt + Power BI + Fabric + ml-pipeline
 │   ├── data/raw/                      55K-row synthetic patient dataset

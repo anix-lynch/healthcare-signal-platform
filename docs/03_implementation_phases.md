@@ -227,4 +227,4 @@ This taxonomy exists because the worst interview answer is "yes, it's all there"
 - **Operational behaviors expected per phase:** [`02_operational_realism.md`](02_operational_realism.md)
 - **Layer + role mapping:** [`01_layer_purpose_and_ownership.md`](01_layer_purpose_and_ownership.md)
 - **Architecture diagrams:** [`../diagrams/`](../diagrams/)
-- **Patient lifecycle (touches Phase 1-3 today, Phase 5 expansion):** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
+- **Patient lifecycle (touches Phase 1-3 today, Phase 5 expansion):** [`../docs/05_patient_lifecycle.md`](../docs/05_patient_lifecycle.md)
