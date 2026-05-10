@@ -117,7 +117,26 @@ healthcare-genai-fullstack/
 │
 ├── README.md                          ← you are here (3-layer hero)
 ├── Makefile                           ← top-level: orchestrates per-layer
-├── docs/                              ← architecture · mission · runbooks
+│
+├── docs/                              ← read these for "why each layer + who owns it"
+│   ├── 00_mission.md                     mission contracts between layers
+│   ├── 01_layer_purpose_and_ownership.md why each layer · audience · ownership ·
+│   │                                      role-to-folder map (RECRUITER ENTRY POINT)
+│   ├── 02_operational_realism.md          retry · timeout · fallback · audit ·
+│   │                                      escalation · observability
+│   └── 03_implementation_phases.md        what's shipped vs scaffold vs queued
+│
+├── diagrams/                          ← ASCII architecture (no external image deps)
+│   ├── full_system_flow.md               patient → triage → ops → dashboard → audit
+│   └── layer_diagrams.md                  per-layer internal structure (3 diagrams)
+│
+├── flows/                             ← operational walkthroughs
+│   └── patient_lifecycle.md              12 steps from arrival to audit-write,
+│                                          with failure scenarios per step
+│
+├── demos/                             ← evidence + screenshots (Phase 5)
+│   └── README.md                          what's planned + what's already
+│                                          available (JSON baselines)
 │
 ├── layer1-data-backbone/              🟦 dbt + Power BI + Fabric + ml-pipeline
 │   ├── data/raw/                      55K-row synthetic patient dataset
