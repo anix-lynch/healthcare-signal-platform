@@ -47,25 +47,24 @@ These three diagrams ARE the architect argument. Folder structure proves it. **Y
                                             │ dbt marts
                                             ▼
               ┌─────────────────────────────────────────────────────────┐
-              │           GOLD — dbt-project/marts/                     │
+              │       GOLD — dbt-project/models/marts/core/             │
               │                                                         │
-              │  ├── mart_er_triage          per-patient features       │
-              │  │     · age · vitals · chief_complaint                 │
-              │  │     · readmission_risk · predicted_los               │
-              │  │     · high_utilizer_flag · recent_visit_summary      │
-              │  │     → consumed by apps/er-triage                     │
+              │  Classic star schema (what's actually on disk today):   │
+              │                                                         │
+              │  ├── fact_patient_encounters.sql   (77 lines)           │
+              │  │     joins all dims · LoS computed · readmission flag │
               │  │                                                       │
-              │  ├── mart_operations         system-state KPIs          │
-              │  │     · ER_wait_time · bed_availability                │
-              │  │     · nurse_staffing · occupancy                      │
-              │  │     · queue_length · ER_overload_signal              │
-              │  │     → consumed by apps/ops-capacity-assistant        │
-              │  │                                                       │
-              │  └── mart_executive_kpi      board-level rollups        │
-              │        · readmission_rate · avg_length_of_stay          │
-              │        · cost_trend · throughput                         │
-              │        · patient_volume · dept_performance              │
-              │        → consumed by apps/executive-dashboard           │
+              │  ├── dim_patient.sql               (23 lines, dedup'd)  │
+              │  ├── dim_doctor.sql                                      │
+              │  ├── dim_hospital.sql                                    │
+              │  ├── dim_diagnosis.sql                                   │
+              │  ├── dim_medication.sql                                  │
+              │  ├── dim_insurance.sql                                   │
+              │  └── dim_date.sql                                        │
+              │                                                         │
+              │  Audience-shaped marts (mart_er_triage / mart_ops /     │
+              │  mart_executive_kpi) are QUEUED, not shipped.           │
+              │  See ../docs/03_implementation_phases.md.               │
               └─────────────────────────────────────────────────────────┘
                                             │
                             ┌───────────────┴────────────────┐
@@ -107,12 +106,12 @@ app   =  the screen / AI       (the restaurant serving them to humans)
 A mart doesn't make decisions. It feeds the app that makes decisions.
 
 ```
-mart_operations says:                       ops-capacity-assistant says:
-  "ER beds available = 3                      "ER is overloaded.
-   avg wait = 72 min                           Route lower-acuity patient
-   nurses on shift = 4"                        to observation unit."
+fact_patient_encounters says:                ops-capacity-assistant would say:
+  "patient X · admit 2024-01-31 ·              "ER pattern looks loaded.
+   discharge 2024-02-02 · LoS=2d ·               Route lower-acuity patient
+   medication=Paracetamol · cost=$18,856"        to observation unit."
 
-  ↑ numbers                                   ↑ decision
+  ↑ numbers (real today)                       ↑ decision (queued, Phase 5)
 ```
 
 Same data. Different jobs. Layer 1 cooks. Layer 2 serves. Layer 3 inspects.

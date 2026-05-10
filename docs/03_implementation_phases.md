@@ -145,6 +145,69 @@ Live data wiring                               Layer 1 gold tables → Layer 2 r
 
 ---
 
+## ⚠️ Layer 1 honest gaps (audited 2026-05-09)
+
+Earlier docs claimed Layer 1 had things that don't match the code on disk. Logged here so the gap is tracked, not hidden.
+
+```
+CLAIM (earlier docs)                       REALITY ON DISK                          STATUS
+────────────────────────────────────────────────────────────────────────────────────────────────
+3 audience-shaped marts                    ❌ NOT BY THOSE NAMES.                   QUEUED
+(mart_er_triage / mart_operations /            Actual SQL is a classic star schema:
+ mart_executive_kpi)                            7 dim_*.sql + fact_patient_encounters.sql.
+                                                Audience-shaped marts to be built on top.
+
+ML feature: readmission_risk               ⚠️ TRAINING CODE REAL,                   PARTIAL
+                                                NEVER PERSISTED.
+                                                Target is engineered from
+                                                Test Results column ("Abnormal" → 1) =
+                                                a PROXY, not real readmission ground truth.
+                                                No saved .pkl/.joblib in repo.
+
+ML feature: predicted_los                  ❌ ZERO CODE.                            NOT BUILT
+                                                LoS is computed in API as
+                                                discharge_date - admission_date subtraction
+                                                (arithmetic, not a model).
+
+ML feature: high_utilizer_flag             ❌ ZERO CODE anywhere.                   NOT BUILT
+                                                Could be SQL-only (count prior visits > N)
+                                                — easy implementation when scheduled.
+
+ML feature: ER_overload_signal             ❌ ZERO CODE anywhere.                   NOT BUILT
+
+ML inference (score.py)                    ❌ PLACEHOLDER.                          NOT BUILT
+                                                Mostly commented out; writes hardcoded
+                                                dummy CSV ("1,0.85\n2,0.12\n").
+
+PHI redaction at Layer 1                   ❌ NO CODE.                              NOT BUILT
+                                                Single grep hit is a markdown comment
+                                                about screenshots, not de-id code.
+                                                (Layer 2 input_guardrails has spaCy+regex
+                                                 PII redaction — that's runtime, not
+                                                 data-pipeline level.)
+
+Data-pipeline monitoring                   ❌ NO CODE.                              NOT BUILT
+                                                Layer 3 covers AI-output monitoring.
+                                                Layer 1 dbt-test-pass-rate / mart-
+                                                freshness alerting is queued.
+```
+
+**What's defendable in interview today:**
+✅ working FastAPI on 55K real synthetic records
+✅ professional dbt star schema (14 SQL files, real LAG window for readmission flag)
+✅ Power BI TMDL structure (5 tables, 4 relationships — Fabric-dependent at refresh time)
+✅ readmission_risk training script (XGBoost+sklearn+MLflow) — with proxy-target caveat
+✅ valid OpenAPI 3.1.0 contract with 11 paths
+
+**What's NOT defendable until built:**
+❌ predicted_los model · high_utilizer_flag model · ER_overload_signal model
+❌ Real ML inference (score.py is a placeholder)
+❌ Layer-1-level PHI redaction
+❌ Layer-1-level data-pipeline monitoring
+❌ Audience-shaped marts (mart_er_triage / mart_operations / mart_executive_kpi)
+
+---
+
 ## What "shipped" means in this repo (be honest)
 
 ```
