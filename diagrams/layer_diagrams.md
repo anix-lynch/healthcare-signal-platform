@@ -4,6 +4,22 @@
 
 ---
 
+## Why three diagrams (the architect/junior split)
+
+```
+Junior thinks      →   "LLM = whole system."
+                        Builds one repo. Prompt + LLM call. Done.
+
+Architect thinks   →   "LLM = ONE DANGEROUS COMPONENT inside a bigger system."
+                        Builds three layers because data prep, AI reasoning,
+                        and governance are three different specialties with
+                        three different KPIs.
+```
+
+These three diagrams ARE the architect argument. Folder structure proves it. **You can't fake this signal.** Full framing in [`../docs/04_why_three_layers.md`](../docs/04_why_three_layers.md).
+
+---
+
 ## 🟦 Layer 1 — Data Backbone (medallion architecture)
 
 ```
@@ -194,8 +210,36 @@
 
 ---
 
+## Title → which diagram do you open first
+
+```
+TITLE                              OPEN FIRST
+─────────────────────────────────────────────────────────────
+AI Data Engineer                   🟦 Layer 1 (above)
+Analytics Engineer                 🟦 Layer 1
+Healthcare Data Engineer           🟦 Layer 1
+Data Platform Engineer             🟦 Layer 1
+
+Applied AI Engineer                🟩 Layer 2
+GenAI Engineer                     🟩 Layer 2
+Forward Deployed Engineer          🟩 Layer 2 (apps/er-triage)
+GenAI Platform Architect           🟩 Layer 2 + 🟥 Layer 3
+
+AI Platform Engineer               🟥 Layer 3
+AI Safety / Compliance             🟥 Layer 3
+
+AI Solutions Architect             ALL 3 — the integration is the role
+AI Transformation Lead             ALL 3 — same
+AI Technical Consultant            ALL 3 — same
+```
+
+One folder per role. 30 seconds to land.
+
+---
+
 ## Cross-references
 
+- **The architect/junior framing in full:** [`../docs/04_why_three_layers.md`](../docs/04_why_three_layers.md)
 - **End-to-end flow combining all three layers:** [`full_system_flow.md`](full_system_flow.md)
 - **Patient lifecycle written-out:** [`../flows/patient_lifecycle.md`](../flows/patient_lifecycle.md)
 - **Why each layer exists + ownership:** [`../docs/01_layer_purpose_and_ownership.md`](../docs/01_layer_purpose_and_ownership.md)
