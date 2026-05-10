@@ -127,24 +127,34 @@ healthcare-genai-fullstack/
 │   ├── api/                           FastAPI + OpenAPI contract
 │   └── README.md
 │
-├── layer2-ai-application/             🟩 7 patterns + multi-cloud + runtime guardrails
-│   ├── app/
-│   │   ├── retrieval/                 Pattern 1 — Rachel
-│   │   ├── classify/                  Pattern 2 — Traffic Light + 3-tier router
-│   │   ├── regress/                   Pattern 3 — Crystal Ball
-│   │   ├── generate/                  Pattern 4 — Mad Lib
-│   │   ├── anomaly/                   Pattern 5 — Smoke Detector
-│   │   ├── cluster/                   Pattern 6 — Treasure Map
-│   │   ├── rank/                      Pattern 7 — Police Lineup
-│   │   ├── safety/                    medical hard-rule overrides
-│   │   ├── guardrails/                input + output runtime layer
-│   │   ├── memory/                    3-tier triage memory
-│   │   ├── evaluation/                per-pattern eval harness
-│   │   └── cloud/                     CloudProvider adapter (Vertex/Azure/AWS)
-│   ├── inputs/                        golden_esi.json + healthcare_qa_200.json
-│   ├── outputs/baseline/              JSON-backed eval baselines (regression gates)
-│   ├── tests/red_team/                pytest regression: red-team must hold 100%
-│   └── README.md                      (the ER3 README — full per-layer detail)
+├── layer2-ai-application/             🟩 lean apps + services + shared (restructured 2026-05-09)
+│   ├── apps/                          ← WHO consumes (audience-shaped)
+│   │   ├── er-triage/                    clinicians (NOW / SOON / WAIT)
+│   │   ├── ops-capacity-assistant/       ops team — Phase 5 stub
+│   │   └── executive-dashboard/          execs — Phase 5 stub
+│   │
+│   ├── services/                      ← WHAT powers them (HTTP APIs — Phase 5 stubs)
+│   │   ├── rag-api/                      retrieval + generation
+│   │   ├── guardrails-api/               input + output safety
+│   │   ├── feature-api/                  per-patient ML features (from Layer 1)
+│   │   └── analytics-api/                system-state KPIs (from Layer 1)
+│   │
+│   └── shared/                        ← the 7 patterns + cross-cutting libs
+│       ├── retrieval/                 Pattern 1 — Rachel
+│       ├── classify/                  Pattern 2 — Traffic Light + 3-tier router
+│       ├── regress/                   Pattern 3 — Crystal Ball
+│       ├── generate/                  Pattern 4 — Mad Lib
+│       ├── anomaly/                   Pattern 5 — Smoke Detector
+│       ├── cluster/                   Pattern 6 — Treasure Map
+│       ├── rank/                      Pattern 7 — Police Lineup
+│       ├── guardrails/                input + output runtime layer
+│       ├── memory/                    3-tier memory (short · session · long-term)
+│       ├── evaluation/                per-pattern eval harness
+│       └── cloud/                     CloudProvider adapter (Vertex/Azure/AWS)
+│
+│   (er-triage-specific bits live INSIDE apps/er-triage/:
+│    classify/esi_classifier.py · safety/safety_agent.py · inputs/golden_esi.json ·
+│    outputs/baseline/{ragas,redteam,router}_baseline.json · tests/red_team/)
 │
 └── layer3-governance/                 🟥 eval + safety + red-team
     ├── scripts/

@@ -1,95 +1,29 @@
-.PHONY: help install smoke drift test classify eval-all eval-rachel eval-traffic-light eval-crystal-ball eval-mad-lib eval-smoke-detector eval-treasure-map eval-police-lineup cloud-test
+# Layer 2 AI Application — top-level delegation Makefile
+# Most actions delegate to apps/er-triage (the only currently-implemented app)
+
+.PHONY: help eval-all eval-rachel eval-traffic-light eval-crystal-ball eval-mad-lib eval-smoke-detector eval-treasure-map eval-police-lineup smoke drift redteam-test test baseline-all install
 
 help:
-	@echo "ER3 — seven-lens healthcare triage + multi-cloud adapter"
+	@echo "Layer 2 — AI Application (apps + services + shared)"
 	@echo ""
-	@echo "  Build / setup"
-	@echo "    make install               install requirements"
+	@echo "  Apps:"
+	@echo "    apps/er-triage/                 working — see Makefile in there"
+	@echo "    apps/ops-capacity-assistant/    Phase 5 stub"
+	@echo "    apps/executive-dashboard/       Phase 5 stub"
 	@echo ""
-	@echo "  Per-pattern eval (the 7-lens harness)"
-	@echo "    make eval-rachel           Pattern 1 — retrieval (P@K, NDCG, Recall@K)"
-	@echo "    make eval-traffic-light    Pattern 2 — classify (acc, F1, calibration)"
-	@echo "    make eval-crystal-ball     Pattern 3 — regress (MAE, R², schema validity)"
-	@echo "    make eval-mad-lib          Pattern 4 — generate (faithfulness, LLM-judge)"
-	@echo "    make eval-smoke-detector   Pattern 5 — anomaly (precision/recall on outliers)"
-	@echo "    make eval-treasure-map     Pattern 6 — cluster (silhouette, BERTopic)"
-	@echo "    make eval-police-lineup    Pattern 7 — rank (NDCG, MRR, win-rate)"
-	@echo "    make eval-all              run every per-pattern eval, write JSON report"
+	@echo "  Services (READMEs only — Phase 5 implementations):"
+	@echo "    services/rag-api/         services/guardrails-api/"
+	@echo "    services/feature-api/     services/analytics-api/"
 	@echo ""
-	@echo "  Smoke / drift / cloud"
-	@echo "    make smoke                 ESI auto-tag smoke test (must always pass)"
-	@echo "    make drift                 compute drift metrics vs baseline"
-	@echo "    make cloud-test            test all 3 CloudProvider implementations"
-	@echo "    make test                  run all pytest tests"
-	@echo ""
-	@echo "  CLI"
-	@echo "    make classify              classify a case from stdin"
+	@echo "  Common targets (delegate to apps/er-triage):"
+	@echo "    make install              install Python deps"
+	@echo "    make eval-all             run all 7 pattern evals"
+	@echo "    make smoke                Phase 2 ESI smoke test"
+	@echo "    make drift                Phase 3 drift monitor"
+	@echo "    make redteam-test         red-team regression gate"
+	@echo "    make baseline-all         re-run Ragas + redteam + router baselines"
+	@echo "    make test                 all pytest tests"
 
-install:
-	pip install -r requirements.txt
-
-# ── Per-pattern eval (7-lens harness) ──
-eval-rachel:
-	python -m app.evaluation.retrieval_eval
-
-eval-traffic-light:
-	python -m app.evaluation.classify_eval
-
-eval-crystal-ball:
-	python -m app.evaluation.regress_eval
-
-eval-mad-lib:
-	python -m app.evaluation.generate_eval
-
-eval-smoke-detector:
-	python -m app.evaluation.anomaly_eval
-
-eval-treasure-map:
-	python -m app.evaluation.cluster_eval
-
-eval-police-lineup:
-	python -m app.evaluation.rank_eval
-
-eval-all: eval-rachel eval-traffic-light eval-crystal-ball eval-mad-lib eval-smoke-detector eval-treasure-map eval-police-lineup
-	@echo "→ All 7 pattern evals complete. JSON report at outputs/eval_report.json"
-
-# ── Folded pipelines (from healthcare-rag-guardrails 2026-05-09) ──
-gen-qa:
-	python scripts/gen_healthcare_qa.py --n 200 --output inputs/healthcare_qa_200.json
-
-run-ragas:
-	python scripts/run_ragas_eval.py --qa inputs/healthcare_qa_200.json \
-		--output outputs/baseline/ragas_baseline.json
-
-run-redteam:
-	python scripts/run_redteam_suite.py --output outputs/baseline/redteam_baseline.json
-
-run-pii-mask:
-	python scripts/run_pii_masker.py --input inputs/healthcare_qa_200.json \
-		--output outputs/pii_masked_sample.json
-
-run-router:
-	python -m app.classify.router --queries inputs/healthcare_qa_200.json \
-		--output outputs/baseline/router_baseline.json
-
-baseline-all: run-ragas run-redteam run-router
-	@echo "→ All baseline evals re-run. Check outputs/baseline/."
-
-# ── Existing targets ──
-smoke:
-	pytest tests/test_smoke_esi.py -v
-
-drift:
-	python -m app.anomaly.drift
-
-cloud-test:
-	pytest tests/test_*_provider.py -v
-
-redteam-test:
-	pytest tests/red_team/ -v
-
-test:
-	pytest tests/ -v
-
-classify:
-	python -m app.classify.esi_classifier
+# All targets below delegate to apps/er-triage
+install eval-all eval-rachel eval-traffic-light eval-crystal-ball eval-mad-lib eval-smoke-detector eval-treasure-map eval-police-lineup smoke drift redteam-test test baseline-all:
+	@cd apps/er-triage && $(MAKE) $@
