@@ -48,9 +48,24 @@ These three diagrams ARE the architect argument. Folder structure proves it. **Y
                                             ▼
               ┌─────────────────────────────────────────────────────────┐
               │           GOLD — dbt-project/marts/                     │
+              │                                                         │
               │  ├── mart_er_triage          per-patient features       │
+              │  │     · age · vitals · chief_complaint                 │
+              │  │     · readmission_risk · predicted_los               │
+              │  │     · high_utilizer_flag · recent_visit_summary      │
+              │  │     → consumed by apps/er-triage                     │
+              │  │                                                       │
               │  ├── mart_operations         system-state KPIs          │
+              │  │     · ER_wait_time · bed_availability                │
+              │  │     · nurse_staffing · occupancy                      │
+              │  │     · queue_length · ER_overload_signal              │
+              │  │     → consumed by apps/ops-capacity-assistant        │
+              │  │                                                       │
               │  └── mart_executive_kpi      board-level rollups        │
+              │        · readmission_rate · avg_length_of_stay          │
+              │        · cost_trend · throughput                         │
+              │        · patient_volume · dept_performance              │
+              │        → consumed by apps/executive-dashboard           │
               └─────────────────────────────────────────────────────────┘
                                             │
                             ┌───────────────┴────────────────┐
@@ -81,6 +96,26 @@ These three diagrams ARE the architect argument. Folder structure proves it. **Y
 **Audience:** Data Engineering · Analytics Engineering team.
 **Stakeholder:** CDO · Hospital IT Director.
 **KPI:** schema test pass rate · mart freshness SLA · % PHI redacted upstream.
+
+### Mart vs app — the line that confuses everyone
+
+```
+mart  =  data ready to serve   (the kitchen prepping ingredients)
+app   =  the screen / AI       (the restaurant serving them to humans)
+```
+
+A mart doesn't make decisions. It feeds the app that makes decisions.
+
+```
+mart_operations says:                       ops-capacity-assistant says:
+  "ER beds available = 3                      "ER is overloaded.
+   avg wait = 72 min                           Route lower-acuity patient
+   nurses on shift = 4"                        to observation unit."
+
+  ↑ numbers                                   ↑ decision
+```
+
+Same data. Different jobs. Layer 1 cooks. Layer 2 serves. Layer 3 inspects.
 
 ---
 
