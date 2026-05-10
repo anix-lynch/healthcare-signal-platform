@@ -1,0 +1,15 @@
+relationship 'Patient Encounters-Patient'
+	fromColumn: 'Patient Encounters'.PatientKey
+	toColumn: Patient.PatientKey
+
+relationship 'Patient Encounters-Doctor'
+	fromColumn: 'Patient Encounters'.DoctorKey
+	toColumn: Doctor.DoctorKey
+
+relationship 'Patient Encounters-Hospital'
+	fromColumn: 'Patient Encounters'.HospitalKey
+	toColumn: Hospital.HospitalKey
+
+relationship 'Patient Encounters-Date'
+	fromColumn: 'Patient Encounters'.DateKey
+	toColumn: Date.DateKey

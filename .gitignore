@@ -1,0 +1,60 @@
+# Secrets / env
+.env
+.env.local
+*.env
+!.env.example
+secrets/
+*.key
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual envs (don't ship — that was the 337MB problem)
+.venv/
+venv/
+env/
+**/venv/
+**/.venv/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build / dist
+build/
+dist/
+*.egg
+
+# Notebooks scratch
+.ipynb_checkpoints/
+
+# Eval / runtime artifacts (regen via make baseline-all — don't pollute history)
+**/mlruns/
+**/.cache/
+
+# Large derived outputs (keep baselines, drop generated dumps)
+**/outputs/raw_runs/
+**/outputs/scratch/
+
+# Layer-specific
+layer1-data-backbone/_scaffold_backup_*/
+layer1-data-backbone/.specify/
+
+# dbt derived (regen via `dbt deps`, never commit)
+**/dbt_packages/
+**/dbt_modules/
+**/target/
+**/logs/
+
+# MLflow runs (metadata may contain creds)
+**/mlruns/

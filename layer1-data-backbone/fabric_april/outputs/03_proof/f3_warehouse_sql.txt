@@ -1,0 +1,11 @@
+F3 Warehouse SQL — narrative proof (screenshot: warehouse_sql_results.png)
+
+Warehouse: HealthcareWarehouse
+
+Query:
+```sql
+SELECT TOP 100 *
+FROM dbo.healthcare_encounters;
+```
+
+Result: SQL editor + populated results grid (real warehouse table).

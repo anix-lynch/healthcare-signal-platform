@@ -1,0 +1,8 @@
+table Doctor
+	lineageTag: 11111111-4003-4e76-a444-642d0e954321
+	column DoctorKey
+		dataType: string
+		sourceColumn: DoctorKey
+	partition Doctor = m
+		mode: import
+		source = Sql.Database(Environment.GetEnvironmentVariable("FABRIC_SERVER"), Environment.GetEnvironmentVariable("FABRIC_DATABASE")){[Schema="dbo",Item="dim_doctor"]}[Data]

@@ -1,0 +1,8 @@
+table Date
+	lineageTag: 33333333-4003-4e76-a444-642d0e954321
+	column DateKey
+		dataType: string
+		sourceColumn: DateKey
+	partition Date = m
+		mode: import
+		source = Sql.Database(Environment.GetEnvironmentVariable("FABRIC_SERVER"), Environment.GetEnvironmentVariable("FABRIC_DATABASE")){[Schema="dbo",Item="dim_date"]}[Data]

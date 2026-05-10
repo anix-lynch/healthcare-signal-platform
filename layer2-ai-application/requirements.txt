@@ -1,0 +1,38 @@
+# Core
+anthropic
+openai>=1.50.0
+pydantic>=2.0
+python-dotenv
+pyyaml
+
+# Cloud SDKs (multi-cloud adapter)
+google-cloud-aiplatform>=1.60.0
+vertexai>=1.60.0
+
+# RAG + Eval (folded from healthcare-rag-guardrails 2026-05-09)
+ragas>=0.2.6
+datasets>=3.0.0
+rank_bm25>=0.2.2
+chromadb>=0.5.0
+langchain>=0.3.0
+langchain-openai>=0.2.0
+sentence-transformers
+
+# Classification + structured output
+instructor
+
+# Compliance / PII / safety (folded from healthcare-rag-guardrails 2026-05-09)
+spacy>=3.7.0
+# After install: python -m spacy download en_core_web_sm
+
+# Drift / anomaly
+numpy
+scikit-learn
+
+# Tests
+pytest
+pytest-asyncio
+
+# Notebooks
+jupyter
+matplotlib

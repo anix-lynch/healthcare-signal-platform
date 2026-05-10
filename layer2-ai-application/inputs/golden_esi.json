@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "purpose": "Smoke test gold set for ESI auto-tagging.",
+    "size_target": 30,
+    "distribution": "10× ESI-1 · 10× ESI-2 · 5× ESI-3 · 3× ESI-4 · 2× ESI-5",
+    "must_pass": "every case must classify within ±1 of expected tier",
+    "must_never": "chest pain / stroke / AMS cases must NEVER classify ≥3"
+  },
+  "cases": [
+    {
+      "id": "GOLDEN-001",
+      "expected_tier": 1,
+      "must_be_at_most": 1,
+      "case": {
+        "cc": "cardiac arrest, no pulse",
+        "vitals": {"hr": 0, "rr": 0, "bp": "0/0", "spo2": null},
+        "hpi": "witnessed collapse 3 min ago, CPR in progress",
+        "arrival": "ambulance"
+      }
+    },
+    {
+      "id": "GOLDEN-002",
+      "expected_tier": 2,
+      "must_be_at_most": 2,
+      "_safety_critical": true,
+      "case": {
+        "cc": "chest pain",
+        "vitals": {"hr": 105, "rr": 22, "bp": "150/95", "spo2": 96},
+        "hpi": "62yo M, substernal pressure 30 min, radiating to left arm, diaphoretic",
+        "arrival": "walk-in"
+      }
+    }
+  ],
+  "_notes": "Hand-label remaining 28 cases before shipping. This is the smoke test."
+}

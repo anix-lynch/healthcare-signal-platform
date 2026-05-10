@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: healthcare
+    schema: dbo
+    tables:
+      - name: raw_healthcare_data
+        identifier: raw_healthcare_data

@@ -1,0 +1,51 @@
+table 'Patient Encounters'
+	lineageTag: a55a8aa8-4003-4e76-a444-642d0e954322
+
+	column EncounterID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: b6826502-3435-4228-9823-123456789013
+		summarizeBy: none
+		sourceColumn: EncounterID
+
+	column PatientKey
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: c7826502-3435-4228-9823-123456789013
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+	column DoctorKey
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: d8826502-3435-4228-9823-123456789013
+		summarizeBy: none
+		sourceColumn: DoctorKey
+
+	column TotalCost
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: e9826502-3435-4228-9823-123456789013
+		summarizeBy: sum
+		sourceColumn: TotalCost
+
+	measure 'Total Revenue' = SUM('Patient Encounters'[TotalCost])
+		formatString: "$#,##0.00"
+		lineageTag: f0826502-3435-4228-9823-123456789013
+
+	measure 'Readmission Rate' = 
+		DIVIDE(
+			CALCULATE(COUNTROWS('Patient Encounters'), 'Patient Encounters'[ReadmissionFlag] = 1),
+			COUNTROWS('Patient Encounters')
+		)
+		formatString: "0.00%"
+		lineageTag: f1826502-3435-4228-9823-123456789013
+
+	partition 'Patient Encounters' = m
+		mode: import
+		source =
+			let
+				Source = Sql.Database(Environment.GetEnvironmentVariable("FABRIC_SERVER"), Environment.GetEnvironmentVariable("FABRIC_DATABASE")),
+				dbo_fact = Source{[Schema="dbo",Item="fact_patient_encounters"]}[Data]
+			in
+				dbo_fact

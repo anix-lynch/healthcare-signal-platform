@@ -1,0 +1,33 @@
+# Secrets — never commit
+.env
+.env.local
+*.pem
+*.key
+gcp-adc.json
+
+# Data containing PII/PHI (even synthetic — be cautious)
+data/pii_masked_sample.json
+data/*_raw.json
+
+# Outputs that might have patient-looking data
+outputs/*.png
+outputs/*.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Symlinks (content lives elsewhere — don't commit symlink targets)
+healthcare_da_src
+himalayas_factory
+
+# Internal docs (application context — not for public repo)
+docs/
+BUILD_PLAN.md

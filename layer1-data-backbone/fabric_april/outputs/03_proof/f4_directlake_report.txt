@@ -1,0 +1,5 @@
+F4 Power BI Direct Lake — narrative proof (screenshot: powerbi_directlake_report.png)
+
+Artifact: Power BI report view with Direct Lake–backed semantic model context (see PNG for UI labels).
+
+SLA: outputs/01_screenshots/powerbi_directlake_report.png (> 2 KB)

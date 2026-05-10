@@ -1,0 +1,13 @@
+F2 Data Factory — healthcare pipeline (narrative proof; screenshot must match data_factory_pipeline_run.png)
+
+Pipeline name: bronze-silver-gold
+Source: HealthcareAnalytics.healthcare_encounters
+Destination: HealthcareWarehouse.dbo.healthcare_encounters
+Mode: Full copy
+Result: Pipeline run succeeded (status: Succeeded)
+
+Notes:
+- Real healthcare copy job (not sample taxi data).
+- Copy job connection created/signed in where required for auth.
+
+SLA file: outputs/01_screenshots/data_factory_pipeline_run.png (must be real PNG > 2 KB)

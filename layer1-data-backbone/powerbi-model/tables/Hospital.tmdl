@@ -1,0 +1,8 @@
+table Hospital
+	lineageTag: 22222222-4003-4e76-a444-642d0e954321
+	column HospitalKey
+		dataType: string
+		sourceColumn: HospitalKey
+	partition Hospital = m
+		mode: import
+		source = Sql.Database(Environment.GetEnvironmentVariable("FABRIC_SERVER"), Environment.GetEnvironmentVariable("FABRIC_DATABASE")){[Schema="dbo",Item="dim_hospital"]}[Data]

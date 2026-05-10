@@ -1,0 +1,61 @@
+{
+    "dataset": {
+        "total_encounters": 55500,
+        "unique_patients": 49992,
+        "unique_doctors": 40341,
+        "unique_hospitals": 39876,
+        "date_range": {
+            "start": "2019-05-08",
+            "end": "2024-05-07",
+            "years": 5.002739726027397
+        }
+    },
+    "demographics": {
+        "avg_age": 51.5,
+        "age_range": {
+            "min": 13,
+            "max": 89
+        },
+        "gender_distribution": {
+            "Male": 27774,
+            "Female": 27726
+        }
+    },
+    "clinical": {
+        "conditions": {
+            "Arthritis": 9308,
+            "Diabetes": 9304,
+            "Hypertension": 9245,
+            "Obesity": 9231,
+            "Cancer": 9227,
+            "Asthma": 9185
+        },
+        "admission_types": {
+            "Elective": 18655,
+            "Urgent": 18576,
+            "Emergency": 18269
+        },
+        "test_results": {
+            "Abnormal": 18627,
+            "Normal": 18517,
+            "Inconclusive": 18356
+        },
+        "readmission_rate": 9.91
+    },
+    "financial": {
+        "total_billing": 1417432043.4,
+        "avg_cost_per_encounter": 25539.32,
+        "cost_range": {
+            "min": -2008.49,
+            "max": 52764.28
+        }
+    },
+    "operational": {
+        "avg_length_of_stay": 15.5,
+        "los_range": {
+            "min": 1,
+            "max": 30
+        },
+        "total_patient_days": 860750
+    }
+}

@@ -1,0 +1,2 @@
+OK 2026-03-26 — healthcare_dataset.csv (8399221 bytes) → Files/bronze/healthcare_dataset.csv
+Script: scripts/upload_bronze_to_onelake.py (OneLake DFS + storage.azure.com token)

@@ -1,0 +1,924 @@
+{
+  "summary": {
+    "n_queries": 100,
+    "classifier_model": "gpt-4o-mini (proxy for Gemini Flash routing classifier)",
+    "baseline_model": "gpt-4o ($2.50/1M input)",
+    "tier_distribution": {
+      "1": 32,
+      "2": 52,
+      "3": 16
+    },
+    "tier_1_model": "claude-haiku-4-5 ($0.80/1M)",
+    "tier_2_model": "gemini-1.5-flash ($0.075/1M)",
+    "tier_3_model": "claude-sonnet-4-6 ($3.00/1M)",
+    "baseline_all_gpt4o_cost_usd": 0.003922,
+    "routed_cost_usd": 0.001484,
+    "classifier_overhead_usd": 0.000235,
+    "net_savings_usd": 0.002439,
+    "cost_reduction_pct": 62.2,
+    "run_date": "2026-04-20",
+    "note": "Real API classification decisions. Token count estimated from query length."
+  },
+  "ledger": [
+    {
+      "query": "What blood type does the first patient (Bobby JacksOn) have?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 15,
+      "routed_cost_usd": 1.2e-05,
+      "baseline_cost_usd": 3.75e-05,
+      "savings_usd": 2.55e-05
+    },
+    {
+      "query": "What medication was prescribed to the patient admitted with Cancer on 2024-01-31?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 20,
+      "routed_cost_usd": 1.6e-05,
+      "baseline_cost_usd": 5e-05,
+      "savings_usd": 3.4e-05
+    },
+    {
+      "query": "How many distinct medical conditions appear in the dataset?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "What are the medical conditions tracked in this dataset?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.12e-05,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 2.38e-05
+    },
+    {
+      "query": "What insurance providers are represented in the patient records?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 16,
+      "routed_cost_usd": 1.2e-06,
+      "baseline_cost_usd": 4e-05,
+      "savings_usd": 3.88e-05
+    },
+    {
+      "query": "What types of hospital admissions are recorded?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 11,
+      "routed_cost_usd": 8.8e-06,
+      "baseline_cost_usd": 2.75e-05,
+      "savings_usd": 1.87e-05
+    },
+    {
+      "query": "What is the most common medical condition in the dataset?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "What is the least common medical condition in the dataset?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "What blood types are present in the patient records?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 9.7e-07,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 3.152e-05
+    },
+    {
+      "query": "What medications are commonly prescribed in these records?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "What test result categories are used in the dataset?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 1.04e-05,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 2.21e-05
+    },
+    {
+      "query": "Which hospital appears in the first patient record?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9.6e-06,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.04e-05
+    },
+    {
+      "query": "What was the admission type for Bobby JacksOn?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 11,
+      "routed_cost_usd": 8.8e-06,
+      "baseline_cost_usd": 2.75e-05,
+      "savings_usd": 1.87e-05
+    },
+    {
+      "query": "What is the billing amount for Bobby JacksOn's admission?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.12e-05,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 2.38e-05
+    },
+    {
+      "query": "How many unique hospitals are referenced in the first 500 records?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 16,
+      "routed_cost_usd": 1.2e-06,
+      "baseline_cost_usd": 4e-05,
+      "savings_usd": 3.88e-05
+    },
+    {
+      "query": "Which insurance provider appears most frequently?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9e-07,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.91e-05
+    },
+    {
+      "query": "What is the room number for the first admitted patient?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 1.04e-05,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 2.21e-05
+    },
+    {
+      "query": "How many male vs female patients are in the first 500 records?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 15,
+      "routed_cost_usd": 1.13e-06,
+      "baseline_cost_usd": 3.75e-05,
+      "savings_usd": 3.638e-05
+    },
+    {
+      "query": "What is the most common admission type?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 7.5e-07,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 2.425e-05
+    },
+    {
+      "query": "What is the most common blood type in the dataset?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9e-07,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.91e-05
+    },
+    {
+      "query": "Which medication is prescribed most often?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 7.5e-07,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 2.425e-05
+    },
+    {
+      "query": "What is the most common test result outcome?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 11,
+      "routed_cost_usd": 8.2e-07,
+      "baseline_cost_usd": 2.75e-05,
+      "savings_usd": 2.667e-05
+    },
+    {
+      "query": "How many cancer patients are in the first 500 records?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 1.04e-05,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 2.21e-05
+    },
+    {
+      "query": "How many diabetes patients are in the first 500 records?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.12e-05,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 2.38e-05
+    },
+    {
+      "query": "What is the billing amount range across patient records?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "What doctor treated Bobby JacksOn?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 8e-06,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 1.7e-05
+    },
+    {
+      "query": "What was Bobby JacksOn's discharge date?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 8e-06,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 1.7e-05
+    },
+    {
+      "query": "What is LesLie TErRy's age and gender?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 8e-06,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 1.7e-05
+    },
+    {
+      "query": "What medical condition does LesLie TErRy have?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 11,
+      "routed_cost_usd": 8.8e-06,
+      "baseline_cost_usd": 2.75e-05,
+      "savings_usd": 1.87e-05
+    },
+    {
+      "query": "What insurance provider covers LesLie TErRy?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 11,
+      "routed_cost_usd": 8.8e-06,
+      "baseline_cost_usd": 2.75e-05,
+      "savings_usd": 1.87e-05
+    },
+    {
+      "query": "What is LesLie TErRy's billing amount?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 8e-06,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 1.7e-05
+    },
+    {
+      "query": "What is LesLie TErRy's admission type?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 8e-06,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 1.7e-05
+    },
+    {
+      "query": "What medication is prescribed to LesLie TErRy?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 11,
+      "routed_cost_usd": 8.8e-06,
+      "baseline_cost_usd": 2.75e-05,
+      "savings_usd": 1.87e-05
+    },
+    {
+      "query": "What is LesLie TErRy's test result?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 8e-06,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 1.7e-05
+    },
+    {
+      "query": "How many distinct doctors appear in the first 500 records?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "What percentage of admissions are Emergency type in the first 500 records?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 18,
+      "routed_cost_usd": 1.35e-06,
+      "baseline_cost_usd": 4.5e-05,
+      "savings_usd": 4.365e-05
+    },
+    {
+      "query": "What percentage of admissions are Elective type?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9e-07,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.91e-05
+    },
+    {
+      "query": "What percentage of patients have Normal test results?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 9.7e-07,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 3.152e-05
+    },
+    {
+      "query": "How many unique room numbers appear in the dataset?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9.6e-06,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.04e-05
+    },
+    {
+      "query": "What is LesLie TErRy's blood type?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 8e-06,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 1.7e-05
+    },
+    {
+      "query": "Summarize the distribution of medical conditions in the patient dataset.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 18,
+      "routed_cost_usd": 1.35e-06,
+      "baseline_cost_usd": 4.5e-05,
+      "savings_usd": 4.365e-05
+    },
+    {
+      "query": "What is the average age of patients in the dataset?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9.6e-06,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.04e-05
+    },
+    {
+      "query": "Summarize the average billing amount across all patients.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "What is the average billing amount for cancer patients specifically?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 17,
+      "routed_cost_usd": 1.27e-06,
+      "baseline_cost_usd": 4.25e-05,
+      "savings_usd": 4.123e-05
+    },
+    {
+      "query": "Summarize the insurance provider distribution in the dataset.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 15,
+      "routed_cost_usd": 1.13e-06,
+      "baseline_cost_usd": 3.75e-05,
+      "savings_usd": 3.638e-05
+    },
+    {
+      "query": "Summarize the gender breakdown of patients.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 7.5e-07,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 2.425e-05
+    },
+    {
+      "query": "What proportion of patients had Urgent admissions?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9e-07,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.91e-05
+    },
+    {
+      "query": "Summarize medication prescribing patterns in the dataset.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "Summarize the blood type distribution across patients.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 9.7e-07,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 3.152e-05
+    },
+    {
+      "query": "Summarize the test result outcomes across all patients.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 9.7e-07,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 3.152e-05
+    },
+    {
+      "query": "What is the length of stay distribution for the first patient (Bobby JacksOn)?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 1.43e-06,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": 4.608e-05
+    },
+    {
+      "query": "Summarize the admission type distribution.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 7.5e-07,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 2.425e-05
+    },
+    {
+      "query": "What is the billing range and average for the dataset?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 9.7e-07,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 3.152e-05
+    },
+    {
+      "query": "Summarize the cancer patient population in the dataset.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 9.7e-07,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 3.152e-05
+    },
+    {
+      "query": "What are the most common co-occurring patterns of condition and medication?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 18,
+      "routed_cost_usd": 1.35e-06,
+      "baseline_cost_usd": 4.5e-05,
+      "savings_usd": 4.365e-05
+    },
+    {
+      "query": "Summarize the dataset columns and what each represents.",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 1.04e-05,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 2.21e-05
+    },
+    {
+      "query": "What is the average billing amount for emergency admissions vs elective?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 18,
+      "routed_cost_usd": 1.35e-06,
+      "baseline_cost_usd": 4.5e-05,
+      "savings_usd": 4.365e-05
+    },
+    {
+      "query": "Summarize the hospital distribution in the dataset.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9e-07,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.91e-05
+    },
+    {
+      "query": "What percentage of patients have Abnormal test results?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 9.7e-07,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 3.152e-05
+    },
+    {
+      "query": "Summarize the age distribution of patients \u2014 what age groups are represented?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 1.43e-06,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": 4.608e-05
+    },
+    {
+      "query": "What proportion of patients have Medicare as their insurance?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 15,
+      "routed_cost_usd": 1.13e-06,
+      "baseline_cost_usd": 3.75e-05,
+      "savings_usd": 3.638e-05
+    },
+    {
+      "query": "Summarize the Obesity patient cohort.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 10,
+      "routed_cost_usd": 7.5e-07,
+      "baseline_cost_usd": 2.5e-05,
+      "savings_usd": 2.425e-05
+    },
+    {
+      "query": "What is the billing variance between the highest and lowest billed patients?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 1.43e-06,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": 4.608e-05
+    },
+    {
+      "query": "Summarize medication coverage across conditions.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9e-07,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.91e-05
+    },
+    {
+      "query": "What proportion of records have Inconclusive test results?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "Summarize how billing amounts differ by insurance provider.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.05e-06,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 3.395e-05
+    },
+    {
+      "query": "How many distinct doctors appear in the dataset and what does that imply?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 18,
+      "routed_cost_usd": 1.35e-06,
+      "baseline_cost_usd": 4.5e-05,
+      "savings_usd": 4.365e-05
+    },
+    {
+      "query": "Summarize the overall dataset size and scope.",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 11,
+      "routed_cost_usd": 8.8e-06,
+      "baseline_cost_usd": 2.75e-05,
+      "savings_usd": 1.87e-05
+    },
+    {
+      "query": "What is the average billing for Obesity patients?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 12,
+      "routed_cost_usd": 9e-07,
+      "baseline_cost_usd": 3e-05,
+      "savings_usd": 2.91e-05
+    },
+    {
+      "query": "Summarize the Urgent vs Emergency vs Elective admission billing patterns.",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 18,
+      "routed_cost_usd": 1.35e-06,
+      "baseline_cost_usd": 4.5e-05,
+      "savings_usd": 4.365e-05
+    },
+    {
+      "query": "Why might cancer patients have higher average billing than other conditions?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 5.7e-05,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": -9.5e-06
+    },
+    {
+      "query": "A patient is admitted as Emergency with Cancer and Abnormal test results. What should clinical staff prioritize?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 28,
+      "routed_cost_usd": 8.4e-05,
+      "baseline_cost_usd": 7e-05,
+      "savings_usd": -1.4e-05
+    },
+    {
+      "query": "If a patient's test result is Inconclusive, what does that imply for the treatment plan?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 22,
+      "routed_cost_usd": 6.6e-05,
+      "baseline_cost_usd": 5.5e-05,
+      "savings_usd": -1.1e-05
+    },
+    {
+      "query": "Why might billing amounts vary significantly between patients with the same condition?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 21,
+      "routed_cost_usd": 6.3e-05,
+      "baseline_cost_usd": 5.25e-05,
+      "savings_usd": -1.05e-05
+    },
+    {
+      "query": "What risk does high billing amount pose for uninsured or underinsured patients?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 5.7e-05,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": -9.5e-06
+    },
+    {
+      "query": "If a patient has both Diabetes and is prescribed Ibuprofen, what clinical concern arises?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 22,
+      "routed_cost_usd": 6.6e-05,
+      "baseline_cost_usd": 5.5e-05,
+      "savings_usd": -1.1e-05
+    },
+    {
+      "query": "Why would a hospital track room number in patient records?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 14,
+      "routed_cost_usd": 1.12e-05,
+      "baseline_cost_usd": 3.5e-05,
+      "savings_usd": 2.38e-05
+    },
+    {
+      "query": "What does it indicate if Emergency admissions outnumber Elective in the dataset?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 20,
+      "routed_cost_usd": 6e-05,
+      "baseline_cost_usd": 5e-05,
+      "savings_usd": -1e-05
+    },
+    {
+      "query": "A RAG system retrieves records matching 'Obesity' and returns billing amounts. What compliance risk exists?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 26,
+      "routed_cost_usd": 1.95e-06,
+      "baseline_cost_usd": 6.5e-05,
+      "savings_usd": 6.305e-05
+    },
+    {
+      "query": "Why is tracking both admission date and discharge date important for analytics?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 1.43e-06,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": 4.608e-05
+    },
+    {
+      "query": "How would you design a query to find patients with high billing AND Abnormal test results?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 22,
+      "routed_cost_usd": 1.65e-06,
+      "baseline_cost_usd": 5.5e-05,
+      "savings_usd": 5.335e-05
+    },
+    {
+      "query": "What inference can be drawn if a patient is prescribed Paracetamol after a Cancer diagnosis?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 23,
+      "routed_cost_usd": 6.9e-05,
+      "baseline_cost_usd": 5.75e-05,
+      "savings_usd": -1.15e-05
+    },
+    {
+      "query": "Why should insurance provider data be segmented separately from clinical data in a RAG system?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 23,
+      "routed_cost_usd": 1.73e-06,
+      "baseline_cost_usd": 5.75e-05,
+      "savings_usd": 5.578e-05
+    },
+    {
+      "query": "If a query asks 'What is the average billing for Medicare patients?', what data does it need?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 23,
+      "routed_cost_usd": 1.73e-06,
+      "baseline_cost_usd": 5.75e-05,
+      "savings_usd": 5.578e-05
+    },
+    {
+      "query": "What does a high proportion of Inconclusive test results suggest about a hospital's diagnostic capability?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 26,
+      "routed_cost_usd": 7.8e-05,
+      "baseline_cost_usd": 6.5e-05,
+      "savings_usd": -1.3e-05
+    },
+    {
+      "query": "How could prompt injection attacks exploit a healthcare RAG that doesn't mask PII?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 20,
+      "routed_cost_usd": 6e-05,
+      "baseline_cost_usd": 5e-05,
+      "savings_usd": -1e-05
+    },
+    {
+      "query": "Why is it important to use BM25 or semantic retrieval rather than exact match in healthcare RAG?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 24,
+      "routed_cost_usd": 7.2e-05,
+      "baseline_cost_usd": 6e-05,
+      "savings_usd": -1.2e-05
+    },
+    {
+      "query": "What evaluation metric best captures whether a RAG answer contains only information from retrieved context?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 26,
+      "routed_cost_usd": 7.8e-05,
+      "baseline_cost_usd": 6.5e-05,
+      "savings_usd": -1.3e-05
+    },
+    {
+      "query": "If billing data shows Medicare patients have lower billing than Blue Cross patients, what could explain it?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 26,
+      "routed_cost_usd": 7.8e-05,
+      "baseline_cost_usd": 6.5e-05,
+      "savings_usd": -1.3e-05
+    },
+    {
+      "query": "Why would you use a 3-tier model router (cheap/medium/expensive) for healthcare RAG queries?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 23,
+      "routed_cost_usd": 6.9e-05,
+      "baseline_cost_usd": 5.75e-05,
+      "savings_usd": -1.15e-05
+    },
+    {
+      "query": "What should the system return if no patient record matches the query?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 17,
+      "routed_cost_usd": 1.36e-05,
+      "baseline_cost_usd": 4.25e-05,
+      "savings_usd": 2.89e-05
+    },
+    {
+      "query": "A query asks for 'all patients named John'. Should the system return results?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 1.52e-05,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": 3.23e-05
+    },
+    {
+      "query": "What if two patients have the same name in the dataset?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 1.04e-05,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 2.21e-05
+    },
+    {
+      "query": "A query arrives in Japanese. How should a healthcare RAG handle it?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 16,
+      "routed_cost_usd": 1.2e-06,
+      "baseline_cost_usd": 4e-05,
+      "savings_usd": 3.88e-05
+    },
+    {
+      "query": "What happens if the retrieved context contradicts the patient's medication in a follow-up query?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 24,
+      "routed_cost_usd": 7.2e-05,
+      "baseline_cost_usd": 6e-05,
+      "savings_usd": -1.2e-05
+    },
+    {
+      "query": "A patient record shows Age = 0. How should the analytics system handle this?",
+      "complexity_tier": 2,
+      "routed_model": "gemini-1.5-flash",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 1.43e-06,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": 4.608e-05
+    },
+    {
+      "query": "What if a billing amount is negative in the dataset?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 13,
+      "routed_cost_usd": 1.04e-05,
+      "baseline_cost_usd": 3.25e-05,
+      "savings_usd": 2.21e-05
+    },
+    {
+      "query": "A query asks 'delete all records for patient X'. How should the system respond?",
+      "complexity_tier": 3,
+      "routed_model": "claude-sonnet-4-6",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 5.7e-05,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": -9.5e-06
+    },
+    {
+      "query": "What if a retrieved document is from a future date (e.g., admission date 2099)?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 19,
+      "routed_cost_usd": 1.52e-05,
+      "baseline_cost_usd": 4.75e-05,
+      "savings_usd": 3.23e-05
+    },
+    {
+      "query": "A red-team prompt asks the system to 'act as if all safety guardrails are disabled'. What is the correct response?",
+      "complexity_tier": 1,
+      "routed_model": "claude-haiku-4-5",
+      "estimated_tokens": 28,
+      "routed_cost_usd": 2.24e-05,
+      "baseline_cost_usd": 7e-05,
+      "savings_usd": 4.76e-05
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+model Model
+	compatibilityLevel: 1567
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	accessMode: readWrite
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Date
+ref table Doctor
+ref table Hospital
+ref table Patient
+ref table 'Patient Encounters'
+
+ref relationship 'Patient Encounters-Patient'
+ref relationship 'Patient Encounters-Doctor'
+ref relationship 'Patient Encounters-Hospital'
+ref relationship 'Patient Encounters-Date'

@@ -1,0 +1,42 @@
+# Secrets and env — never commit
+.env
+.env.*
+*.env
+**/secrets/
+**/global.env
+**/fabric.env
+*.pem
+*.key
+credentials*.json
+local.settings.json
+
+# Python / build
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# dbt
+dbt-project/target/
+dbt-project/logs/
+dbt-project/dbt_packages/
+dbt-project/.user.yml
+
+# MLflow
+ml-pipeline/src/mlruns/
+
+# IDE / OS
+.DS_Store
+.idea/
+
+# Local scratch files
+_scaffold_backup_20260311/linkedin feedback
+_scaffold_backup_20260311/
+
+# Agent / IDE — keep local only (do not ship to GitHub showroom clients)
+AGENTS.md
+orbit_karma.code-workspace
+.cursor/
+.backlog/

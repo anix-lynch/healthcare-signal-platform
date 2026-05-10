@@ -1,0 +1,32 @@
+table Patient
+	lineageTag: 955a8aa8-4003-4e76-a444-642d0e954321
+
+	column PatientKey
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 66826502-3435-4228-9823-123456789012
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+	column FirstName
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 77826502-3435-4228-9823-123456789012
+		summarizeBy: none
+		sourceColumn: FirstName
+
+	column LastName
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 88826502-3435-4228-9823-123456789012
+		summarizeBy: none
+		sourceColumn: LastName
+
+	partition Patient = m
+		mode: import
+		source =
+			let
+				Source = Sql.Database(Environment.GetEnvironmentVariable("FABRIC_SERVER"), Environment.GetEnvironmentVariable("FABRIC_DATABASE")),
+				dbo_dim_patient = Source{[Schema="dbo",Item="dim_patient"]}[Data]
+			in
+				dbo_dim_patient
