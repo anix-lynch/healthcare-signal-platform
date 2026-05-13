@@ -30,25 +30,25 @@ install:
 
 # ── Per-pattern eval (7-lens harness) ──
 eval-rachel:
-	python -m app.evaluation.retrieval_eval
+	cd ../.. && python -m shared.evaluation.retrieval_eval
 
 eval-traffic-light:
-	python -m app.evaluation.classify_eval
+	cd ../.. && python -m shared.evaluation.classify_eval
 
 eval-crystal-ball:
-	python -m app.evaluation.regress_eval
+	cd ../.. && python -m shared.evaluation.regress_eval
 
 eval-mad-lib:
-	python -m app.evaluation.generate_eval
+	cd ../.. && python -m shared.evaluation.generate_eval
 
 eval-smoke-detector:
-	python -m app.evaluation.anomaly_eval
+	cd ../.. && python -m shared.evaluation.anomaly_eval
 
 eval-treasure-map:
-	python -m app.evaluation.cluster_eval
+	cd ../.. && python -m shared.evaluation.cluster_eval
 
 eval-police-lineup:
-	python -m app.evaluation.rank_eval
+	cd ../.. && python -m shared.evaluation.rank_eval
 
 eval-all: eval-rachel eval-traffic-light eval-crystal-ball eval-mad-lib eval-smoke-detector eval-treasure-map eval-police-lineup
 	@echo "→ All 7 pattern evals complete. JSON report at outputs/eval_report.json"
@@ -69,8 +69,8 @@ run-pii-mask:
 		--output outputs/pii_masked_sample.json
 
 run-router:
-	python -m app.classify.router --queries inputs/healthcare_qa_200.json \
-		--output outputs/baseline/router_baseline.json
+	cd ../.. && python -m shared.classify.router --queries apps/er-triage/inputs/healthcare_qa_200.json \
+		--output apps/er-triage/outputs/baseline/router_baseline.json
 
 baseline-all: run-ragas run-redteam run-router
 	@echo "→ All baseline evals re-run. Check outputs/baseline/."
@@ -80,7 +80,7 @@ smoke:
 	pytest tests/test_smoke_esi.py -v
 
 drift:
-	python -m app.anomaly.drift
+	cd ../.. && python -m shared.anomaly.drift
 
 cloud-test:
 	pytest tests/test_*_provider.py -v
@@ -92,4 +92,4 @@ test:
 	pytest tests/ -v
 
 classify:
-	python -m app.classify.esi_classifier
+	python -m classify.esi_classifier

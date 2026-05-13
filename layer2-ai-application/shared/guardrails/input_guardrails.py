@@ -26,6 +26,7 @@ The flow (matches the canonical guardrail diagram):
 """
 
 import re
+import unicodedata
 from pydantic import BaseModel, ValidationError
 
 
@@ -49,8 +50,11 @@ PII_PATTERNS = {
 # Sanitization
 # ────────────────────────────────────────────────────────────────────────────
 def sanitize_note(text: str) -> str:
-    """Normalize whitespace, strip control chars, trim. Generic hygiene."""
-    raise NotImplementedError("TODO: unicodedata.normalize NFKC + strip control chars")
+    """Normalize to NFKC, strip ASCII control chars, trim whitespace."""
+    text = unicodedata.normalize("NFKC", text)
+    # strip ASCII control chars (0x00-0x1F except tab \t=0x09 and newline \n=0x0A) + DEL 0x7F
+    text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
+    return text.strip()
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -64,6 +68,7 @@ INJECTION_PATTERNS = [
     r"system:",
     r"</?(system|user|assistant)>",
 ]
+_INJECTION_RE = [re.compile(p, re.IGNORECASE) for p in INJECTION_PATTERNS]
 
 
 def strip_prompt_injection(text: str) -> str:
@@ -71,7 +76,15 @@ def strip_prompt_injection(text: str) -> str:
 
     Conservative: false positive (over-strip) > false negative (let it through).
     """
-    raise NotImplementedError("TODO: regex match + replacement + audit log of hits")
+    hits = []
+    for pat in _INJECTION_RE:
+        if pat.search(text):
+            hits.append(pat.pattern)
+    if hits:
+        print(f"[INPUT_GUARDRAIL] injection blocked: {hits}")
+        for pat in _INJECTION_RE:
+            text = pat.sub("[INJECTION_BLOCKED]", text)
+    return text
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -84,10 +97,6 @@ def redact_pii(text: str, provider=None, use_ner: bool = True) -> tuple[str, dic
       1. Regex over PII_PATTERNS (SSN, DOB, MRN, phone, email, etc.)
       2. spaCy NER for names + locations (PERSON, GPE, LOC, ORG)
 
-    If a CloudProvider is passed, prefer its native deidentify() (Comprehend
-    Medical / Healthcare API DLP / Azure AI Language) — falls back to the
-    local regex+NER pipeline if the provider is None or fails.
-
     Returns: (masked_text, hit_counts)
     """
     if provider is not None:
@@ -97,14 +106,14 @@ def redact_pii(text: str, provider=None, use_ner: bool = True) -> tuple[str, dic
             pass  # fall through to local pipeline
 
     # Pass 1: regex
-    hits = {}
+    hits: dict = {}
     for label, pat in PII_PATTERNS.items():
         matches = pat.findall(text)
         if matches:
             hits[label] = len(matches)
             text = pat.sub(f"[REDACTED_{label}]", text)
 
-    # Pass 2: spaCy NER (optional — heavy import)
+    # Pass 2: spaCy NER (optional)
     if use_ner:
         try:
             import spacy
@@ -126,13 +135,27 @@ def redact_pii(text: str, provider=None, use_ner: bool = True) -> tuple[str, dic
 # Hard limits
 # ────────────────────────────────────────────────────────────────────────────
 def enforce_token_limit(text: str, max_tokens: int = 4000) -> str:
-    """Truncate or reject if input exceeds context-window budget."""
-    raise NotImplementedError("TODO: tiktoken count + truncate-with-summary")
+    """Truncate if input exceeds context-window budget."""
+    try:
+        import tiktoken
+        enc = tiktoken.get_encoding("cl100k_base")
+        tokens = enc.encode(text)
+        if len(tokens) > max_tokens:
+            text = enc.decode(tokens[:max_tokens]) + "\n[TRUNCATED: token limit]"
+    except ImportError:
+        char_limit = max_tokens * 4
+        if len(text) > char_limit:
+            text = text[:char_limit] + "\n[TRUNCATED: token limit]"
+    return text
 
 
 def block_weird_chars(text: str) -> str:
-    """Strip zero-width chars, RTL overrides, and other prompt-smuggling tricks."""
-    raise NotImplementedError("TODO: strip U+200B-U+200F, U+2028-U+2029, U+202A-U+202E")
+    """Strip zero-width, RTL overrides, and other prompt-smuggling unicode."""
+    text = re.sub(r"[​-‏]", "", text)   # zero-width chars
+    text = re.sub(r"[ - ]", " ", text)  # line/paragraph separators
+    text = re.sub(r"[‪-‮]", "", text)   # bidirectional overrides
+    text = re.sub(r"[‎‏؜]", "", text)  # directional marks
+    return text
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -140,7 +163,10 @@ def block_weird_chars(text: str) -> str:
 # ────────────────────────────────────────────────────────────────────────────
 def validate_schema(payload: dict, schema_cls: type[BaseModel]) -> BaseModel:
     """Pydantic-validate the incoming request. Raise on bad shape."""
-    raise NotImplementedError("TODO: schema_cls.model_validate(payload)")
+    try:
+        return schema_cls.model_validate(payload)
+    except ValidationError as exc:
+        raise ValueError(f"Schema validation failed: {exc}") from exc
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -149,4 +175,9 @@ def validate_schema(payload: dict, schema_cls: type[BaseModel]) -> BaseModel:
 def run_input_guardrails(text: str, provider=None) -> str:
     """Sequence: sanitize → strip injection → redact PII → enforce token limit
     → block weird chars. Returns cleaned text ready for the LLM."""
-    raise NotImplementedError("TODO: chain the 5 functions above with audit logging")
+    text = sanitize_note(text)
+    text = strip_prompt_injection(text)
+    text, _hits = redact_pii(text, provider=provider)
+    text = enforce_token_limit(text)
+    text = block_weird_chars(text)
+    return text

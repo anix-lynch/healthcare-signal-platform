@@ -1,166 +1,255 @@
 """
-Step 2a — Classifier-based 3-tier model router.
+ER triage classifier — produces NOW / SOON / WAIT from a patient case.
 
-FIXED 2026-04-20: OpenAI gpt-4o-mini as classifier (was Vertex Gemini Flash).
-Same routing logic, same cost math — real API calls, real tier decisions.
+Deterministic, rule-based, no API calls. Composite score from:
+  - chief-complaint red-flag keyword match
+  - vital-sign abnormality (HR, RR, SpO2, SBP)
+  - age modifier (extremes of age push toward NOW)
 
-Architecture:
-    Query → gpt-4o-mini classifier (complexity 1-3) →
-        1 → Claude Haiku  ($0.80/1M — cheap, fast)
-        2 → Gemini Flash  ($0.075/1M — cheap, different family)
-        3 → Claude Sonnet ($3.00/1M — expensive, complex only)
-    vs Baseline: all GPT-4o ($2.50/1M)
-    Every decision logged to JSON → importable to Fabric Lakehouse
+Returns a structured TriageDecision with confidence and reasoning, so the
+result is auditable and the guardrails layer can inspect it.
 
-Run:
-    python scripts/03_classifier_router.py \
-        --queries data/healthcare_qa_200.json \
-        --output data/router_results.json
+Mapping ESI ↔ bucket:
+  ESI 1, 2 → NOW   (immediate, can't wait)
+  ESI 3    → SOON  (multi-resource, stable)
+  ESI 4, 5 → WAIT  (low-acuity)
 
-Pillar: 💰 COST
-Evidence: data/router_results.json
+Cost-routing classifier was moved to shared/classify/cost_router.py.
 """
+
 from __future__ import annotations
-
-import argparse
-import json
-import os
-import time
-from pathlib import Path
-
-# Cost-per-1M-tokens (input), sourced 2026-04-20
-# Refs: Anthropic pricing, Google pricing pages
-COST_PER_1M_INPUT = {
-    "gemini-1.5-flash":    0.075,   # tier 2
-    "claude-haiku-4-5":    0.80,    # tier 1
-    "claude-sonnet-4-6":   3.00,    # tier 3
-    "gpt-4o":              2.50,    # baseline (what naive implementation would use)
-}
-
-CLASSIFIER_PROMPT = """Rate the complexity of this healthcare query on a 1-3 scale:
-1 = simple factual lookup (single value, demographic, yes/no)
-2 = summary / aggregation (multi-field, pattern across patients)
-3 = complex reasoning (differential, multi-source inference, causality)
-
-Query: {query}
-
-Respond with exactly one digit: 1, 2, or 3. No other text."""
+import re
+from dataclasses import dataclass, asdict, field
 
 
-def classify_query(client, query: str) -> int:
-    """Use gpt-4o-mini as the complexity classifier."""
-    try:
-        resp = client.chat.completions.create(
-            model="anthropic/claude-haiku-4-5",
-            messages=[{"role": "user", "content": CLASSIFIER_PROMPT.format(query=query)}],
-            temperature=0.0,
-            max_tokens=5,
-        )
-        text = resp.choices[0].message.content.strip()
-        for ch in text:
-            if ch in "123":
-                return int(ch)
-    except Exception as e:
-        print(f"Classify error (default tier 2): {e}")
-    return 2
+# ── Red-flag keyword rules ──────────────────────────────────────────────────
+# Each rule: (regex, esi_cap, label). esi_cap is the WORST tier we allow.
+# Order matters — first match for a given category wins, but we accumulate flags.
+RED_FLAGS = [
+    # ESI 1 — life-threatening
+    (re.compile(r"cardiac arrest|no pulse|asystole|pulseless", re.I), 1, "cardiac_arrest"),
+    (re.compile(r"unresponsive|gcs ?[0-7]\b", re.I),                  1, "unresponsive"),
+    (re.compile(r"agonal|apneic|not breathing", re.I),                1, "respiratory_arrest"),
+    (re.compile(r"massive (hemorr|bleed)|exsanguinat", re.I),         1, "massive_bleeding"),
+    (re.compile(r"intubat|airway compromise", re.I),                  1, "airway_compromise"),
+
+    # ESI 2 — high-risk, can't wait
+    (re.compile(r"chest pain|substernal|cardiac sounding", re.I),     2, "chest_pain"),
+    (re.compile(r"stroke|fast positive|facial droop|hemipares", re.I),2, "stroke_signs"),
+    (re.compile(r"altered mental|ams\b|confused|lethargic", re.I),    2, "altered_mental_status"),
+    (re.compile(r"anaphyla|severe allergic|airway swelling", re.I),   2, "anaphylaxis"),
+    (re.compile(r"active bleeding|gi bleed|hematemesis", re.I),       2, "active_bleeding"),
+    (re.compile(r"respiratory distress|severe asthma|status asth", re.I), 2, "respiratory_distress"),
+    (re.compile(r"suicidal|homicidal|sui ideation", re.I),            2, "psych_emergency"),
+    (re.compile(r"sepsis|septic shock|qSOFA", re.I),                  2, "sepsis_concern"),
+]
+
+# ── Moderate-acuity keywords (floor at ESI 3, multi-resource expected) ─────
+# Per ESI Annex: cases that typically need ≥2 resources (labs, imaging, IV
+# fluids, specialist consult). Even with stable vitals, these aren't ESI 4-5.
+MODERATE_ACUITY = [
+    (re.compile(r"abdominal pain|abd pain|rlq|ruq|llq|luq", re.I),    "abd_pain_workup"),
+    (re.compile(r"flank pain|kidney stone|renal colic|hematuria", re.I), "renal_workup"),
+    (re.compile(r"fracture|deformed|dislocat", re.I),                  "ortho_workup"),
+    (re.compile(r"dehydration|severe vomiting|severe diarrhea", re.I), "fluid_workup"),
+    (re.compile(r"fall(?!en asleep)|head strike|head injury", re.I),   "fall_workup"),
+    (re.compile(r"pregnan|first trimester bleeding", re.I),            "obgyn_workup"),
+    (re.compile(r"new onset|acute onset", re.I),                       "acute_workup"),
+]
+
+# ── Vital-sign abnormality scoring ─────────────────────────────────────────
+def _vital_score(vitals: dict) -> tuple[int, list[str]]:
+    """Return (severity_points, flag_list). Severity 0=normal, 3=critical."""
+    flags: list[str] = []
+    score = 0
+    if not vitals:
+        return 0, []
+
+    hr = vitals.get("hr")
+    rr = vitals.get("rr")
+    spo2 = vitals.get("spo2")
+    bp = vitals.get("bp")
+
+    if hr is not None:
+        if hr == 0 or hr >= 150:
+            score += 3; flags.append(f"hr_critical_{hr}")
+        elif hr >= 130 or hr <= 40:
+            score += 2; flags.append(f"hr_severe_{hr}")
+        elif hr >= 110 or hr <= 50:
+            score += 1; flags.append(f"hr_abnormal_{hr}")
+
+    if rr is not None:
+        if rr == 0 or rr >= 30:
+            score += 3; flags.append(f"rr_critical_{rr}")
+        elif rr >= 24 or rr <= 8:
+            score += 2; flags.append(f"rr_severe_{rr}")
+        elif rr >= 20 or rr <= 10:
+            score += 1; flags.append(f"rr_abnormal_{rr}")
+
+    if spo2 is not None:
+        if spo2 < 88:
+            score += 3; flags.append(f"spo2_critical_{spo2}")
+        elif spo2 < 92:
+            score += 2; flags.append(f"spo2_severe_{spo2}")
+        elif spo2 < 95:
+            score += 1; flags.append(f"spo2_abnormal_{spo2}")
+
+    if isinstance(bp, str) and "/" in bp:
+        try:
+            sbp = int(bp.split("/")[0])
+            if sbp == 0 or sbp >= 220:
+                score += 3; flags.append(f"sbp_critical_{sbp}")
+            elif sbp <= 90 or sbp >= 200:
+                score += 2; flags.append(f"sbp_severe_{sbp}")
+            elif sbp <= 100 or sbp >= 180:
+                score += 1; flags.append(f"sbp_abnormal_{sbp}")
+        except ValueError:
+            pass
+
+    return score, flags
 
 
-def route(complexity: int) -> str:
-    return {
-        1: "claude-haiku-4-5",
-        2: "gemini-1.5-flash",
-        3: "claude-sonnet-4-6",
-    }[complexity]
+# ── Age modifier ──────────────────────────────────────────────────────────
+def _age_modifier(hpi: str) -> int:
+    """Pediatric < 1yo or geriatric > 75yo → +1 vital severity."""
+    m = re.search(r"\b(\d{1,3})\s*(yo|y/o|year)", hpi or "", re.I)
+    m_mo = re.search(r"\b(\d+)\s*(mo|month)", hpi or "", re.I)
+    if m_mo:
+        return 1
+    if m:
+        age = int(m.group(1))
+        if age < 1 or age > 75:
+            return 1
+    return 0
 
 
-def estimate_tokens(text: str) -> int:
-    """Rough token estimate: ~4 chars per token."""
-    return max(len(text) // 4, 10)
+# ── Output schema ─────────────────────────────────────────────────────────
+@dataclass
+class TriageDecision:
+    esi_tier: int                # 1-5
+    bucket: str                  # NOW / SOON / WAIT
+    confidence: float            # 0-1
+    reasoning: str               # human-readable trace
+    red_flags: list[str] = field(default_factory=list)
+    resources_expected: int = 0  # ESI Annex resource count
+
+    def to_dict(self) -> dict:
+        return asdict(self)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--queries", default="data/healthcare_qa_200.json")
-    parser.add_argument("--output", default="data/router_results.json")
-    args = parser.parse_args()
+def _tier_to_bucket(tier: int) -> str:
+    if tier <= 2: return "NOW"
+    if tier == 3: return "SOON"
+    return "WAIT"
 
-    import openai
-    client = openai.OpenAI(api_key=os.environ["OPENROUTER_API_KEY"], base_url="https://openrouter.ai/api/v1")
 
-    qa = json.loads(Path(args.queries).read_text())
-    print(f"Routing {len(qa)} queries...")
+def _tier_resources(tier: int) -> int:
+    return {1: 5, 2: 4, 3: 2, 4: 1, 5: 0}.get(tier, 0)
 
-    ledger = []
-    tier_counts = {1: 0, 2: 0, 3: 0}
-    baseline_cost = 0.0
-    routed_cost = 0.0
-    classifier_cost = 0.0
 
-    for i, item in enumerate(qa):
-        query = item["question"]
-        tier = classify_query(client, query)
-        routed_model = route(tier)
+# ── Main classifier ────────────────────────────────────────────────────────
+def classify(case: dict) -> TriageDecision:
+    """
+    Classify an ER case into ESI 1-5 + NOW/SOON/WAIT bucket.
 
-        tokens_k = estimate_tokens(query) / 1_000_000
-        item_routed_cost = COST_PER_1M_INPUT[routed_model] * tokens_k
-        item_baseline_cost = COST_PER_1M_INPUT["gpt-4o"] * tokens_k
-        # Classifier itself costs ~gpt-4o-mini (0.15/1M) but negligible
-        item_classifier_cost = 0.15 * tokens_k
+    Args:
+        case: dict with keys cc (str), vitals (dict), hpi (str), arrival (str)
 
-        routed_cost += item_routed_cost
-        baseline_cost += item_baseline_cost
-        classifier_cost += item_classifier_cost
-        tier_counts[tier] += 1
+    Returns:
+        TriageDecision (deterministic, JSON-serializable via .to_dict()).
+    """
+    cc = case.get("cc", "") or ""
+    hpi = case.get("hpi", "") or ""
+    text = f"{cc} {hpi}".strip()
+    vitals = case.get("vitals") or {}
 
-        ledger.append({
-            "query": query[:200],
-            "complexity_tier": tier,
-            "routed_model": routed_model,
-            "estimated_tokens": int(tokens_k * 1_000_000),
-            "routed_cost_usd": round(item_routed_cost, 8),
-            "baseline_cost_usd": round(item_baseline_cost, 8),
-            "savings_usd": round(item_baseline_cost - item_routed_cost, 8),
-        })
+    # 1) red-flag scan
+    matched_flags: list[str] = []
+    keyword_cap = 5  # default = no urgency forced
+    for pattern, cap, label in RED_FLAGS:
+        if pattern.search(text):
+            matched_flags.append(label)
+            if cap < keyword_cap:
+                keyword_cap = cap
 
-        if (i + 1) % 20 == 0:
-            print(f"  {i + 1}/{len(qa)} classified")
-        time.sleep(0.05)
+    # 1b) moderate-acuity scan — floor at ESI 3 if multi-resource workup needed
+    moderate_match = False
+    for pattern, label in MODERATE_ACUITY:
+        if pattern.search(text):
+            matched_flags.append(label)
+            moderate_match = True
 
-    cost_reduction_pct = (1 - routed_cost / baseline_cost) * 100 if baseline_cost else 0
-    total_net_savings = baseline_cost - routed_cost
+    # 2) vital-sign score
+    vital_pts, vital_flags = _vital_score(vitals)
+    age_mod = _age_modifier(hpi)
+    vital_pts += age_mod
+    if age_mod:
+        vital_flags.append("extremes_of_age")
 
-    summary = {
-        "n_queries": len(qa),
-        "classifier_model": "gpt-4o-mini (proxy for Gemini Flash routing classifier)",
-        "baseline_model": "gpt-4o ($2.50/1M input)",
-        "tier_distribution": tier_counts,
-        "tier_1_model": "claude-haiku-4-5 ($0.80/1M)",
-        "tier_2_model": "gemini-1.5-flash ($0.075/1M)",
-        "tier_3_model": "claude-sonnet-4-6 ($3.00/1M)",
-        "baseline_all_gpt4o_cost_usd": round(baseline_cost, 6),
-        "routed_cost_usd": round(routed_cost, 6),
-        "classifier_overhead_usd": round(classifier_cost, 6),
-        "net_savings_usd": round(total_net_savings, 6),
-        "cost_reduction_pct": round(cost_reduction_pct, 1),
-        "run_date": "2026-04-20",
-        "note": "Real API classification decisions. Token count estimated from query length.",
-    }
+    # 3) composite tier — worst of red-flag cap and vital-derived tier
+    if vital_pts >= 6:
+        vital_tier = 1
+    elif vital_pts >= 4:
+        vital_tier = 2
+    elif vital_pts >= 2:
+        vital_tier = 3
+    elif vital_pts >= 1:
+        vital_tier = 4
+    else:
+        vital_tier = 5
 
-    output_path = Path(args.output)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps({"summary": summary, "ledger": ledger}, indent=2))
+    final_tier = min(keyword_cap, vital_tier)
+    # Moderate-acuity keywords floor the tier at 3 (multi-resource workup)
+    if moderate_match and final_tier > 3:
+        final_tier = 3
 
-    print("\n" + "=" * 50)
-    print("ROUTER RESULTS (REAL):")
-    print(f"  Queries routed:    {summary['n_queries']}")
-    print(f"  Tier distribution: {tier_counts}")
-    print(f"  Baseline cost:     ${summary['baseline_all_gpt4o_cost_usd']:.4f}")
-    print(f"  Routed cost:       ${summary['routed_cost_usd']:.4f}")
-    print(f"  Cost reduction:    {summary['cost_reduction_pct']}%")
-    print("=" * 50)
-    print(f"\n✅ Full ledger → {output_path}")
-    print(f"   UPDATE RESUME BULLET: {summary['cost_reduction_pct']}% cost reduction on {len(qa)} healthcare queries")
+    # 4) confidence — high when keyword AND vitals agree, lower when they diverge
+    keyword_signal = keyword_cap < 5
+    vital_signal = vital_pts > 0
+
+    if keyword_signal and vital_signal:
+        confidence = 0.92
+    elif keyword_signal and not vital_signal:
+        confidence = 0.78  # keyword alone — we trust the rule but vitals reassuring
+    elif vital_signal and not keyword_signal:
+        confidence = 0.70  # vitals alone — no narrative context
+    elif moderate_match:
+        confidence = 0.68  # moderate-acuity keyword caught it
+    else:
+        confidence = 0.55  # nothing alarming — could be ESI 4/5 or under-documented
+
+    # 5) reasoning trace
+    parts = []
+    if matched_flags:
+        parts.append(f"red_flags={matched_flags}")
+    if vital_flags:
+        parts.append(f"vital_abnormalities={vital_flags} (severity_pts={vital_pts})")
+    if not parts:
+        parts.append("no red flags, vitals within normal limits")
+    parts.append(f"→ ESI {final_tier}")
+    reasoning = " · ".join(parts)
+
+    return TriageDecision(
+        esi_tier=final_tier,
+        bucket=_tier_to_bucket(final_tier),
+        confidence=round(confidence, 3),
+        reasoning=reasoning,
+        red_flags=matched_flags + vital_flags,
+        resources_expected=_tier_resources(final_tier),
+    )
+
+
+def classify_dict(case: dict) -> dict:
+    """Same as classify() but returns plain dict (for JSON serialization)."""
+    return classify(case).to_dict()
 
 
 if __name__ == "__main__":
-    main()
+    import json, sys
+    sample = json.loads(sys.stdin.read()) if not sys.stdin.isatty() else {
+        "cc": "chest pain",
+        "vitals": {"hr": 105, "rr": 22, "bp": "150/95", "spo2": 96},
+        "hpi": "62yo M, substernal pressure 30 min, radiating to left arm",
+        "arrival": "walk-in",
+    }
+    print(json.dumps(classify_dict(sample), indent=2))

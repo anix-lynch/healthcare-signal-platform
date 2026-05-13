@@ -1,0 +1,337 @@
+{
+  "metrics": {
+    "n_patients": 40167,
+    "k": 4,
+    "silhouette": 0.4132,
+    "cluster_size_balance": 0.023,
+    "label_distribution": {
+      "low_acuity_occasional": 23307,
+      "emergency_dominant": 11529,
+      "chronic_frequent_flyer": 4796,
+      "complex_high_utilizer": 535
+    },
+    "visit_count_histogram": {
+      "1": 30447,
+      "2": 7053,
+      "3": 1500,
+      "4": 562,
+      "5": 244,
+      "6": 142,
+      "7": 79,
+      "8": 43,
+      "9": 28,
+      "10": 19,
+      "11": 16,
+      "12": 11,
+      "13": 1,
+      "14": 9,
+      "15": 2,
+      "16": 5,
+      "17": 1,
+      "18": 1,
+      "19": 1,
+      "22": 1,
+      "23": 1,
+      "24": 1
+    },
+    "cluster_summaries": [
+      {
+        "cluster_id": 2,
+        "label": "low_acuity_occasional",
+        "size": 23307,
+        "share_of_population": 0.5803,
+        "mean_visit_count": 1.119,
+        "mean_avg_los_days": 15.479,
+        "mean_total_billing": 28544.355,
+        "mean_condition_diversity": 1.0,
+        "mean_emergency_rate": 0.0
+      },
+      {
+        "cluster_id": 1,
+        "label": "emergency_dominant",
+        "size": 11529,
+        "share_of_population": 0.287,
+        "mean_visit_count": 1.144,
+        "mean_avg_los_days": 15.655,
+        "mean_total_billing": 29030.166,
+        "mean_condition_diversity": 1.003,
+        "mean_emergency_rate": 0.99
+      },
+      {
+        "cluster_id": 0,
+        "label": "chronic_frequent_flyer",
+        "size": 4796,
+        "share_of_population": 0.1194,
+        "mean_visit_count": 2.585,
+        "mean_avg_los_days": 15.367,
+        "mean_total_billing": 66681.73,
+        "mean_condition_diversity": 2.138,
+        "mean_emergency_rate": 0.322
+      },
+      {
+        "cluster_id": 3,
+        "label": "complex_high_utilizer",
+        "size": 535,
+        "share_of_population": 0.0133,
+        "mean_visit_count": 6.938,
+        "mean_avg_los_days": 15.353,
+        "mean_total_billing": 182632.394,
+        "mean_condition_diversity": 4.021,
+        "mean_emergency_rate": 0.341
+      }
+    ],
+    "model": "pure-Python k-means on 5 patient-level features, z-score standardized"
+  },
+  "assignments_sample": [
+    {
+      "name": "bobby jackson",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 2.0,
+      "total_billing": 18856.281305978155,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 30.0
+    },
+    {
+      "name": "leslie terry",
+      "cluster_id": 1,
+      "visit_count": 1,
+      "avg_los_days": 6.0,
+      "total_billing": 33643.327286577885,
+      "condition_diversity": 1,
+      "emergency_rate": 1.0,
+      "avg_age": 62.0
+    },
+    {
+      "name": "danny smith",
+      "cluster_id": 1,
+      "visit_count": 1,
+      "avg_los_days": 15.0,
+      "total_billing": 27955.096078842456,
+      "condition_diversity": 1,
+      "emergency_rate": 1.0,
+      "avg_age": 76.0
+    },
+    {
+      "name": "andrew watts",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 30.0,
+      "total_billing": 37909.78240987528,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 28.0
+    },
+    {
+      "name": "adrienne bell",
+      "cluster_id": 2,
+      "visit_count": 2,
+      "avg_los_days": 20.0,
+      "total_billing": 28476.635627875246,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 43.5
+    },
+    {
+      "name": "emily johnson",
+      "cluster_id": 3,
+      "visit_count": 4,
+      "avg_los_days": 14.25,
+      "total_billing": 127709.92146689346,
+      "condition_diversity": 4,
+      "emergency_rate": 0.5,
+      "avg_age": 34.25
+    },
+    {
+      "name": "edward edwards",
+      "cluster_id": 0,
+      "visit_count": 3,
+      "avg_los_days": 12.0,
+      "total_billing": 66586.88295120228,
+      "condition_diversity": 3,
+      "emergency_rate": 0.6666666666666666,
+      "avg_age": 48.666666666666664
+    },
+    {
+      "name": "christina martinez",
+      "cluster_id": 0,
+      "visit_count": 3,
+      "avg_los_days": 10.666666666666666,
+      "total_billing": 71343.89879391127,
+      "condition_diversity": 3,
+      "emergency_rate": 1.0,
+      "avg_age": 45.0
+    },
+    {
+      "name": "jasmine aguilar",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 13.0,
+      "total_billing": 50119.222791548505,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 82.0
+    },
+    {
+      "name": "christopher berg",
+      "cluster_id": 0,
+      "visit_count": 3,
+      "avg_los_days": 17.333333333333332,
+      "total_billing": 93483.78249846718,
+      "condition_diversity": 2,
+      "emergency_rate": 0.6666666666666666,
+      "avg_age": 57.666666666666664
+    },
+    {
+      "name": "michelle daniels",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 3.0,
+      "total_billing": 12576.795609050234,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 72.0
+    },
+    {
+      "name": "aaron martinez",
+      "cluster_id": 0,
+      "visit_count": 4,
+      "avg_los_days": 22.5,
+      "total_billing": 78313.04577753104,
+      "condition_diversity": 3,
+      "emergency_rate": 0.5,
+      "avg_age": 42.5
+    },
+    {
+      "name": "connor hansen",
+      "cluster_id": 1,
+      "visit_count": 1,
+      "avg_los_days": 16.0,
+      "total_billing": 43282.28335770435,
+      "condition_diversity": 1,
+      "emergency_rate": 1.0,
+      "avg_age": 75.0
+    },
+    {
+      "name": "robert bauer",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 28.0,
+      "total_billing": 33207.706633729606,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 68.0
+    },
+    {
+      "name": "brooke brady",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 5.0,
+      "total_billing": 40701.599227308754,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 44.0
+    },
+    {
+      "name": "ms. natalie gamble",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 10.0,
+      "total_billing": 12263.357425021362,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 46.0
+    },
+    {
+      "name": "haley perkins",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 21.0,
+      "total_billing": 24499.847903736576,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 63.0
+    },
+    {
+      "name": "mrs. jamie campbell",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 25.0,
+      "total_billing": 17440.465444124675,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 38.0
+    },
+    {
+      "name": "luke burgess",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 10.0,
+      "total_billing": 18843.02301783416,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 34.0
+    },
+    {
+      "name": "daniel schmidt",
+      "cluster_id": 0,
+      "visit_count": 2,
+      "avg_los_days": 9.0,
+      "total_billing": 58767.957521492295,
+      "condition_diversity": 2,
+      "emergency_rate": 0.5,
+      "avg_age": 43.0
+    },
+    {
+      "name": "timothy burns",
+      "cluster_id": 0,
+      "visit_count": 2,
+      "avg_los_days": 8.5,
+      "total_billing": 18675.11184789428,
+      "condition_diversity": 2,
+      "emergency_rate": 0.0,
+      "avg_age": 71.5
+    },
+    {
+      "name": "christopher bright",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 19.0,
+      "total_billing": 17695.911622343818,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 48.0
+    },
+    {
+      "name": "kathryn stewart",
+      "cluster_id": 2,
+      "visit_count": 2,
+      "avg_los_days": 19.5,
+      "total_billing": 42609.333343558654,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 42.5
+    },
+    {
+      "name": "dr. eileen thompson",
+      "cluster_id": 2,
+      "visit_count": 1,
+      "avg_los_days": 10.0,
+      "total_billing": 25250.052428216135,
+      "condition_diversity": 1,
+      "emergency_rate": 0.0,
+      "avg_age": 59.0
+    },
+    {
+      "name": "paul henderson",
+      "cluster_id": 1,
+      "visit_count": 1,
+      "avg_los_days": 24.0,
+      "total_billing": 33211.29541901202,
+      "condition_diversity": 1,
+      "emergency_rate": 1.0,
+      "avg_age": 72.0
+    }
+  ]
+}

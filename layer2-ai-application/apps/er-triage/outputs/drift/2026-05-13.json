@@ -1,0 +1,8 @@
+{
+  "score": 1.0,
+  "threshold": 0.92,
+  "alert": false,
+  "baseline_n": 50,
+  "current_n": 50,
+  "status": "STABLE"
+}
