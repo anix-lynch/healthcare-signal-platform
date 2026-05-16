@@ -228,6 +228,157 @@ Next upgrade:
 
 ---
 
+## 🔮 Crystal Ball ceiling — the L1 data screams
+
+Crystal Ball is the **loudest pattern** about L1 quality because regression
+on snapshot-only data hits a hard ceiling. Adding chef skill (LightGBM,
+calibration, ensembles) closes the gap to ceiling, but **the ceiling itself
+is set by L1**.
+
+### The ingredient vs chef split (architect realization)
+
+```
+L1 = ingredients quality           sets the CEILING
+L2 = chef skill                     determines how close you get to ceiling
+
+if ingredients are half-cursed gas-station chicken 💀
+   even a Michelin chef plates a sad dish.
+   BUT a good chef still beats a bad chef on the same ingredients.
+
+→ Crystal Ball today is operationally honest, clinically NOT trustworthy.
+   Honesty + warnings = the only thing keeping it out of felony territory.
+```
+
+### What Crystal Ball NEEDS from L1 (in order of impact)
+
+```
+RANK  L1 NEED                        UNLOCKS                                 PHASE
+─────────────────────────────────────────────────────────────────────────────────
+1️⃣    Temporal aggregation           "this patient over 3 admissions" view   C
+       multiple encounters per         → real readmission_30d targets         
+       patient indexed chronologically  → time-since-last-visit features      
+                                        → readmission risk → calibrated 0-1
+
+2️⃣    Real outcome labels             true mortality_indicator label          C
+       death_in_hospital + 30d_mort    → mortality model instead of keyword
+       30d_readmit ground truth        → calibrated risk scores
+                                        → eval against real labels (AUC, Brier)
+
+3️⃣    Vital trends over time          BP/HR/SpO2 trajectories instead         D
+       not single-snapshot vitals       of door-entry single point
+                                        → early-warning score (MEWS/NEWS2)
+                                        → Smoke Detector ALSO benefits
+
+4️⃣    Lab values over time            trending troponin / lactate / WBC       D
+       discrete tests with timestamps  → trajectory inputs for prognosis
+                                        → sepsis BUNDLE rule eval
+                                        → Smoke Detector trending signals
+
+5️⃣    Clinical trajectory markers     procedure events / med admin timeline   D
+       what happened DURING the stay   → days-on-pressor, days-intubated
+                                        → severity-of-illness scoring
+
+6️⃣    Comorbidity / problem list      Charlson / Elixhauser comorbidity      C
+       per patient, not per encounter  → comorbidity-adjusted LoS target
+                                        → real readmission features
+
+7️⃣    SDoH (social determinants)      housing / insurance churn / language   D
+       discharge readiness inputs       → readmission risk features
+                                        → discharge planning quality
+```
+
+### What L2 chef can still do TODAY (without L1 upgrades)
+
+Crystal Ball today = cohort-mean LoS + sigmoid-on-prior-visits readmission +
+keyword mortality heuristic. The chef has room to grow WITHOUT new ingredients:
+
+```
+✅ WORK WITH CURRENT L1
+   LightGBM trained on existing 15-col features
+     → likely beats cohort-mean on RMSE (already scaffolded in train_lightgbm.py)
+   Calibration via isotonic regression on the 100-row holdout
+     → readmission risk that actually means "70% chance" when it says 0.70
+   Feature engineering on existing fields
+     → age × condition interaction, season × admission_type
+   Uncertainty quantification (LightGBM quantile regression)
+     → "predicted_los = 4 days, 80% CI [2, 9]"
+   Ensemble (cohort + LightGBM + rule heuristic)
+     → vote-based, drops outlier predictions
+
+❌ HITS HARD CEILING UNTIL L1 IMPROVES
+   Real mortality prediction (needs death-event labels — currently NONE)
+   Real readmission prediction (needs 30-day return tracking — currently NONE)
+   Trajectory-aware prognosis (needs vitals/labs over time — currently NONE)
+   Patient-level calibration (needs multi-encounter view — partially blocked)
+```
+
+### Confidence ceiling per L1 phase
+
+```
+L1 PHASE                              CRYSTAL BALL CONFIDENCE CAP   data_source value
+─────────────────────────────────────────────────────────────────────────────────────
+A — current (snapshot registry)       LOW                            registry_v1
+B — small ingestion realism           LOW                            registry_v2_enriched
+                                       (better narrative, still no temporal)
+
+C — temporal aggregation +            MED                            registry_v3_temporal
+    real outcome labels +              (real readmission/mortality
+    comorbidity                         labels → real model)
+
+D — full EHR realism                  HIGH (governed)                ehr_v1
+    (telemetry over time + labs        (only allowed after eval
+     over time + trajectory + SDoH)     gate passes on holdout)
+```
+
+**Hard rule:** Crystal Ball will NEVER emit `confidence="high"` on
+`data_source="registry_v1"` or `registry_v2_enriched`. The cap stays MED at
+best. This is enforced in `shared/regress/baseline.py` and audited in
+`shared/regress/eval.py`. Marketing wants to remove the cap; the lawyer's
+favorite slide is what keeps it there.
+
+### Why this is correct sequencing (not a bug, a loop)
+
+```
+L2 builds with L1 as-is
+   ↓
+L2 surfaces realism gaps via eval failures
+   ↓
+gaps tell L1 what to fix next (= this section's roadmap)
+   ↓
+L1 upgrades land
+   ↓
+L2 retunes against new ceiling
+   ↓
+loop
+
+That feedback loop IS modern GenAI architecture.
+Build L2 against weak L1 first, otherwise you don't know what to harden.
+```
+
+### Brutal Crystal Ball self-portrait
+
+```
+Crystal Ball today:
+  ✅ operationally honest
+  ✅ architecturally believable
+  ❌ clinically trustworthy
+  ❌ FDA-approved prophecy
+  ❌ ICU supercomputer
+  ❌ Dr. Strange medical timeline engine 💀
+
+What it actually is:
+  honest survival calculator
+  built from:
+    cohort statistics
+    + rule heuristics
+    + "bro this looks dangerous 😭"
+  capped at confidence=low until L1 grows up.
+
+Pretending otherwise = felony. The warnings array exists for that reason.
+```
+
+---
+
 ## Cross-references
 
 - L1 README (current shipped state): [`README.md`](README.md)
