@@ -58,3 +58,7 @@ layer1-data-backbone/.specify/
 
 # MLflow runs (metadata may contain creds)
 **/mlruns/
+
+# Internal-only scratch (never pushed)
+_private/
+*.pdf

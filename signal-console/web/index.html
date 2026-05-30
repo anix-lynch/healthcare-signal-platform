@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L1.5 Signal Console · machine intuition before the agent acts</title>
+<style>
+  :root{
+    --paper:#fbf9f4;--cream:#f3eee3;--ink:#2b2b28;--soft:#6b6760;--line:#e3ddcf;
+    --line2:#cabfa6;--coral:#d98b6f;--sea:#5a8b8b;--r:#c2453a;--a:#c98a2b;--g:#4f8a5b;
+    --mono:'SF Mono',ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:ui-sans-serif,-apple-system,Inter,sans-serif;
+    line-height:1.5;padding:26px 16px;display:flex;justify-content:center}
+  .wrap{width:100%;max-width:880px}
+  .hdr{border:1.5px solid var(--line2);border-radius:14px;background:var(--cream);padding:16px 18px}
+  .hdr h1{font-size:18px;margin:0}
+  .hdr .sub{font-size:12.5px;color:var(--soft);margin-top:4px}
+  .flow{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:9px}
+  .tabs{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
+  .tab{cursor:pointer;font-family:var(--mono);font-size:13px;font-weight:700;padding:8px 14px;border-radius:10px;
+    border:1.5px solid var(--line2);background:var(--paper);color:var(--soft)}
+  .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .box{border:1.5px solid var(--line2);border-radius:14px;background:#fff;padding:16px}
+  .box .lbl{font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--soft);text-transform:uppercase;margin-bottom:10px}
+  .kv{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:4px 0;border-bottom:1px dashed var(--line)}
+  .kv:last-child{border-bottom:none}.kv .k{color:var(--soft)}.kv .v{font-weight:600;text-align:right}
+  .sig{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .sig:last-child{border-bottom:none}
+  .sig .nm{font-weight:700}.sig .vl{color:var(--soft);font-size:12.5px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-top:5px;flex:0 0 auto}
+  .dot.high{background:var(--r)}.dot.med{background:var(--a)}.dot.low{background:var(--g)}
+  .agent{margin-top:14px;border:1.5px solid var(--sea);border-radius:14px;background:#eef4f4;padding:16px}
+  .agent .lbl{color:var(--sea)}
+  .agent .body{font-size:14px;line-height:1.6;min-height:20px}
+  .pill{font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 9px;border-radius:14px;border:1.5px solid var(--line2);background:var(--paper);float:right}
+  .l3{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .l3 button{cursor:pointer;font-family:var(--mono);font-size:12px;font-weight:700;padding:8px 14px;border-radius:9px;border:1.5px solid var(--line2);background:var(--paper);color:var(--ink)}
+  .l3 button:hover{background:var(--coral);border-color:var(--coral);color:#fff}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;font-size:12.5px}
+  .vs .c{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--cream)}
+  .vs .c b{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--soft);text-transform:uppercase}
+  .prov{font-family:var(--mono);font-size:10.5px;color:var(--soft);margin-top:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <h1>🧠 L1.5 Signal Console <span class="pill" id="pill">grounded · gemini-2.5</span></h1>
+    <div class="sub">Machine intuition for healthcare agents — signals computed <b>before</b> the agent, fed in as labeled facts.</div>
+    <div class="flow">L1 Truth (dbt/warehouse) → L1.5 Signals (pre-computed) → L2 Agent reads labels → L3 Human decision</div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="grid">
+    <div class="box"><div class="lbl">L1 · Truth (facts)</div><div id="truth"></div></div>
+    <div class="box"><div class="lbl">L1.5 · Signals (machine gut feeling)</div><div id="sigs"></div></div>
+  </div>
+
+  <div class="agent">
+    <div class="lbl">L2 · Agent decision <span class="pill" id="apill">live</span></div>
+    <div class="body" id="decision">…</div>
+    <div class="vs">
+      <div class="c"><b>Truth says</b><div id="tsays"></div></div>
+      <div class="c"><b>Signal says</b><div id="ssays"></div></div>
+    </div>
+  </div>
+
+  <div class="l3">
+    <span style="font-family:var(--mono);font-size:11px;color:var(--soft);align-self:center">L3 · Human:</span>
+    <button>Approve</button><button>Hold</button><button>Override</button><button>Need more evidence</button>
+  </div>
+
+  <div class="prov" id="prov"></div>
+</div>
+
+<script>
+  const API = location.protocol.startsWith('http') ? '' : 'http://127.0.0.1:8080';
+  let DATA = null, current = null;
+
+  function dotClass(t){ return t==='high'?'high':t==='med'?'med':'low'; }
+
+  function render(c){
+    current = c.id;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on', t.dataset.id===c.id));
+    document.getElementById('truth').innerHTML = Object.entries(c.truth)
+      .map(([k,v])=>`<div class="kv"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+    document.getElementById('sigs').innerHTML = c.signals
+      .map(s=>`<div class="sig"><span class="dot ${dotClass(s.tone)}"></span><div><div class="nm">${s.icon} ${s.name}</div><div class="vl">${s.value}</div></div></div>`).join('');
+    document.getElementById('tsays').textContent = c.truth_says;
+    document.getElementById('ssays').textContent = c.signal_says;
+    decide(c.id);
+  }
+
+  async function decide(id){
+    const out = document.getElementById('decision');
+    out.textContent = '…agent reasoning on labeled signals…';
+    try{
+      const r = await fetch(API+'/api/decide?case='+encodeURIComponent(id)).then(r=>r.json());
+      out.textContent = r.decision;
+      document.getElementById('apill').textContent = r.grounded ? 'live · '+r.model : 'fallback';
+      document.getElementById('pill').innerHTML = r.grounded ? 'grounded · '+r.model : 'retrieval-only';
+    }catch(e){ out.textContent = (DATA.cases.find(x=>x.id===id)||{}).agent_says || 'unreachable'; }
+  }
+
+  (async()=>{
+    DATA = await fetch(API+'/api/signals').then(r=>r.json());
+    const tabs = document.getElementById('tabs');
+    DATA.cases.forEach((c,i)=>{
+      const b=document.createElement('div'); b.className='tab'+(i===0?' on':''); b.dataset.id=c.id;
+      b.textContent = c.title+' · '+c.audience; b.onclick=()=>render(c); tabs.appendChild(b);
+    });
+    const p = DATA.eval_provenance;
+    document.getElementById('prov').textContent =
+      `signal metrics from real eval harness — anomaly F1 ${p.anomaly_smoke_detector.f1} (R ${p.anomaly_smoke_detector.recall}, FPR ${p.anomaly_smoke_detector.false_positive_rate}) · cluster surfaced ${p.cluster_treasure_map.complex_high_utilizers} high-utilizers of ${p.cluster_treasure_map.of_patients} · classify ±1-tier ${p.classify_traffic_light.accuracy_within_1_tier*100}%, ${p.classify_traffic_light.safety_violations} safety violations`;
+    render(DATA.cases[0]);
+  })();
+</script>
+</body>
+</html>

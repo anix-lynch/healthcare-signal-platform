@@ -4,9 +4,9 @@ _Last update: 2026-05-13 · LAYER 2 COMPLETE — all 7 patterns live, 33 tests p
 
 ---
 
-## ✅ STATUS — DONE FOR RESUME PURPOSES
+## ✅ STATUS — LAYER 2 COMPLETE
 
-All 7 Layer 2 patterns alive end-to-end with real eval metrics. Bullets injected into all 5 fail-fwd resume variants (A–E). Project is GitHub-ready pending Bchan approval.
+All 7 patterns live. All stubs resolved. 35 tests passing, 0 skipped. Project is committed on Mini and GitHub-ready pending Bchan approval.
 
 **Quick verify (run on Mac Mini):**
 ```bash
@@ -122,16 +122,22 @@ cluster_cases (Pattern 6)   → patient utilization cohorts for care management
 
 ---
 
-## ❌ WHAT'S STILL STUB
+## ✅ WHAT GOT FINISHED (2026-05-13)
 
-- `shared/anomaly/drift.py` — POPULATION-level drift (different concern from per-case anomaly which IS real)
-- `shared/guardrails/input_guardrails.py` — full file is TODO scaffold
-- `shared/guardrails/output_guardrails.py` — `hallucination_check`, `citation_validation`, `forbidden_actions`, `illegal_advice_filter`, `schema_validation`, `run_output_guardrails` still TODO
-- `shared/cloud/{aws,azure,vertex}_provider.py` + `adapter.py` + `factory.py` — stubs
+Previously stub, now real:
+- `shared/guardrails/input_guardrails.py` — sanitize, inject-strip, PII redact, token limit, schema validate, pipeline entry
+- `shared/guardrails/output_guardrails.py` — hallucination check (coverage-based), citation validate, forbidden-action gate, illegal-advice filter, schema validate, pipeline entry
+- `shared/anomaly/drift.py` — centroid-shift cosine similarity, JSON artifact output
+- `shared/memory/memory.py` — InMemoryShortTerm/Session/LongTerm + TriageMemory facade
+- `test_drift_alerts.py` — 2 drift tests (was skipped, now passing)
+
+## ⚠️ STILL STUB (lower priority — doesn't block resume)
+
+- `shared/cloud/{aws,azure,vertex}_provider.py` — cloud adapters (need real API keys + cloud accounts to test)
 - `services/{rag-api,guardrails-api,feature-api,analytics-api}/` — READMEs only
 - `apps/{ops-capacity-assistant,executive-dashboard}/` — stubs
-- Layer 3 governance scripts — code exists but needs `OPENAI_API_KEY` + generated QA data
-- Layer 1 ML pipeline (`predict_los.py`, `predict_readmission.py`, etc.) — code exists but not verified end-to-end this session
+- Layer 3 governance scripts — needs `OPENAI_API_KEY` + generated QA data
+- Layer 1 ML pipeline (`predict_los.py`, `predict_readmission.py`) — code exists, not verified end-to-end
 
 ---
 

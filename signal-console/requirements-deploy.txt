@@ -1,0 +1,4 @@
+fastapi>=0.115
+uvicorn[standard]>=0.27
+vertexai>=1.60
+google-cloud-aiplatform>=1.60

@@ -1,0 +1,68 @@
+{
+  "_note": "Hero cases for the L1.5 Signal Console. L1 facts + pre-computed L1.5 signals. Signal metrics are the headline numbers from the real eval harness (layer2-ai-application/shared/evaluation/*_eval.py over the 55,500-row / 40K-patient synthetic corpus). The agent reads LABELED signals, it does not compute them.",
+  "eval_provenance": {
+    "anomaly_smoke_detector": { "precision": 0.79, "recall": 0.92, "f1": 0.85, "false_positive_rate": 0.06, "eval": "250-case synthetic injection" },
+    "cluster_treasure_map": { "silhouette": 0.41, "complex_high_utilizers": 535, "of_patients": 40000, "cohorts": 4 },
+    "classify_traffic_light": { "accuracy_within_1_tier": 1.0, "bucket_accuracy": 0.944, "safety_violations": 0, "gold_cases": 18 }
+  },
+  "cases": [
+    {
+      "id": "er-triage",
+      "audience": "Clinician",
+      "title": "ER Triage",
+      "truth": {
+        "Patient age": "82",
+        "Chief complaint": "Chest pain",
+        "Vitals": "BP 88/54, HR 122, SpO2 91% — unstable",
+        "History": "Diabetes, prior MI",
+        "Source": "trusted warehouse / dbt model"
+      },
+      "signals": [
+        { "icon": "🚦", "name": "Classify (Traffic Light)", "value": "ESI 2 · NOW", "tone": "high" },
+        { "icon": "💨", "name": "Anomaly (Smoke Detector)", "value": "0.87 — unusual vitals vs cohort", "tone": "high" },
+        { "icon": "🧭", "name": "Cluster (Treasure Map)", "value": "complex_high_utilizer cohort", "tone": "high" },
+        { "icon": "🏆", "name": "Rank (Police Lineup)", "value": "priority #2 of waiting", "tone": "med" }
+      ],
+      "truth_says": "82yo, history of MI, but a single snapshot could read as 'old but stable'.",
+      "signal_says": "Anomaly score 0.87 + complex-utilizer cohort + ESI-2 classify all push urgency UP.",
+      "agent_says": "Escalate to clinician review NOW. Move from WAIT → NOW."
+    },
+    {
+      "id": "ops-capacity",
+      "audience": "Ops team",
+      "title": "Ops Capacity",
+      "truth": {
+        "Beds available now": "6",
+        "Current census": "78%",
+        "Inbound (last hr)": "4 ER arrivals",
+        "Source": "trusted warehouse / dbt model"
+      },
+      "signals": [
+        { "icon": "🔮", "name": "Forecast (Crystal Ball)", "value": "bed pressure rising — ~92% in 4h", "tone": "high" },
+        { "icon": "🧭", "name": "Cluster (Treasure Map)", "value": "inbound skew = emergency_dominant", "tone": "med" },
+        { "icon": "💨", "name": "Anomaly (Smoke Detector)", "value": "arrival rate 1.8× baseline", "tone": "med" }
+      ],
+      "truth_says": "Beds available now — looks fine at this instant.",
+      "signal_says": "Forecast + arrival-rate anomaly say capacity tightens within 4 hours.",
+      "agent_says": "Pre-alert staffing now; surface to ops dashboard before it's a crisis."
+    },
+    {
+      "id": "exec-brief",
+      "audience": "Executive",
+      "title": "Executive Brief",
+      "truth": {
+        "30-day readmission KPI": "14.2% (up from 11.8%)",
+        "Window": "trailing 90 days",
+        "Source": "trusted warehouse / dbt model"
+      },
+      "signals": [
+        { "icon": "🔮", "name": "Forecast (Crystal Ball)", "value": "trend likely continues next quarter", "tone": "high" },
+        { "icon": "🧭", "name": "Cluster (Treasure Map)", "value": "535 complex high-utilizers drive most of the lift", "tone": "high" },
+        { "icon": "🏆", "name": "Rank (Police Lineup)", "value": "top 3 conditions by readmit contribution", "tone": "med" }
+      ],
+      "truth_says": "Readmission KPI is rising — the chart shows the number.",
+      "signal_says": "Forecast says it continues; cluster pins the lift on 535 high-utilizers.",
+      "agent_says": "Generate a risk briefing targeting the high-utilizer cohort for case management."
+    }
+  ]
+}
