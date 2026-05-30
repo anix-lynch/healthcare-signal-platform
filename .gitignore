@@ -62,3 +62,8 @@ layer1-data-backbone/.specify/
 # Internal-only scratch (never pushed)
 _private/
 *.pdf
+signal-console/.obs-venv/
+signal-console/wandb/
+signal-console/**/__pycache__/
+signal-console/feature-store/*.db
+.feast-venv/
