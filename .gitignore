@@ -67,3 +67,4 @@ signal-console/wandb/
 signal-console/**/__pycache__/
 signal-console/feature-store/*.db
 .feast-venv/
+WHERE_WE_ARE.md
