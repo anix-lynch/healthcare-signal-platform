@@ -1,6 +1,11 @@
-# healthcare-genai-fullstack
+# healthcare-signal-platform
 
-> A 3-layer enterprise GenAI architecture for clinical AI: trusted data → AI reasoning → governance. Mission-coherent, monorepo-organized, multi-cloud-deployable. Built pain-driven, retroactively coherent — the way real architects actually emerge.
+> **L1.25 + L1.5 healthcare AI platform** — feature marts and *evaluated* signal services that feed GenAI agents as structured evidence, not raw text. Trusted data → features → signals → **the signals measurably change the agent's decision** → an accountable human signs off.
+
+### ▶︎ Flagship: the live L1.5 Signal Console
+**[signal-console-819957310168.us-west1.run.app](https://signal-console-819957310168.us-west1.run.app)** — pick a case and watch the agent decide **with** the signals vs **without** them (on-screen ablation: the call visibly flips). Each signal carries its eval vs an industry benchmark (🟢/🟡), tracked in [Weights & Biases](https://wandb.ai/alynch-zeroshot/healthcare-l15-signals); every agent call traced in Langfuse. Code: [`signal-console/`](signal-console/) · signals: [`layer2-ai-application/shared/`](layer2-ai-application/shared/) (anomaly · classify · cluster · rank · retrieval).
+
+> The one thing this repo proves: **trusted data becomes features, features become evaluated signals, and those signals change agent decisions** — the L1.25→L1.5 platform layer most engineers skip. The broader L1 (data) and L3 (governance) context lives in the layer folders below and in sibling repos.
 
 ---
 
