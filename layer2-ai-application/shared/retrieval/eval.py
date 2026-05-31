@@ -1,5 +1,5 @@
 """
-Pattern 1 — Rachel · Retrieval eval harness.
+Pattern 1 — retrieval · Retrieval eval harness.
 
 Five metrics, five reasons:
 
@@ -8,7 +8,7 @@ Five metrics, five reasons:
                         Floor metric — token overlap is enough to pass.
 
     Precision@K        "of K returned, how many are actually relevant?"
-                        Cares about noise. Critical when downstream is Mad Lib
+                        Cares about noise. Critical when downstream is generation
                         grounding — noisy hits = hallucinated chart notes.
 
     MRR                "how high did the FIRST relevant result rank?"

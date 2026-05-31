@@ -1,6 +1,6 @@
-"""Pattern 1 — Rachel public API."""
+"""Pattern 1 — retrieval public API."""
 from .baseline import retrieve, retrieve_for_case, Method
-from .schema import RachelOutput, Hit, HitType, RetrievalMethod
+from .schema import retrievalOutput, Hit, HitType, RetrievalMethod
 from .guardrails import (
     RetrievalGuardError,
     validate_citations,
@@ -15,7 +15,7 @@ __all__ = [
     "retrieve",
     "retrieve_for_case",
     "Method",
-    "RachelOutput",
+    "retrievalOutput",
     "Hit",
     "HitType",
     "RetrievalMethod",

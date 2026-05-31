@@ -1,5 +1,5 @@
 """
-Pattern 3 — Crystal Ball · Leakage guards.
+Pattern 3 — forecast · Leakage guards.
 
 Predicting future using discharge_date = exam cheating with the answer key 😭
 
@@ -52,7 +52,7 @@ def check_features(features: dict, *, allow_mid_stay: bool = False) -> None:
     fail-loud — silent leakage is the bug that ships.
 
     Args:
-        features: the dict the caller wants to feed Crystal Ball.
+        features: the dict the caller wants to feed forecast.
         allow_mid_stay: True only for "post-triage prognosis update" use cases
                         where physician notes etc. are legitimately available.
     """
@@ -60,7 +60,7 @@ def check_features(features: dict, *, allow_mid_stay: bool = False) -> None:
     if found_discharge:
         raise LeakageError(
             f"discharge-time fields in prediction features = answer-key cheat: {sorted(found_discharge)}. "
-            f"Strip these before calling Crystal Ball."
+            f"Strip these before calling forecast."
         )
     if not allow_mid_stay:
         found_mid = set(features.keys()) & MID_STAY_FIELDS

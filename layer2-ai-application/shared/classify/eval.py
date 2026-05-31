@@ -1,5 +1,5 @@
 """
-Pattern 2 — Traffic Light · Eval harness.
+Pattern 2 — classifier · Eval harness.
 
 Metrics:
     Per-class F1, precision, recall    — bucket-level health

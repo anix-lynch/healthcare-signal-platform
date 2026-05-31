@@ -1,4 +1,4 @@
-"""Pattern 1 (Rachel) eval — retrieval metrics on the Layer 1 corpus.
+"""Pattern 1 eval — retrieval metrics on the Layer 1 corpus.
 
 Real metrics: Precision@K, Recall@K, NDCG@K.
 

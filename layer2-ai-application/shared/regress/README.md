@@ -1,11 +1,11 @@
-# Pattern 3 — Crystal Ball 🔮
+# Pattern 3 — forecast 🔮
 
 > **"how bad will this become later, in numbers 😭"**
 
-This is prognosis / forecasting / regression. NOT retrieval (that's Rachel).
-NOT classification (that's Traffic Light). NOT generation (that's Mad Lib).
+This is prognosis / forecasting / regression. NOT retrieval (that's retrieval).
+NOT classification (that's classifier). NOT generation (that's generation).
 
-Crystal Ball answers three brutal questions per encounter:
+forecast answers three brutal questions per encounter:
 
 ```
 predicted_los_days        →  "patient นี้จะ camp เตียงกี่วัน 😭"
@@ -25,7 +25,7 @@ apps/ops-capacity-assistant → uses los + readmission (discharge routing)
 apps/executive-dashboard    → uses los rollup + readmission rate (KPI)
 ```
 
-Three apps. One forecaster. That's why Crystal Ball lives in `shared/`, not
+Three apps. One forecaster. That's why forecast lives in `shared/`, not
 inside any one app folder.
 
 ---
@@ -69,12 +69,12 @@ an EHR. The current scaffold is honest about that.
 ## Why regression ≠ classification (the line that gets confused)
 
 ```
-CLASSIFICATION (Traffic Light)
+CLASSIFICATION
     output: discrete bucket
     error type: confusion matrix, F1, precision/recall
     "is this ESI 1 or ESI 2?"
 
-REGRESSION (Crystal Ball)
+REGRESSION
     output: continuous number
     error type: RMSE, MAE, bias, calibration
     "how many days will this stay?"
@@ -127,7 +127,7 @@ Layer 1 **enriched** dataset (LLM-augmented, runs via
 `layer1-data-backbone/scripts/enrich_clinical_narrative.py`) backfills the
 left-side gaps with synthetic CC + HPI + vitals + labs + ESI ground-truth.
 
-When `data_source="registry_v2_enriched"` in the output, Crystal Ball is
+When `data_source="registry_v2_enriched"` in the output, forecast is
 allowed to lift its confidence cap from `low` to `med`. Until real EHR
 ingest exists, the cap stays at `med` — never `high`. By design.
 
@@ -238,6 +238,5 @@ Output (truncated):
 ## Cross-references
 
 - 7-pattern map: `../../../README.md`
-- Patient lifecycle (where this fires): `../../../docs/05_patient_lifecycle.md` §3 (Feature Lookup)
 - Layer 1 enrichment script: `../../../layer1-data-backbone/scripts/enrich_clinical_narrative.py`
-- Sibling pattern outputs (Rachel, Traffic Light, etc.): `../retrieval/`, `../classify/`, ...
+- Sibling pattern outputs (retrieval, classifier, etc.): `../retrieval/`, `../classify/`, ...

@@ -1,4 +1,4 @@
-"""Pattern 4 — Mad Lib public API."""
+"""Pattern 4 — generation public API."""
 from .baseline import generate_note
 from .schema import MadLibOutput, GenerationMethod
 from .chart_note import generate

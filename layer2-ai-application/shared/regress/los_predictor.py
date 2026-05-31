@@ -1,5 +1,5 @@
 """
-Pattern 3 — Crystal Ball · Length-of-stay predictor.
+Pattern 3 — forecast · Length-of-stay predictor.
 
 Predicts LOS in DAYS for an incoming ER case from Layer 1 cohort statistics.
 

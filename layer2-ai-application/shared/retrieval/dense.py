@@ -1,5 +1,5 @@
 """
-Pattern 1 — Rachel · Dense embedding retriever.
+Pattern 1 — retrieval · Dense embedding retriever.
 
 Wraps sentence-transformers into the same {case_id, snippet, score} shape
 as retriever.search(), so baseline.py can switch BM25 ↔ dense ↔ hybrid

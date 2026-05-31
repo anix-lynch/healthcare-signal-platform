@@ -1,10 +1,10 @@
 """
-Pattern 7 — Police Lineup · Output schema.
+Pattern 7 — ranking · Output schema.
 
     "which evidence should appear first 😭"
 
-Reranks Rachel's top-K hits using clinical severity / age proximity /
-condition match. Produces a smaller, sharper lineup for Mad Lib grounding.
+Reranks retrieval's top-K hits using clinical severity / age proximity /
+condition match. Produces a smaller, sharper lineup for generation grounding.
 """
 from __future__ import annotations
 from typing import Literal
@@ -30,7 +30,7 @@ class PoliceLineupOutput(BaseModel):
     case_id: str
     ranked: list[RankedHit] = Field(default_factory=list)
     method: RerankMethod
-    k_input: int = Field(..., description="how many Rachel hits we reranked from")
+    k_input: int = Field(..., description="how many retrieval hits we reranked from")
     k_output: int = Field(..., description="how many we returned")
     ndcg_lift_vs_rachel: float | None = Field(None, description=(
         "offline-computed lift. None at inference time, populated by eval."

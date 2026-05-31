@@ -1,10 +1,10 @@
 """
-Pattern 4 — Mad Lib · Output schema.
+Pattern 4 — generation · Output schema.
 
     "explain this shit to humans 😭"
 
 Generates a chart note / nurse handoff / patient explanation, GROUNDED in
-the Rachel hits + the Traffic Light tier. Every claim must cite a Rachel
+the retrieval hits + the classifier tier. Every claim must cite a retrieval
 source_id; uncited claims = hallucinations.
 """
 from __future__ import annotations

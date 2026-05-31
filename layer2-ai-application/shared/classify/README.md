@@ -1,11 +1,11 @@
-# Pattern 2 — Traffic Light 🚦
+# Pattern 2 — classifier 🚦
 
 > **"how urgently should we panic 😭"**
 
-This is classification. NOT retrieval (that's Rachel). NOT regression
-(that's Crystal Ball). NOT generation (that's Mad Lib).
+This is classification. NOT retrieval (that's retrieval). NOT regression
+(that's forecast). NOT generation (that's generation).
 
-Traffic Light answers ONE question:
+classifier answers ONE question:
 
 ```
 "which suffering cuts the line first?"
@@ -19,16 +19,16 @@ single sentence of LLM prose.
 
 ## Why it sits here
 
-Two layers consume Traffic Light:
+Two layers consume classifier:
 
 ```
 apps/er-triage              → drives the NOW/SOON/WAIT UI + escalation page
 apps/er-triage/safety       → applies hard-rules (ESI 1 always escalates)
-services/rag-api            → wraps Traffic Light as /v1/classify-tier
-shared/generate (Mad Lib)   → consumes tier as context when grounding a note
+services/rag-api            → wraps classifier as /v1/classify-tier
+shared/generate   → consumes tier as context when grounding a note
 ```
 
-Four callers, one engine. That's why Traffic Light lives in `shared/`.
+Four callers, one engine. That's why classifier lives in `shared/`.
 
 (Note: the `cost_router.py` in this same folder is a DIFFERENT classifier
 — it picks WHICH MODEL TIER (Haiku/Flash/Sonnet) to call. Same shared/classify
@@ -106,8 +106,8 @@ failure: misroutes ESI 1→3       failure: returns irrelevant cases
         = harm                    = chart-note hallucinates
 
 Together (the lifecycle):
-  Rachel:        "this smells like past cardiac near-death ghosts"
-  Traffic Light: "cool, then NOW — move 😭"
+  retrieval:        "this smells like past cardiac near-death ghosts"
+  classifier: "cool, then NOW — move 😭"
 ```
 
 ---
@@ -234,6 +234,5 @@ REAL (real EHR)                ensemble of rules + LLM + LightGBM
 ## Cross-references
 
 - 7-pattern map: `../../../README.md`
-- Patient lifecycle (where Traffic Light fires): `../../../docs/05_patient_lifecycle.md` §5 (Classification)
-- Sibling patterns: `../retrieval/` (Rachel), `../regress/` (Crystal Ball)
-- App that consumes Traffic Light: `../../apps/er-triage/`
+- Sibling patterns: `../retrieval/`, `../regress/`
+- App that consumes classifier: `../../apps/er-triage/`

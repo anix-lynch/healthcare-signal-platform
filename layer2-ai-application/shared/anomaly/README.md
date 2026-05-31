@@ -1,4 +1,4 @@
-# Pattern 5 — Smoke Detector 🚨
+# Pattern 5 — anomaly detector 🚨
 
 > **"this case smells WRONG 😭"**
 
@@ -43,15 +43,15 @@ current state             = rule + stats, threshold = 2.5 default
 ## Together with the other patterns
 
 ```
-Rachel: "this smells like sepsis ghosts"
-Traffic Light: "ESI 2, escalate"
-Crystal Ball: "LoS 6d ±2, readm 0.42"
-Smoke Detector: "wait — anomaly_score 3.8, 4 reasons fired,
+retrieval: "this smells like sepsis ghosts"
+classifier: "ESI 2, escalate"
+forecast: "LoS 6d ±2, readm 0.42"
+anomaly detector: "wait — anomaly_score 3.8, 4 reasons fired,
                   this case is in the corner of the cohort space"
                 → human review required
 ```
 
-Without Smoke Detector, the system happily classifies + retrieves on weird
+Without anomaly detector, the system happily classifies + retrieves on weird
 inputs that should have stopped it. The lawyer's favorite slide.
 
 ## Quick start

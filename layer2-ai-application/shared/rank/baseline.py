@@ -1,10 +1,10 @@
 """
-Pattern 7 — Police Lineup · Honest baseline orchestrator.
+Pattern 7 — ranking · Honest baseline orchestrator.
 
 Wraps the existing `reranker.rerank()` (heuristic severity + age/condition
 proximity) into the PoliceLineupOutput contract.
 
-The engine takes Rachel candidates + query context, scores each on:
+The engine takes retrieval candidates + query context, scores each on:
     - age proximity to query
     - condition match
     - LoS quartile signal (severe ⇒ higher rerank)
@@ -13,7 +13,7 @@ The engine takes Rachel candidates + query context, scores each on:
 Returns top-K reranked. We add original_rachel_rank for eval lift math.
 
 This is the FLOOR. A cross-encoder rerank (ms-marco-MiniLM) goes here
-when we ship V2 retrieval. Eval must show NDCG lift vs Rachel raw.
+when we ship V2 retrieval. Eval must show NDCG lift vs retrieval raw.
 """
 from __future__ import annotations
 from typing import Iterable
@@ -30,11 +30,11 @@ def lineup(
     top_k: int = 5,
 ) -> PoliceLineupOutput:
     """
-    Rerank Rachel candidates → top-K reranked list.
+    Rerank retrieval candidates → top-K reranked list.
 
     Args:
         query: free-text query (or rendered case CC+HPI).
-        candidates: iterable of Rachel hit dicts ({source_id/case_id, snippet, score, ...}).
+        candidates: iterable of retrieval hit dicts ({source_id/case_id, snippet, score, ...}).
         case_id: encounter identifier.
         top_k: how many to return after rerank.
 
@@ -44,7 +44,7 @@ def lineup(
     cand_list = list(candidates)
     rachel_rank = {c.get("source_id") or c.get("case_id"): i for i, c in enumerate(cand_list)}
 
-    # The engine expects {"case_id", "snippet", "score"} keys. Rachel's Hit
+    # The engine expects {"case_id", "snippet", "score"} keys. retrieval's Hit
     # uses "source_id" + "similarity". Normalize before calling.
     engine_input = [
         {

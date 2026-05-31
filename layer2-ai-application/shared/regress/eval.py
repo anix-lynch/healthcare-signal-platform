@@ -1,5 +1,5 @@
 """
-Pattern 3 — Crystal Ball · Eval harness.
+Pattern 3 — forecast · Eval harness.
 
 Metrics:
     RMSE   — penalises big LOS misses (correctly: ER bed planning hates a 2-day miss far more than two 1-day misses)

@@ -1,5 +1,5 @@
 """
-Pattern 6 — Treasure Map · Output schema.
+Pattern 6 — cohort clustering · Output schema.
 
     "what suffering tribe is this 😭"
 

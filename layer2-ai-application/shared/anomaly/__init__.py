@@ -1,4 +1,4 @@
-"""Pattern 5 — Smoke Detector public API."""
+"""Pattern 5 — anomaly detector public API."""
 from .baseline import detect_smoke, DEFAULT_THRESHOLD
 from .schema import SmokeDetectorOutput, AnomalyMethod
 from .anomaly_flagger import flag

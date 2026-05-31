@@ -1,5 +1,5 @@
 """
-Pattern 3 — Crystal Ball · Optional LightGBM trainer (tabular boost).
+Pattern 3 — forecast · Optional LightGBM trainer (tabular boost).
 
 WHY this file exists:
     Boosting frequently beats LLMs on tabular regression. For LOS prediction

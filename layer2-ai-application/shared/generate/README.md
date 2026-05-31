@@ -1,9 +1,9 @@
-# Pattern 4 — Mad Lib 📖
+# Pattern 4 — generation 📖
 
 > **"explain this shit to humans 😭"**
 
-Generation. Grounded in Rachel hits + Traffic Light tier. Every claim cites
-a Rachel `source_id`. Without grounding, every chart note hallucinates.
+Generation. Grounded in retrieval hits + classifier tier. Every claim cites
+a retrieval `source_id`. Without grounding, every chart note hallucinates.
 
 ## File map
 
@@ -27,7 +27,7 @@ faithfulness_score (Ragas)    ⚠️ offline only — eval harness in layer3
 LLM enhance path              ⚠️ stub in engine (enhance=True flag)
 ```
 
-## Mad Lib's brutal mantra
+## generation's brutal mantra
 
 ```
 template alone     = boring but never hallucinates
@@ -39,9 +39,9 @@ template + cite + LLM polish = production
 ## Together with the other patterns
 
 ```
-Rachel surfaces hits           →  Mad Lib grounds in them
-Traffic Light decides tier     →  Mad Lib uses tier for disposition
-Crystal Ball numbers           →  Mad Lib slots LoS + readmission risk
+retrieval surfaces hits           →  generation grounds in them
+classifier decides tier     →  generation uses tier for disposition
+forecast numbers           →  generation slots LoS + readmission risk
 
 if you skip the citation gate, the lawyer notices first 💀
 ```

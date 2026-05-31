@@ -1,8 +1,8 @@
 """
-Pattern 7 — Police Lineup · Outcome-severity re-ranker over Rachel.
+Pattern 7 — ranking · Outcome-severity re-ranker over retrieval.
 
-Rachel (BM25 retrieval) finds DEMOGRAPHICALLY similar past cases.
-Police Lineup re-ranks them by CLINICAL severity, surfacing the
+retrieval (BM25 retrieval) finds DEMOGRAPHICALLY similar past cases.
+ranking re-ranks them by CLINICAL severity, surfacing the
 "cautionary tales" — past patients who arrived looking like the
 current case AND had a bad outcome.
 
@@ -15,11 +15,11 @@ Severity signal (per Layer 1 row):
 Final score = BM25_score_normalized * 0.4 + severity_score * 0.6
 
 Why 60% severity > 40% BM25:
-  - Rachel already filtered for demographic similarity at recall stage
+  - retrieval already filtered for demographic similarity at recall stage
   - The lineup's job is to surface OUTCOMES that matter, not redundant
     demographic matches
 
-Lineup output is a re-ordered list of the same Rachel hits, plus a
+Lineup output is a re-ordered list of the same retrieval hits, plus a
 'severity_score' and 'rank_explanation' attached.
 """
 
@@ -163,7 +163,7 @@ def _score_severity(hit: dict, query_age: int | None, query_condition: str | Non
 def rerank(query: str, candidates: list[dict], top_k: int = 5,
            bm25_weight: float = 0.4, severity_weight: float = 0.6) -> list[dict]:
     """
-    Re-rank Rachel's BM25 candidates by clinical outcome severity.
+    Re-rank retrieval's BM25 candidates by clinical outcome severity.
 
     Args:
         query: the original retrieval query (used for age/condition extraction).
@@ -209,14 +209,14 @@ def rerank(query: str, candidates: list[dict], top_k: int = 5,
 
 def rerank_for_case(case: dict, k_rachel: int = 50, k_lineup: int = 5) -> list[dict]:
     """
-    End-to-end: Rachel pulls top-k_rachel similar cases, then Lineup re-ranks
+    End-to-end: retrieval pulls top-k_rachel similar cases, then Lineup re-ranks
     to top-k_lineup most-severe matches.
     """
     from shared.retrieval.retriever import search_for_case, search
     candidates = search_for_case(case, k=k_rachel)
     if not candidates:
         return []
-    # Build the same query Rachel built
+    # Build the same query retrieval built
     cc = case.get("cc", "") or ""
     hpi = case.get("hpi", "") or ""
     query = f"{cc} {hpi}".strip()

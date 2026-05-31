@@ -1,5 +1,5 @@
 """
-Pattern 6 — Treasure Map · Honest baseline orchestrator.
+Pattern 6 — cohort clustering · Honest baseline orchestrator.
 
 Wraps the existing `cohort.cluster_cases()` (k-means over patient features)
 into the TreasureMapOutput contract. The engine returns cluster labels +

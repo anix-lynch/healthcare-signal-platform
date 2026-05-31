@@ -1,4 +1,4 @@
-"""Pattern 3 — Crystal Ball public API."""
+"""Pattern 3 — forecast public API."""
 from .baseline import predict_prognosis
 from .schema import (
     CrystalBallOutput,

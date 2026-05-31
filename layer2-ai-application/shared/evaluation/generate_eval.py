@@ -1,4 +1,4 @@
-"""Pattern 4 (Mad Lib) eval — generation metrics for ER chart notes.
+"""Pattern 4 eval — generation metrics for ER chart notes.
 
 Real metrics on the er-triage golden set. Deterministic checks suited to a
 template-based generator: structural completeness, faithfulness (no

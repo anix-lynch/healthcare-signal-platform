@@ -1,5 +1,5 @@
 """
-Pattern 5 — Smoke Detector · Per-case cohort outlier flagger.
+Pattern 5 — anomaly detector · Per-case cohort outlier flagger.
 
 For an incoming case, build its cohort (same gender × condition × age band)
 from Layer 1, then compute z-scores on the case's expected operational

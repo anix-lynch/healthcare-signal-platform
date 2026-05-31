@@ -1,8 +1,8 @@
 """
-Pattern 1 — Rachel · Patient identity bridge.
+Pattern 1 — retrieval · Patient identity bridge.
 
 Loads Layer 1's patient_identity_map.json (encounter_id → patient_id) and
-exposes a `patient_of(case_id) → str | None` callable that Rachel's
+exposes a `patient_of(case_id) → str | None` callable that retrieval's
 cross-patient leak guard consumes.
 
 Why this lives in shared/retrieval/:

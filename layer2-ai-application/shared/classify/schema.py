@@ -1,5 +1,5 @@
 """
-Pattern 2 — Traffic Light · Output schema.
+Pattern 2 — classifier · Output schema.
 
 The thing apps/er-triage hands to a charge nurse:
 

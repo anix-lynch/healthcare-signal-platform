@@ -1,4 +1,4 @@
-# Pattern 6 — Treasure Map 🗺️
+# Pattern 6 — cohort clustering 🗺️
 
 > **"what suffering tribe is this 😭"**
 
@@ -40,15 +40,15 @@ k=adaptive (HDBSCAN) = lets data choose; right answer for production
 ## Together with the other patterns
 
 ```
-Rachel: "this smells like 5 past cases"
-Treasure Map: "...all of which are in the same cluster_3
+retrieval: "this smells like 5 past cases"
+cohort clustering: "...all of which are in the same cluster_3
                 = elderly_polypharm_chest_pain phenotype"
                 → ops dashboard groups them for routing
-Crystal Ball: predicts the LoS for this PHENOTYPE
+forecast: predicts the LoS for this PHENOTYPE
                 = tighter cohort = sharper number
 ```
 
-Without Treasure Map, "similar cases" is a flat list. With it, similar
+Without cohort clustering, "similar cases" is a flat list. With it, similar
 cases come with a NAME that an ops manager can act on.
 
 ## Quick start

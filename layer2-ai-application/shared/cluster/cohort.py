@@ -1,5 +1,5 @@
 """
-Pattern 6 — Treasure Map · Patient high-utilizer clustering.
+Pattern 6 — cohort clustering · Patient high-utilizer clustering.
 
 Groups Layer 1's 55,500 encounters by patient (Name → patient proxy), computes
 per-patient operational features, then runs k-means to surface utilization

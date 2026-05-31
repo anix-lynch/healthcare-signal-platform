@@ -1,5 +1,5 @@
 """
-Pattern 2 — Traffic Light · Honest baseline orchestrator.
+Pattern 2 — classifier · Honest baseline orchestrator.
 
 What this is:
     Wraps the existing rule-based `router.classify()` engine into the
@@ -37,7 +37,7 @@ def triage(
     allow_post_triage: bool = False,
 ) -> TrafficLightOutput:
     """
-    Run the rule-based Traffic Light baseline on one case.
+    Run the rule-based classifier baseline on one case.
 
     Args:
         case: dict with at least 'cc'; ideally also 'hpi', 'vitals', 'arrival'.

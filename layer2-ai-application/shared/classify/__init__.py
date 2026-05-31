@@ -1,4 +1,4 @@
-"""Pattern 2 — Traffic Light public API."""
+"""Pattern 2 — classifier public API."""
 from .baseline import triage, triage_dict
 from .schema import (
     TrafficLightOutput,

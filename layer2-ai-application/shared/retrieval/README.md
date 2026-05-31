@@ -1,19 +1,19 @@
-# Pattern 1 — Rachel 🔍
+# Pattern 1 — retrieval 🔍
 
 > **"bro find me another patient who almost died like this 😭"**
 
-This is retrieval. NOT classification (that's Traffic Light). NOT regression
-(that's Crystal Ball). NOT generation (that's Mad Lib).
+This is retrieval. NOT classification (that's classifier). NOT regression
+(that's forecast). NOT generation (that's generation).
 
-Rachel answers ONE question:
+retrieval answers ONE question:
 
 ```
 "what does this remind me of?"
 ```
 
 She returns the K most similar past cases + the relevant guidelines.
-Mad Lib then grounds every generated claim on a `source_id` from Rachel.
-Without Rachel, every downstream chart note hallucinates.
+generation then grounds every generated claim on a `source_id` from retrieval.
+Without retrieval, every downstream chart note hallucinates.
 
 ---
 
@@ -25,11 +25,11 @@ Every L2 app that summarises, decides, or briefs needs to cite something:
 apps/er-triage              → cite similar past triages on escalation rationale
 apps/ops-capacity-assistant → cite similar past LoS patterns for routing
 apps/executive-dashboard    → cite KPI guidelines + past briefings
-services/rag-api            → wraps Rachel as /v1/search
-shared/generate (Mad Lib)   → consumes Rachel hits as grounding context
+services/rag-api            → wraps retrieval as /v1/search
+shared/generate   → consumes retrieval hits as grounding context
 ```
 
-Five callers, one engine. That's why Rachel lives in `shared/`, not inside
+Five callers, one engine. That's why retrieval lives in `shared/`, not inside
 any one app folder.
 
 ---
@@ -38,9 +38,9 @@ any one app folder.
 
 ```
 shared/retrieval/
-├── __init__.py        public API (retrieve, RachelOutput)
-├── schema.py          Pydantic output contract — Hit + RachelOutput
-├── baseline.py        orchestrator (method="bm25"|"dense") → RachelOutput
+├── __init__.py        public API (retrieve, retrievalOutput)
+├── schema.py          Pydantic output contract — Hit + retrievalOutput
+├── baseline.py        orchestrator (method="bm25"|"dense") → retrievalOutput
 ├── retriever.py       BM25 engine — token-overlap floor
 ├── dense.py           sentence-transformers MiniLM cosine — semantic layer
 ├── guardrails.py      citation validation + cross-patient leak + score floor
@@ -58,7 +58,7 @@ COMPONENT                     STATUS         NOTES
 ─────────────────────────────────────────────────────────────────────────────
 BM25 search                   ✅ shipped     pure Python, 55K corpus
 search_for_case               ✅ shipped     builds query from case dict
-schema (RachelOutput / Hit)   ✅ shipped     pydantic, matches /v1/search shape
+schema (retrievalOutput / Hit)   ✅ shipped     pydantic, matches /v1/search shape
 citation validation           ✅ shipped     drops unresolved source_ids
 cross-patient leak filter     ✅ shipped     wired via identity.patient_of;
                                               degrades to no-op when L1 map
@@ -89,7 +89,7 @@ RERANK =      "now a smarter model re-orders the top-50"
 
 production retrieval = HYBRID + RERANK
 demo retrieval =       BM25 with guards
-current Rachel =       demo retrieval, honestly labeled
+current retrieval =       demo retrieval, honestly labeled
 ```
 
 A model that does dense + hybrid + rerank but loses to BM25 + guards on
@@ -128,7 +128,7 @@ MJ video "Man in the Mirror live"   top-K similar live performance videos
                                     (different domain, same Pattern 1)
 ```
 
-Rachel doesn't care about the domain. She cares about "what reminds me
+retrieval doesn't care about the domain. She cares about "what reminds me
 of what." Hospital chaos or pop catalog — same engine.
 
 ---
@@ -143,9 +143,9 @@ metric: Recall@K, NDCG      metric: F1, precision, recall (per class)
 failure: missed relevant    failure: misrouted to wrong tier
                             
 Together:
-  Rachel surfaces context  →  Traffic Light decides urgency
-  Rachel: "this smells like past cardiac near-death ghosts"
-  Traffic Light: "cool, then NOW — move 😭"
+  retrieval surfaces context  →  classifier decides urgency
+  retrieval: "this smells like past cardiac near-death ghosts"
+  classifier: "cool, then NOW — move 😭"
 ```
 
 ---
@@ -249,6 +249,5 @@ REAL (real EHR)                hybrid + cross-encoder rerank
 ## Cross-references
 
 - 7-pattern map: `../../../README.md`
-- Patient lifecycle (where Rachel fires): `../../../docs/05_patient_lifecycle.md` §4 (Retrieval)
-- Sibling patterns: `../classify/` (Traffic Light), `../regress/` (Crystal Ball)
-- Mad Lib (consumes Rachel hits): `../generate/`
+- Sibling patterns: `../classify/`, `../regress/`
+- generation (consumes retrieval hits): `../generate/`

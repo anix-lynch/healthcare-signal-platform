@@ -1,6 +1,6 @@
-"""Pattern 7 (Police Lineup) eval — reranking metrics.
+"""Pattern 7 eval — reranking metrics.
 
-Compares Police Lineup (re-rank by outcome severity) against the Rachel
+Compares ranking (re-rank by outcome severity) against the retrieval
 baseline (BM25 only) on the same query set.
 
 Relevance signal for NDCG:
@@ -157,7 +157,7 @@ def main():
     print("POLICE LINEUP (Pattern 7 — rank) eval")
     print("=" * 60)
     print(f"  n queries:                 {metrics['n_queries']}")
-    print(f"  NDCG@{args.k_lineup} baseline (Rachel only): {metrics['baseline_ndcg_mean']:.4f}")
+    print(f"  NDCG@{args.k_lineup} baseline (retrieval only): {metrics['baseline_ndcg_mean']:.4f}")
     print(f"  NDCG@{args.k_lineup} reranked (Lineup):     {metrics['reranked_ndcg_mean']:.4f}")
     print(f"  NDCG lift (abs):                            {metrics['ndcg_lift']:+.4f}")
     print(f"  MRR baseline / reranked:    {metrics['baseline_mrr_mean']:.4f} / {metrics['reranked_mrr_mean']:.4f}")

@@ -1,4 +1,4 @@
-"""Pattern 6 (Treasure Map) eval — clustering quality.
+"""Pattern 6 eval — clustering quality.
 
 Runs the patient utilization clustering and reports:
   - silhouette score (cluster cohesion)

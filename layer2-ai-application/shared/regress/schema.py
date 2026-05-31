@@ -1,5 +1,5 @@
 """
-Pattern 3 — Crystal Ball · Output schema.
+Pattern 3 — forecast · Output schema.
 
 The thing services/rag-api and apps/er-triage hand to clinicians.
 
@@ -45,7 +45,7 @@ class MortalityBlock(BaseModel):
 
 
 class CrystalBallOutput(BaseModel):
-    """Top-level Crystal Ball verdict for a single case."""
+    """Top-level forecast verdict for a single case."""
     model_config = ConfigDict(extra="forbid")
 
     pattern: Literal["crystal_ball_prognosis"] = "crystal_ball_prognosis"

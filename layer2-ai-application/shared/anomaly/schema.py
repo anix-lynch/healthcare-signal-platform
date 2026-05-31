@@ -1,5 +1,5 @@
 """
-Pattern 5 — Smoke Detector · Output schema.
+Pattern 5 — anomaly detector · Output schema.
 
     "this case smells WRONG 😭"
 

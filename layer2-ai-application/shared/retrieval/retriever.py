@@ -1,5 +1,5 @@
 """
-Pattern 1 — Rachel · Retrieval over Layer 1 patient corpus.
+Pattern 1 — retrieval · Retrieval over Layer 1 patient corpus.
 
 "Find me past ER cases that smell like this chief complaint."
 

@@ -1,4 +1,4 @@
-"""Pattern 7 — Police Lineup public API."""
+"""Pattern 7 — ranking public API."""
 from .baseline import lineup
 from .schema import PoliceLineupOutput, RankedHit, RerankMethod
 from .reranker import rerank, rerank_for_case

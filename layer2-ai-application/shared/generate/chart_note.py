@@ -1,5 +1,5 @@
 """
-Pattern 4 — Mad Lib · ER chart-note generator.
+Pattern 4 — generation · ER chart-note generator.
 
 Takes a case + triage decision (from Pattern 2) and renders five human-facing
 views of the same underlying decision:
@@ -234,7 +234,7 @@ def draft_chart_note(case: dict, retrieved_cases: list[dict] | None = None):
     """
     raise NotImplementedError(
         "Use shared.generate.chart_note.generate(case, triage) instead. "
-        "The retrieval-grounded variant is wired in once Pattern 1 (Rachel) ships."
+        "The retrieval-grounded variant is wired in once Pattern 1 ships."
     )
 
 

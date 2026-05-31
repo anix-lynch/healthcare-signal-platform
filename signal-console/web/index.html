@@ -154,11 +154,11 @@
   const API = location.protocol.startsWith('http') ? '' : 'http://127.0.0.1:8080';
   let DATA=null, lastRec='—';
   const QUALITY = {
-    "Treasure Map":  ["y","silhouette 0.41"],
-    "Traffic Light": ["g","within-1-tier 100% · 0 safety misses"],
-    "Smoke Detector":["g","F1 0.85"],
-    "Police Lineup": ["g","NDCG 0.93"],
-    "Rachel":        ["g","P@10 0.95"],
+    "cohort clustering":  ["y","silhouette 0.41"],
+    "classifier": ["g","within-1-tier 100% · 0 safety misses"],
+    "anomaly detector":["g","F1 0.85"],
+    "ranking": ["g","NDCG 0.93"],
+    "retrieval":        ["g","P@10 0.95"],
   };
   // turn the agent's free text into a punchy verdict
   function verdict(t){

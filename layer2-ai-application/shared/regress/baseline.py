@@ -1,5 +1,5 @@
 """
-Pattern 3 — Crystal Ball · Honest baselines.
+Pattern 3 — forecast · Honest baselines.
 
 What this is:
     The minimal cohort-stat + rule combo that produces a structured
@@ -133,12 +133,12 @@ def predict_prognosis(
     allow_mid_stay: bool = False,
 ) -> CrystalBallOutput:
     """
-    Run the full Crystal Ball stack on one case.
+    Run the full forecast stack on one case.
 
     Args:
         case: dict with at least 'cc'; ideally 'hpi', 'arrival'.
         case_id: encounter identifier (echoed back in output).
-        triage: optional Traffic Light output ({bucket: NOW|SOON|WAIT}).
+        triage: optional classifier output ({bucket: NOW|SOON|WAIT}).
         prior_visits: pre-admission visit count (NOT is_readmission).
         allow_mid_stay: pass True only for legitimate post-triage updates.
 

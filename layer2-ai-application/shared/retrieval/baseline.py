@@ -1,9 +1,9 @@
 """
-Pattern 1 — Rachel · Honest baseline orchestrator.
+Pattern 1 — retrieval · Honest baseline orchestrator.
 
 What this is:
     Wraps BM25 and (now) dense embedding retrievers into the structured
-    RachelOutput contract that services/rag-api and Mad Lib consume.
+    retrievalOutput contract that services/rag-api and generation consume.
 
     method="bm25"   token-overlap floor. Free, deterministic, fast.
     method="dense"  sentence-transformers MiniLM cosine. Semantic match on
@@ -28,7 +28,7 @@ from .retriever import (
     _ensure_index,
 )
 from . import dense as _dense
-from .schema import RachelOutput, Hit
+from .schema import retrievalOutput, Hit
 from .guardrails import apply_all_guards
 from .identity import patient_of as _patient_of, identity_available as _identity_available
 
@@ -67,9 +67,9 @@ def retrieve(
     patient_id: str | None = None,
     min_score: float = 0.0,
     method: Method = "bm25",
-) -> RachelOutput:
+) -> retrievalOutput:
     """
-    Run retrieval, wrap into RachelOutput, apply guards.
+    Run retrieval, wrap into retrievalOutput, apply guards.
 
     Args:
         query: free-text query (CC + HPI rendered, or just CC).
@@ -82,7 +82,7 @@ def retrieve(
                 or model load fails.
 
     Returns:
-        RachelOutput — pydantic-validated, JSON-serializable.
+        retrievalOutput — pydantic-validated, JSON-serializable.
     """
     t0 = time.time()
     warnings: list[str] = []
@@ -122,7 +122,7 @@ def retrieve(
     def _source_exists(sid: str) -> bool:
         return sid in valid_ids
 
-    out = RachelOutput(
+    out = retrievalOutput(
         pattern="rachel_retrieval",
         query_case_id=query_case_id,
         retrieved=hits,
@@ -163,8 +163,8 @@ def retrieve_for_case(
     k: int = 5,
     patient_id: str | None = None,
     method: Method = "bm25",
-) -> RachelOutput:
-    """Convenience: build a Rachel query from an ER triage case payload."""
+) -> retrievalOutput:
+    """Convenience: build a retrieval query from an ER triage case payload."""
     cc = case.get("cc", "") or ""
     hpi = case.get("hpi", "") or ""
     query = f"{cc} {hpi}".strip()

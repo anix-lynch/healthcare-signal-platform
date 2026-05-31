@@ -1,4 +1,4 @@
-"""Pattern 5 (Smoke Detector) eval — per-case anomaly detection.
+"""Pattern 5 eval — per-case anomaly detection.
 
 Synthetic injection eval:
     1. Sample N normal cases from Layer 1 with triage bucket matched to admission.

@@ -1,5 +1,5 @@
 """
-Pattern 2 — Traffic Light · Leakage guards.
+Pattern 2 — classifier · Leakage guards.
 
 Classifying ESI tier using esi_tier_truth = exam cheating with answer key 😭
 
@@ -53,7 +53,7 @@ def check_features(features: dict, *, allow_post_triage: bool = False) -> None:
     Raises ClassifyLeakError if a forbidden field is present. Fail loud.
 
     Args:
-        features: dict the caller wants to feed Traffic Light.
+        features: dict the caller wants to feed classifier.
         allow_post_triage: True only for "post-labs re-classify" use cases.
     """
     found = set(features.keys()) & FORBIDDEN_FEATURES

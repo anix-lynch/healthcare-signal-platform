@@ -1,7 +1,7 @@
 """
-Pattern 1 — Rachel · Retrieval guardrails.
+Pattern 1 — retrieval · Retrieval guardrails.
 
-Three things that get the hospital sued if Rachel hallucinates them:
+Three things that get the hospital sued if retrieval hallucinates them:
 
     1. CITATION HALLUCINATION  → returned a source_id that doesn't exist
     2. CROSS-PATIENT LEAKAGE   → returned another patient's row when query
@@ -10,12 +10,12 @@ Three things that get the hospital sued if Rachel hallucinates them:
                                   these are matches inflates faithfulness
 
 This is the "Llama Guard for retrieval" — runs after the index call,
-before Mad Lib touches the hits.
+before generation touches the hits.
 """
 from __future__ import annotations
 from typing import Callable, Iterable
 
-from .schema import Hit, RachelOutput
+from .schema import Hit, retrievalOutput
 
 
 class RetrievalGuardError(ValueError):
@@ -82,16 +82,16 @@ def enforce_score_floor(hits: Iterable[Hit], *, min_score: float = 0.3) -> list[
 
 # ── Compose into one call ──────────────────────────────────────────────────
 def apply_all_guards(
-    output: RachelOutput,
+    output: retrievalOutput,
     *,
     source_exists: Callable[[str], bool],
     query_patient_id: str | None = None,
     hit_patient_of: Callable[[str], str | None] | None = None,
     min_score: float = 0.3,
-) -> RachelOutput:
+) -> retrievalOutput:
     """
     Run citation validation + cross-patient filter + score floor on a
-    RachelOutput. Mutates `warnings` to record what was dropped.
+    retrievalOutput. Mutates `warnings` to record what was dropped.
     """
     hits = output.retrieved
     warnings = list(output.warnings)

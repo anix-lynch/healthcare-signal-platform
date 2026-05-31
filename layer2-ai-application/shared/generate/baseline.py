@@ -1,13 +1,13 @@
 """
-Pattern 4 — Mad Lib · Honest baseline orchestrator.
+Pattern 4 — generation · Honest baseline orchestrator.
 
 Wraps the existing template-based `chart_note.generate()` engine into the
 structured MadLibOutput contract. The engine produces a chart note + nurse
-handoff + patient explanation; we validate citations against Rachel's
+handoff + patient explanation; we validate citations against retrieval's
 returned source_ids before emitting.
 
 Citation rule:
-    Every cited source_id must be present in the Rachel hits we received.
+    Every cited source_id must be present in the retrieval hits we received.
     Uncited claims are accepted (the chart note has structured fields and
     can describe vitals directly), but cited source_ids that DON'T resolve
     = hallucination → drop the citation and warn.
@@ -44,13 +44,13 @@ def generate_note(
     enhance: bool = False,
 ) -> MadLibOutput:
     """
-    Generate chart note + handoffs grounded in Rachel hits.
+    Generate chart note + handoffs grounded in retrieval hits.
 
     Args:
         case: ER case dict (cc, hpi, vitals, ...).
-        triage: Traffic Light output dict (tier, esi_tier, red_flags, ...).
+        triage: classifier output dict (tier, esi_tier, red_flags, ...).
         case_id: encounter identifier echoed back.
-        rachel_hits: iterable of Hit-shaped dicts from Rachel. Source_ids
+        rachel_hits: iterable of Hit-shaped dicts from retrieval. Source_ids
                      here are the only valid citations.
         enhance: pass-through to engine for optional LLM enhancement.
 

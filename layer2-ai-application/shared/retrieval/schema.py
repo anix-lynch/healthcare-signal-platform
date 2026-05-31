@@ -1,12 +1,12 @@
 """
-Pattern 1 — Rachel · Output schema.
+Pattern 1 — retrieval · Output schema.
 
 The contract every caller of retrieval gets back. Matches the spec:
 
     "bro find me another patient who almost died like this 😭"
 
 Output is structured so services/rag-api can wrap it as /v1/search without
-reshaping, and Mad Lib can ground every claim on a `source_id` from here.
+reshaping, and generation can ground every claim on a `source_id` from here.
 """
 from __future__ import annotations
 from typing import Literal
@@ -26,8 +26,8 @@ class Hit(BaseModel):
     why_relevant: str = Field(..., description="one-line plain-English match explanation")
 
 
-class RachelOutput(BaseModel):
-    """Top-level Rachel verdict for a single query case."""
+class retrievalOutput(BaseModel):
+    """Top-level retrieval verdict for a single query case."""
     model_config = ConfigDict(extra="forbid")
 
     pattern: Literal["rachel_retrieval"] = "rachel_retrieval"

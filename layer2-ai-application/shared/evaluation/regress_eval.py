@@ -1,4 +1,4 @@
-"""Pattern 3 (Crystal Ball) eval — LOS regression metrics.
+"""Pattern 3 eval — LOS regression metrics.
 
 Real metrics on a held-out random sample from the Layer 1 corpus:
   - MAE (mean absolute error in days)

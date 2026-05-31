@@ -17,15 +17,18 @@ Pick a case and watch the *same* agent decide **with** the signals vs **without*
 
 ## Structure
 
-- `signal-console/` — the live ablation console **(flagship)**
-- `layer2-ai-application/shared/` — the signal services (anomaly · classify · cluster · rank · retrieval)
-- `layer1-data-backbone/` · `layer3-governance/` — the data and governance layers that feed and guard the signals
+- `layer2-ai-application/shared/` — **the signals themselves.** One folder per algorithm (`anomaly` · `classify` · `cluster` · `rank` · `retrieval`); read these to see exactly how each signal is built and evaluated.
+- `signal-console/` — the live ablation console **(flagship)**: `main.py` serves the API, `signals.json` holds the computed signals + their eval numbers, `web/` is the UI.
+- `layer1-data-backbone/data/` — the synthetic patient dataset the signals run on.
 
 ## Quick start
 
 ```bash
-cd layer2-ai-application && pip install -r requirements.txt
-make eval-all        # run the signal evals against the golden set
+pip install -r layer2-ai-application/requirements.txt
+
+# How a signal is built → read one folder, e.g. the high-utilizer cohort:
+#   layer2-ai-application/shared/cluster/cohort.py   (reproduces silhouette 0.41, 535 cohort)
+# How it's served → signal-console/ (FastAPI + the ablation UI; deploys on Cloud Run)
 ```
 
 ## Stack
@@ -33,4 +36,4 @@ make eval-all        # run the signal evals against the golden set
 Python · FastAPI · scikit-learn · Vertex AI (Gemini) · BM25 · Weights & Biases · Langfuse · Cloud Run · Docker
 
 ---
-*Synthetic data, no PHI. Layers integrate by mission today; the live L1→L2 data pipeline is queued. Part of Anix Lynch's L1→L3 healthcare AI platform — [gozeroshot.dev](https://gozeroshot.dev). MIT licensed.*
+*Synthetic data, no PHI. The broader L1 data-warehouse and L3 governance work lives in sibling repos. Part of Anix Lynch's L1→L3 healthcare AI platform — [gozeroshot.dev](https://gozeroshot.dev). MIT licensed.*

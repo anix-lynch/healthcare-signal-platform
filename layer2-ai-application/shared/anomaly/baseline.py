@@ -1,5 +1,5 @@
 """
-Pattern 5 — Smoke Detector · Honest baseline orchestrator.
+Pattern 5 — anomaly detector · Honest baseline orchestrator.
 
 Wraps the existing `anomaly_flagger.flag()` (rule + cohort-stats) into the
 SmokeDetectorOutput contract. The engine computes vitals z-scores against
@@ -46,8 +46,8 @@ def detect_smoke(
     Args:
         case: ER case dict.
         case_id: encounter identifier.
-        triage: optional Traffic Light output for context.
-        los_prediction: optional Crystal Ball LoS output (rare LoS = signal).
+        triage: optional classifier output for context.
+        los_prediction: optional forecast LoS output (rare LoS = signal).
         threshold: anomaly score floor for is_anomaly.
 
     Returns:
