@@ -1,7 +1,7 @@
 {
   "checkpoint_version": 1,
   "scanned_at": "2026-05-16T17:00:24",
-  "input_file": "/Users/anixlynch/dev/healthcare-genai-fullstack/layer1-data-backbone/data/raw/healthcare_dataset_enriched.csv",
+  "input_file": "layer1-data-backbone/data/raw/healthcare_dataset_enriched.csv",
   "n_rows": 497,
   "checks": {
     "schema_drift": {

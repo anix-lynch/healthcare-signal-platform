@@ -300,5 +300,5 @@
     }
   ],
   "generator": "shared.generate.chart_note (deterministic templates v1)",
-  "gold_set_path": "/Users/anixlynch/dev/healthcare-genai-fullstack/layer2-ai-application/apps/er-triage/inputs/golden_esi.json"
+  "gold_set_path": "layer2-ai-application/apps/er-triage/inputs/golden_esi.json"
 }

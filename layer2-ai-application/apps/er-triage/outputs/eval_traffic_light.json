@@ -295,6 +295,6 @@
       "red_flags": []
     }
   ],
-  "gold_set_path": "/Users/anixlynch/dev/healthcare-genai-fullstack/layer2-ai-application/apps/er-triage/inputs/golden_esi.json",
+  "gold_set_path": "layer2-ai-application/apps/er-triage/inputs/golden_esi.json",
   "classifier": "shared.classify.router (deterministic rule-based v1)"
 }
