@@ -15,11 +15,50 @@ Pick a case and watch the *same* agent decide **with** the signals vs **without*
 - **Computed before the agent** — each signal is a labeled field (`{anomaly_score, cluster, esi_tier}`); the Gemini agent reasons on the labels, never recomputes them — no context pollution.
 - **Synthetic data, real methods** — no PHI; every eval number is on a synthetic set.
 
-## Structure
+## Repo Map
 
-- `layer2-ai-application/shared/` — **the signals themselves.** One folder per algorithm (`anomaly` · `classify` · `cluster` · `rank` · `retrieval`); read these to see exactly how each signal is built and evaluated.
-- `signal-console/` — the live ablation console **(flagship)**: `main.py` serves the API, `signals.json` holds the computed signals + their eval numbers, `web/` is the UI.
-- `layer1-data-backbone/data/` — the synthetic patient dataset the signals run on.
+What lives where, at a glance:
+
+```
+healthcare-signal-platform/
+├── signal-console/                ⭐ the live "with vs without signals" demo (deploys on Cloud Run)
+├── layer2-ai-application/shared/  🧠 the signals themselves — one folder = one signal
+├── layer1-data-backbone/data/     ✅ the synthetic patient dataset the signals read
+└── README.md                      📖 you are here
+```
+
+<details>
+<summary><b>▸ Full file tree</b> (every file, plain-language — click to expand)</summary>
+
+```
+healthcare-signal-platform/
+│
+├── signal-console/                ⭐ FLAGSHIP — runs the agent both ways, shows the call flip
+│   ├── main.py                    ✅ FastAPI — decides WITH vs WITHOUT the signals
+│   ├── web/index.html             ✅ the UI: pick a case, watch the recommendation change
+│   ├── signals.json               🟡 the computed signals + their eval numbers (the proof)
+│   ├── eval/log_to_wandb.py       ✅ pushes the eval scores to Weights & Biases
+│   ├── Dockerfile                 ✅ container for Cloud Run
+│   └── requirements-deploy.txt    ✅ deploy-only deps
+│
+├── layer2-ai-application/shared/  🧠 THE SIGNALS — read one folder to learn how that signal is built
+│   ├── anomaly/                   ✅ flags weird patients (z-score)          → F1 0.85
+│   ├── cluster/                   ✅ groups patients (K-means)               → 535 high-utilizers · silhouette 0.41
+│   ├── classify/                  ✅ ESI urgency tier (rules + cost router)  → ±1-tier 100%
+│   ├── rank/                      ✅ orders who to see first (reranker)
+│   ├── retrieval/                 ✅ finds similar past cases (BM25 + dense)
+│   ├── regress/                   ✅ predicts length-of-stay (LightGBM) — anomaly leans on it
+│   ├── cloud/                     ✅ one interface, swap Vertex / AWS / Azure
+│   ├── guardrails/                ✅ output safety + citation check
+│   ├── evaluation/                ✅ the scripts that PRODUCE each signal's eval number
+│   └── requirements.txt           ✅ deps for the signal code
+│       (each signal folder = schema.py contract · baseline.py algorithm · + its specific code)
+│
+├── layer1-data-backbone/data/     ✅ synthetic patient data (raw · enriched · holdout) the signals read
+│
+└── README.md                      📖 this file
+```
+</details>
 
 ## Quick start
 
