@@ -1,6 +1,6 @@
 # Safety Agent — Hard-Rule Overlay
 
-> **Architecture source:** [`mj/docs/tool_calling.md`](file:///Users/anixlynch/dev/mj/docs/tool_calling.md) — Level-2 Agent.
+> **Architecture source:** `mj/docs/tool_calling.md` — Level-2 Agent.
 
 ## Why hard rules
 

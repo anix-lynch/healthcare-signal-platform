@@ -106,7 +106,7 @@ def api_decide(case: str, signals: bool = True):
                 gen = None
 
         resp = model.generate_content(
-            prompt, generation_config=GenerationConfig(temperature=0.2, max_output_tokens=2048)
+            prompt, generation_config=GenerationConfig(temperature=0.0, max_output_tokens=2048)
         )
         text = (resp.text or "").strip()
 

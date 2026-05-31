@@ -253,10 +253,10 @@ the live data pipeline between Layer 1 and Layer 2 is queued for Phase 5."
 
 ## 🧭 Cross-references
 
-- **Title-to-layer map:** [`fail-fwd/possibletitle/3layer_architecture_title_map.md`](file:///Users/anixlynch/dev/FWD/fail-fwd/possibletitle/3layer_architecture_title_map.md)
-- **Role-KPI tree:** [`fail-fwd/possibletitle/genai_role_kpi_trees.md`](file:///Users/anixlynch/dev/FWD/fail-fwd/possibletitle/genai_role_kpi_trees.md)
-- **Cookie-cutter framework:** [`fail-fwd/cookiecutter_by_role.md`](file:///Users/anixlynch/dev/FWD/fail-fwd/cookiecutter_by_role.md)
-- **6-pillar Nora Bing:** [`mj/docs/nora_bing_metric.md`](file:///Users/anixlynch/dev/mj/docs/nora_bing_metric.md)
+- **Title-to-layer map:** `fail-fwd/possibletitle/3layer_architecture_title_map.md`
+- **Role-KPI tree:** `fail-fwd/possibletitle/genai_role_kpi_trees.md`
+- **Cookie-cutter framework:** `fail-fwd/cookiecutter_by_role.md`
+- **6-pillar Nora Bing:** `mj/docs/nora_bing_metric.md`
 
 ---
 

@@ -1,6 +1,6 @@
 # Phase 2 — ESI Auto-Tagger
 
-> **Concept source:** [`mj/docs/02_traffic_light.md`](file:///Users/anixlynch/dev/mj/docs/02_traffic_light.md) and [`mj/docs/autotagging_llm_as_classifier_intake_automation.md`](file:///Users/anixlynch/dev/mj/docs/autotagging_llm_as_classifier_intake_automation.md)
+> **Concept source:** `mj/docs/02_traffic_light.md` and `mj/docs/autotagging_llm_as_classifier_intake_automation.md`
 
 ## Recipe (drillable)
 

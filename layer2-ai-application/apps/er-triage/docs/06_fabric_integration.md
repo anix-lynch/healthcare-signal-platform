@@ -2,7 +2,7 @@
 
 > **What this is.** ER3 is the **upstream system** producing triage decisions, drift alerts, and cohort outputs. Microsoft Fabric is the **downstream analytics platform** where those outputs feed dashboards, semantic models, and dbt transformations for clinician-facing reporting and ops.
 >
-> **Why "soft fold."** The Fabric work at [`wip/portco/healthcare-da/`](computer:///Users/anixlynch/dev/wip/portco/healthcare-da/) already exists with dbt-project, Power BI semantic model, openapi_snapshot.json, and SLA documentation. Rather than duplicating those into ER3, we wire ER3's output contracts to feed Fabric directly. One upstream, one downstream, no copy-paste.
+> **Why "soft fold."** The Fabric work at `healthcare-da/` already exists with dbt-project, Power BI semantic model, openapi_snapshot.json, and SLA documentation. Rather than duplicating those into ER3, we wire ER3's output contracts to feed Fabric directly. One upstream, one downstream, no copy-paste.
 
 ---
 
@@ -40,12 +40,12 @@ ASSET                                   LIVES IN                                
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ER3 modules (7 patterns + eval)         ER3/app/                                                    OWNED
 ER3 cloud adapter (Vertex/Azure/AWS)    ER3/app/cloud/                                              OWNED
-Fabric dbt-project                      wip/portco/healthcare-da/dbt-project/                       REFERENCED
-Power BI semantic model                 wip/portco/healthcare-da/powerbi-model/                     REFERENCED
-ML pipeline (LoS prototype)             wip/portco/healthcare-da/ml-pipeline/                       REFERENCED
-OpenAPI contract                        wip/portco/healthcare-da/openapi_snapshot.json              REFERENCED
-SLA docs                                wip/portco/healthcare-da/sla.md / sla_all_roles.md          REFERENCED
-SPEC (engineering proof)                wip/portco/healthcare-da/SPEC.md                            REFERENCED
+Fabric dbt-project                      healthcare-da/dbt-project/                       REFERENCED
+Power BI semantic model                 healthcare-da/powerbi-model/                     REFERENCED
+ML pipeline (LoS prototype)             healthcare-da/ml-pipeline/                       REFERENCED
+OpenAPI contract                        healthcare-da/openapi_snapshot.json              REFERENCED
+SLA docs                                healthcare-da/sla.md / sla_all_roles.md          REFERENCED
+SPEC (engineering proof)                healthcare-da/SPEC.md                            REFERENCED
 ```
 
 ## The interview pitch
@@ -89,6 +89,6 @@ Effectively a thin layer over `azure_provider.py` with Fabric-specific data prim
 
 ## Cross-references
 
-- **Fabric hub master:** [`wip/fabric-hub/SPEC.md`](file:///Users/anixlynch/dev/wip/fabric-hub/SPEC.md)
-- **Healthcare-DA engineering proof:** [`wip/portco/healthcare-da/SPEC.md`](file:///Users/anixlynch/dev/wip/portco/healthcare-da/SPEC.md)
-- **ER3 cloud adapter:** [`app/cloud/`](file:///Users/anixlynch/dev/ER3/app/cloud/)
+- **Fabric hub master:** `fabric-hub/SPEC.md`
+- **Healthcare-DA engineering proof:** `healthcare-da/SPEC.md`
+- **ER3 cloud adapter:** `app/cloud/`

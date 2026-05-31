@@ -93,6 +93,6 @@ That's 7 sentences. Drill them until automatic.
 
 ## Cross-references
 
-- **6-pillar canon:** [`mj/docs/nora_bing_metric.md`](file:///Users/anixlynch/dev/mj/docs/nora_bing_metric.md)
-- **Role-KPI reverse map:** [`fail-fwd/possibletitle/genai_role_kpi_trees.md`](file:///Users/anixlynch/dev/FWD/fail-fwd/possibletitle/genai_role_kpi_trees.md)
-- **Cookie-cutter framework:** [`fail-fwd/cookiecutter_by_role.md`](file:///Users/anixlynch/dev/FWD/fail-fwd/cookiecutter_by_role.md)
+- **6-pillar canon:** `mj/docs/nora_bing_metric.md`
+- **Role-KPI reverse map:** `fail-fwd/possibletitle/genai_role_kpi_trees.md`
+- **Cookie-cutter framework:** `fail-fwd/cookiecutter_by_role.md`

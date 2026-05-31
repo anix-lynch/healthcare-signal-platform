@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>L1.5 Signal Console — high-quality signals that change the agent's decision</title>
+<title>L1.5 Signal Platform — facts looked normal, signals changed the call</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -11,74 +11,71 @@
     --s1:#f8fbfd; --s2:#eef4f9; --s3:#e2ecf4; --card:#ffffff;
     --tp:#0f1923; --ts:#4a6080; --tm:#8aa0b8; --bd:#dde8f0;
     --acc:#7bb3d9; --acc-h:#5f9bc8; --acc-bg:rgba(123,179,217,.12); --acc-solid:#eaf3fb;
-    --green:#4f8a5b; --green-bg:#e7f1e9; --yellow:#c9a227; --yellow-bg:#fbf5dd; --coral:#d98b6f;
+    --green:#4f8a5b; --green-bg:#e7f1e9; --yellow:#c9a227; --yellow-bg:#fbf5dd;
+    --coral:#d98b6f; --red:#c2453a; --red-bg:#fbe9e6;
     --sans:"Geist","Inter",system-ui,sans-serif; --mono:"Geist Mono",monospace;
-    --r-md:10px; --r-lg:14px; --r-pill:999px;
-    --sh:0 1px 3px rgba(100,140,180,.10); --sh-h:0 4px 16px rgba(100,140,180,.16);
+    --r-md:10px; --r-lg:14px; --r-pill:999px; --sh:0 1px 3px rgba(100,140,180,.10);
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--s1);color:var(--ts);font-family:var(--sans);line-height:1.55;
        -webkit-font-smoothing:antialiased;padding:32px 18px;display:flex;justify-content:center}
-  .wrap{width:100%;max-width:920px}
+  .wrap{width:100%;max-width:900px}
   a{color:var(--acc-h);text-decoration:none} a:hover{text-decoration:underline}
-  h1{font-size:25px;font-weight:600;color:var(--tp);margin:0;letter-spacing:-.02em}
-  .lede{font-size:15px;color:var(--ts);margin:8px 0 0;max-width:680px}
+  h1{font-size:24px;font-weight:600;color:var(--tp);margin:0;letter-spacing:-.02em}
+  .pathline{font-family:var(--mono);font-size:12px;color:var(--acc-h);margin-top:6px}
+  .lede{font-size:15px;color:var(--ts);margin:6px 0 0;max-width:680px}
   .lede b{color:var(--tp);font-weight:600}
   .toprow{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
   .links{display:flex;gap:6px;flex-wrap:wrap}
-  .chip{font-family:var(--mono);font-size:11px;font-weight:500;padding:5px 10px;border-radius:var(--r-pill);
-        border:1px solid var(--bd);background:var(--card);color:var(--ts)}
+  .chip{font-family:var(--mono);font-size:11px;font-weight:500;padding:5px 10px;border-radius:var(--r-pill);border:1px solid var(--bd);background:var(--card);color:var(--ts)}
   .chip.live{border-color:var(--acc);background:var(--acc-bg);color:var(--acc-h)}
-  .step-h{display:flex;align-items:baseline;gap:10px;margin:30px 0 12px}
-  .step-n{font-family:var(--mono);font-size:12px;font-weight:600;color:#fff;background:var(--acc);
-          width:24px;height:24px;border-radius:var(--r-pill);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-  .step-t{font-size:17px;font-weight:600;color:var(--tp)}
-  .step-s{font-size:13px;color:var(--tm)}
-  /* tabs */
   .tabs{display:flex;gap:8px;margin:20px 0 4px;flex-wrap:wrap}
-  .tab{cursor:pointer;font-size:13.5px;font-weight:500;padding:8px 16px;border-radius:var(--r-pill);
-       border:1px solid var(--bd);background:var(--card);color:var(--ts);transition:.15s}
-  .tab:hover{border-color:var(--acc)}
-  .tab.on{background:var(--tp);color:#fff;border-color:var(--tp)}
-  .case-note{font-size:13px;color:var(--tm);margin:4px 0 0}
-  /* truth */
-  .truth{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .tab{cursor:pointer;font-size:13.5px;font-weight:500;padding:8px 16px;border-radius:var(--r-pill);border:1px solid var(--bd);background:var(--card);color:var(--ts);transition:.15s}
+  .tab:hover{border-color:var(--acc)} .tab.on{background:var(--tp);color:#fff;border-color:var(--tp)}
+  .step-h{display:flex;align-items:baseline;gap:10px;margin:26px 0 12px}
+  .step-n{font-family:var(--mono);font-size:12px;font-weight:600;color:#fff;background:var(--acc);width:24px;height:24px;border-radius:var(--r-pill);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .step-t{font-size:17px;font-weight:600;color:var(--tp)} .step-s{font-size:13px;color:var(--tm)}
+  /* step 0 facts */
+  .truth{display:flex;flex-wrap:wrap;gap:8px}
   .fact{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r-md);padding:8px 12px;font-size:13px}
-  .fact .k{color:var(--tm);font-size:11px;display:block} .fact .v{color:var(--tp);font-weight:600}
-  /* signal cards */
+  .fact .k{color:var(--tm);font-size:11px;display:block} .fact .v{color:var(--tp);font-weight:600;font-size:15px}
+  .lsays{margin-top:10px;font-size:14px;color:var(--ts)} .lsays b{color:var(--tp)}
+  /* step 1 signals */
   .sigs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:640px){.sigs{grid-template-columns:1fr}}
   .scard{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-lg);padding:14px;box-shadow:var(--sh)}
   .scard .sh{display:flex;justify-content:space-between;align-items:center;gap:8px}
   .scard .nm{font-weight:600;color:var(--tp);font-size:14px}
-  .scard .meth{font-family:var(--mono);font-size:10.5px;color:var(--acc-h)}
   .q{font-family:var(--mono);font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:var(--r-pill);white-space:nowrap;flex:0 0 auto}
   .q.g{background:var(--green-bg);color:var(--green)} .q.y{background:var(--yellow-bg);color:var(--yellow)}
-  .flow{margin-top:10px;font-size:12.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .flow .feat{color:var(--tm);font-family:var(--mono);font-size:11px}
-  .flow .arr{color:var(--acc);font-weight:700}
-  .flow .out{color:var(--tp);font-weight:600;background:var(--acc-solid);padding:2px 8px;border-radius:var(--r-md)}
-  /* ablation */
+  .finding{margin-top:9px;font-size:13.5px;color:var(--tp)} .finding .fl{font-size:11px;font-family:var(--mono);color:var(--tm);text-transform:uppercase;display:block;margin-bottom:1px}
+  /* step 2 ablation — BIG */
   .abl{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media(max-width:640px){.abl{grid-template-columns:1fr}}
-  .acol{border-radius:var(--r-lg);padding:15px;border:1px solid var(--bd);background:var(--card)}
-  .acol.off{background:var(--s2)}
-  .acol.on{border:1.5px solid var(--acc);background:var(--acc-solid)}
-  .ahd{font-size:12px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-  .acol.off .ahd{color:var(--tm)} .acol.on .ahd{color:var(--acc-h)}
-  .abody{font-size:13px;color:var(--tp);line-height:1.55;min-height:30px}
-  .delta{margin-top:14px;padding:12px 16px;border-radius:var(--r-lg);background:var(--yellow-bg);
-         border:1px solid #ecdfa0;font-size:13.5px;color:var(--tp)}
-  .delta b{color:var(--coral)} .delta s{color:var(--tm)}
-  /* L3 */
-  .l3{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .l3 .lbl{font-size:13px;color:var(--ts);margin-right:4px}
-  .l3 button{cursor:pointer;font-family:var(--sans);font-size:13px;font-weight:500;padding:8px 16px;
-             border-radius:var(--r-md);border:1px solid var(--bd);background:var(--card);color:var(--tp);transition:.15s}
-  .l3 button:hover{border-color:var(--acc);background:var(--acc-bg)}
-  .l3log{width:100%;font-size:12.5px;color:var(--tp);margin-top:6px;padding:10px 12px;border-radius:var(--r-md);background:var(--s2);display:none}
+  .acol{border-radius:var(--r-lg);padding:18px;border:1px solid var(--bd);background:var(--card);text-align:center}
+  .acol.off{background:var(--s2)} .acol.on{border:1.5px solid var(--acc);background:var(--acc-solid)}
+  .acol .hd{font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--tm)}
+  .acol.on .hd{color:var(--acc-h)}
+  .verdict{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:10px 0 4px;line-height:1.05}
+  .acol .basis{font-size:12px;color:var(--ts)} .acol .full{font-size:11.5px;color:var(--tm);margin-top:8px;line-height:1.45;text-align:left}
+  .result{margin-top:14px;padding:14px 18px;border-radius:var(--r-lg);font-size:15px;font-weight:600;text-align:center}
+  .result.changed{background:var(--green-bg);color:var(--green);border:1px solid #b9d8c0}
+  .result.same{background:var(--yellow-bg);color:var(--yellow);border:1px solid #ecdfa0}
+  /* step 3 human */
+  .l3{border:1.5px solid var(--acc);border-radius:var(--r-lg);background:var(--acc-solid);padding:16px}
+  .l3 .rec{font-size:13px;color:var(--ts);margin-bottom:10px} .l3 .rec b{color:var(--tp);font-size:15px}
+  .l3 .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .l3 button{cursor:pointer;font-family:var(--sans);font-size:14px;font-weight:600;padding:10px 20px;border-radius:var(--r-md);border:1px solid var(--bd);background:var(--card);color:var(--tp);transition:.15s}
+  .l3 button.app:hover{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+  .l3 button.ovr:hover{border-color:var(--coral);background:#fbeee9;color:var(--coral)}
+  .l3 button.hold:hover{border-color:var(--yellow);background:var(--yellow-bg);color:var(--yellow)}
+  .l3log{margin-top:12px;font-size:13px;color:var(--tp);padding:11px 14px;border-radius:var(--r-md);background:var(--card);border:1px solid var(--bd);display:none}
   .l3log.show{display:block}
-  .foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--bd);font-size:12px;color:var(--tm)}
+  /* footer flow */
+  .flowfoot{margin-top:30px;padding:18px;border-radius:var(--r-lg);background:var(--s2);border:1px solid var(--bd);
+            display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px}
+  .flowfoot .n{color:var(--tp);font-weight:600} .flowfoot .a{color:var(--acc)}
+  .foot{margin-top:18px;font-size:12px;color:var(--tm);text-align:center}
 </style>
 </head>
 <body>
@@ -86,114 +83,147 @@
 
   <div class="toprow">
     <div>
-      <h1>L1.5 Signal Console</h1>
-      <p class="lede"><b>Five high-quality signals, computed before the agent</b> and fed in as labeled
-        facts. Watch them <b>change the agent's decision</b> — and see exactly how good each one is.</p>
+      <h1>🧠 L1.5 Signal Platform</h1>
+      <div class="pathline">L1 Truth → L1.5 Signals → L2 Agent → L3 Human</div>
+      <p class="lede"><b>Facts looked normal. Signals detected risk. The agent changed its recommendation. A human signed off.</b>
+        Signals are computed before the agent and fed in as labeled evidence — never raw text.</p>
     </div>
     <div class="links">
       <a class="chip live" id="livepill" href="#">● live · gemini-2.5</a>
-      <a class="chip" target="_blank" rel="noopener" href="https://github.com/anix-lynch/healthcare-genai-fullstack/tree/master/signal-console">&lt;/&gt; source</a>
+      <a class="chip" target="_blank" rel="noopener" href="https://github.com/anix-lynch/healthcare-signal-platform/tree/master/signal-console">&lt;/&gt; source</a>
       <a class="chip" target="_blank" rel="noopener" href="https://wandb.ai/alynch-zeroshot/healthcare-l15-signals">W&amp;B evals</a>
     </div>
   </div>
 
   <div class="tabs" id="tabs"></div>
-  <p class="case-note" id="casenote"></p>
 
-  <!-- STEP 1 — signals + quality -->
-  <div class="step-h"><span class="step-n">1</span>
-    <span class="step-t">The signals — and how good they are</span>
-    <span class="step-s">· each computed before the agent, scored vs an industry benchmark</span></div>
+  <!-- STEP 0 — raw facts -->
+  <div class="step-h"><span class="step-n">0</span><span class="step-t">Raw facts (L1 truth)</span>
+    <span class="step-s">· trusted warehouse / dbt gold mart</span></div>
   <div class="truth" id="truth"></div>
-  <div class="sigs" id="sigs" style="margin-top:12px"></div>
+  <div class="lsays" id="lsays"></div>
 
-  <!-- STEP 2 — ablation -->
-  <div class="step-h"><span class="step-n">2</span>
-    <span class="step-t">Do they change the agent?</span>
-    <span class="step-s">· same Gemini agent, decided with the signals vs on raw facts only</span></div>
+  <!-- STEP 1 — signals -->
+  <div class="step-h"><span class="step-n">1</span><span class="step-t">Signals (L1.5)</span>
+    <span class="step-s">· each pre-computed + scored vs a benchmark · signal → finding, not algorithm → metric</span></div>
+  <div class="sigs" id="sigs"></div>
+
+  <!-- STEP 2 — did the signals change the agent? -->
+  <div class="step-h"><span class="step-n">2</span><span class="step-t">Did the signals change the agent?</span>
+    <span class="step-s">· same Gemini agent — raw facts only vs facts + signals</span></div>
   <div class="abl">
-    <div class="acol off"><div class="ahd">🚫 raw facts only — no signals</div><div class="abody" id="dec_off">…</div></div>
-    <div class="acol on"><div class="ahd">✅ with the L1.5 signals</div><div class="abody" id="dec_on">…</div></div>
+    <div class="acol off">
+      <div class="hd">raw facts only</div>
+      <div class="verdict" id="v_off" style="color:var(--tm)">…</div>
+      <div class="basis">basis: L1 facts, no signals</div>
+      <div class="full" id="f_off"></div>
+    </div>
+    <div class="acol on">
+      <div class="hd">with L1.5 signals</div>
+      <div class="verdict" id="v_on" style="color:var(--red)">…</div>
+      <div class="basis">basis: facts + 5 labeled signals</div>
+      <div class="full" id="f_on"></div>
+    </div>
   </div>
-  <div class="delta" id="delta">…</div>
+  <div class="result" id="result">…</div>
 
   <!-- STEP 3 — human -->
-  <div class="step-h"><span class="step-n">3</span>
-    <span class="step-t">The human decides</span>
-    <span class="step-s">· the agent recommends; an accountable person signs off</span></div>
+  <div class="step-h"><span class="step-n">3</span><span class="step-t">Human decision (L3)</span>
+    <span class="step-s">· the agent recommends; an accountable person decides</span></div>
   <div class="l3">
-    <span class="lbl">L3 judgment —</span>
-    <button onclick="judge('Approved')">Approve</button>
-    <button onclick="judge('Override')">Override</button>
-    <button onclick="judge('Hold')">Hold</button>
+    <div class="rec">Agent recommendation: <b id="l3rec">—</b></div>
+    <div class="btns">
+      <button class="app" onclick="judge('Approved')">Approve</button>
+      <button class="ovr" onclick="judge('Override')">Override</button>
+      <button class="hold" onclick="judge('Hold')">Hold</button>
+    </div>
     <div class="l3log" id="l3log"></div>
   </div>
 
+  <!-- footer flow -->
+  <div class="flowfoot">
+    <span class="n">L1 Truth</span><span class="a">→</span>
+    <span class="n">L1.5 Signals</span><span class="a">→</span>
+    <span class="n">L2 Agent</span><span class="a">→</span>
+    <span class="n">L3 Human accountability</span>
+  </div>
   <div class="foot" id="foot"></div>
 </div>
 
 <script>
   const API = location.protocol.startsWith('http') ? '' : 'http://127.0.0.1:8080';
-  let DATA = null;
-
-  // signal quality vs benchmark — plain words + green/yellow (matches the W&B traffic-light)
+  let DATA=null, lastRec='—';
   const QUALITY = {
-    "Treasure Map":  ["y", "silhouette 0.41 — solid for messy data"],
-    "Traffic Light": ["g", "100% within 1 tier · 0 safety misses"],
-    "Smoke Detector":["g", "F1 0.85 · catches 92%"],
-    "Police Lineup": ["g", "NDCG 0.93 — sickest first"],
-    "Rachel":        ["g", "P@10 0.95"],
+    "Treasure Map":  ["y","silhouette 0.41"],
+    "Traffic Light": ["g","within-1-tier 100% · 0 safety misses"],
+    "Smoke Detector":["g","F1 0.85"],
+    "Police Lineup": ["g","NDCG 0.93"],
+    "Rachel":        ["g","P@10 0.95"],
   };
-
-  function action(t){ const m=(t||'').match(/Action:\s*(.+)$/im); return m?m[1].trim().replace(/[.*]+$/,''):(t||'').slice(0,90); }
+  // turn the agent's free text into a punchy verdict
+  function verdict(t){
+    // use the Action line if present (most decisive), else the whole text
+    const m=(t||'').match(/Action:\s*(.+)$/im); const s=(m?m[1]:(t||'')).toLowerCase();
+    // strong action FIRST (what the WITH-signals case reaches for)
+    if(/(surge|activat|immediat|escalat|expedit|\bstat\b|critical care|right now|code )/.test(s)) return {w:"ACT NOW", c:"var(--red)"};
+    if(/(soon|prioriti|prompt|elevat|expedite)/.test(s))                                          return {w:"SEE SOON", c:"var(--yellow)"};
+    // measured baseline (what raw-facts-only reaches for)
+    if(/(monitor|prepare|proactiv|observ|routine|standard|baseline|assess|initiate|watch|track|continue)/.test(s)) return {w:"WATCH / PREPARE", c:"var(--green)"};
+    const w=(m?m[1]:'review').replace(/[.*].*$/,'').trim().split(/\s+/).slice(0,2).join(' ');
+    return {w:w.toUpperCase()||"REVIEW", c:"var(--ts)"};
+  }
+  function actLine(t){ const m=(t||'').match(/Action:\s*(.+)$/im); return m?m[1].trim():(t||'').slice(0,140); }
 
   function render(c){
     document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on', t.dataset.id===c.id));
-    document.getElementById('casenote').textContent = c.truth_says ? '“'+c.truth_says+'”' : '';
     document.getElementById('truth').innerHTML = Object.entries(c.truth)
+      .filter(([k])=>k!=='Source')
       .map(([k,v])=>`<div class="fact"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+    document.getElementById('lsays').innerHTML = `<b>L1 says:</b> ${c.truth_says||'—'}`;
     document.getElementById('sigs').innerHTML = c.signals.map(s=>{
-      const [cls,txt] = QUALITY[s.name] || ["g",""];
-      return `<div class="scard">
-        <div class="sh">
-          <div><div class="nm">${s.icon} ${s.name}</div><div class="meth">${s.algo||''}</div></div>
-          <span class="q ${cls}">${cls==='g'?'🟢':'🟡'} ${txt}</span>
-        </div>
-        <div class="flow"><span class="feat">${s.feature||'feature'}</span><span class="arr">→</span><span class="out">${s.value}</span></div>
-      </div>`;
+      const [cls,q]=QUALITY[s.name]||["g",""];
+      return `<div class="scard"><div class="sh"><div class="nm">${s.icon} ${s.name}</div>
+        <span class="q ${cls}">${cls==='g'?'🟢':'🟡'} ${q}</span></div>
+        <div class="finding"><span class="fl">finding</span>${s.value}</div></div>`;
     }).join('');
     document.getElementById('l3log').classList.remove('show');
     decide(c.id);
   }
 
   async function decide(id){
-    const off=document.getElementById('dec_off'), on=document.getElementById('dec_on'), delta=document.getElementById('delta');
-    off.textContent='…reasoning on raw facts…'; on.textContent='…reasoning on facts + signals…'; delta.textContent='comparing…';
+    const vo=document.getElementById('v_off'), vn=document.getElementById('v_on');
+    vo.textContent='…'; vn.textContent='…';
+    document.getElementById('f_off').textContent=''; document.getElementById('f_on').textContent='';
+    document.getElementById('result').textContent='comparing…'; document.getElementById('result').className='result';
     try{
-      const [ro,rn] = await Promise.all([
+      const [ro,rn]=await Promise.all([
         fetch(API+'/api/decide?signals=false&case='+encodeURIComponent(id)).then(r=>r.json()),
         fetch(API+'/api/decide?signals=true&case='+encodeURIComponent(id)).then(r=>r.json()),
       ]);
-      off.textContent=ro.decision; on.textContent=rn.decision;
-      document.getElementById('livepill').textContent = (rn.grounded?'● live · ':'● fallback · ')+rn.model;
-      const ao=action(ro.decision), an=action(rn.decision);
-      delta.innerHTML = (ao.toLowerCase()!==an.toLowerCase())
-        ? `⚡ <b>the signals changed the action.</b> Raw facts → <s>${ao}</s> &nbsp; With signals → <b style="color:var(--tp)">${an}</b>`
-        : `≈ same action here — the raw facts already carried it, but the signals add the <i>why</i> and the cited evidence. Try <b>Ops Capacity</b> to see the call flip.`;
-    }catch(e){ off.textContent=on.textContent='unreachable'; delta.textContent=''; }
+      const Vo=verdict(ro.decision), Vn=verdict(rn.decision);
+      vo.textContent=Vo.w; vo.style.color=Vo.c; vn.textContent=Vn.w; vn.style.color=Vn.c;
+      document.getElementById('f_off').textContent=actLine(ro.decision);
+      document.getElementById('f_on').textContent=actLine(rn.decision);
+      document.getElementById('livepill').textContent=(rn.grounded?'● live · ':'● fallback · ')+rn.model;
+      lastRec=Vn.w;
+      document.getElementById('l3rec').textContent=Vn.w;
+      const res=document.getElementById('result');
+      if(Vo.w!==Vn.w){ res.className='result changed'; res.innerHTML=`✅ Recommendation changed: <s style="opacity:.6">${Vo.w}</s> → <b>${Vn.w}</b> — the signals influenced the decision.`; }
+      else { res.className='result same'; res.innerHTML=`≈ Same call (<b>${Vn.w}</b>) — raw facts already carried it; the signals add the <i>why</i> + cited evidence. Try <b>Ops Capacity</b> to see the call flip.`; }
+    }catch(e){ vo.textContent=vn.textContent='—'; document.getElementById('result').textContent=''; }
   }
 
-  function judge(verdict){
-    const log=document.getElementById('l3log');
-    let reason='';
-    if(verdict==='Override') reason = prompt('Override reason (the accountable human note):','clinical context the model lacks') || '';
-    const mark = verdict==='Approved'?'✅':verdict==='Override'?'⚖️':'⏸️';
-    log.innerHTML = `${mark} <b>${verdict}</b>${reason?` — “${reason}”`:''} · signed: clinician · just now &nbsp;<span style="color:var(--tm)">— the agent recommends, the human decides (L3 accountability)</span>`;
+  function judge(verd){
+    const log=document.getElementById('l3log'); let reason='';
+    if(verd==='Override') reason=prompt('Override reason (goes in the audit trail):','clinical context the model lacks')||'';
+    const mk=verd==='Approved'?'✅':verd==='Override'?'⚖️':'⏸️';
+    log.innerHTML=`${mk} <b>${verd}</b> — agent recommended <i>${lastRec}</i>${reason?` · note: “${reason}”`:''}<br>
+      <span style="color:var(--tm);font-family:var(--mono);font-size:11px">signed: charge nurse · just now · the agent recommends, the human is accountable</span>`;
     log.classList.add('show');
   }
 
   (async()=>{
-    DATA = await fetch(API+'/api/signals').then(r=>r.json());
+    DATA=await fetch(API+'/api/signals').then(r=>r.json());
     const ORDER=['ops-capacity','exec-brief','er-triage'];
     DATA.cases.sort((a,b)=>ORDER.indexOf(a.id)-ORDER.indexOf(b.id));
     const tabs=document.getElementById('tabs');
@@ -201,11 +231,7 @@
       b.className='tab'+(i===0?' on':''); b.dataset.id=c.id; b.textContent=c.title+' · '+c.audience;
       b.onclick=()=>render(c); tabs.appendChild(b); });
     const ml=(DATA.signal_catalog||[]).filter(m=>m.is_ml).length;
-    document.getElementById('foot').innerHTML =
-      `5 signals · ${ml} trained ML (K-Means), 4 rules / statistics / search — all pre-computed, labeled, evaluated. `+
-      `Method honesty: only clustering is ML; the rest use the simplest method that clears the bar. `+
-      `Evals in <a target="_blank" href="https://wandb.ai/alynch-zeroshot/healthcare-l15-signals">Weights &amp; Biases</a>, `+
-      `agent calls traced in Langfuse. Live on Cloud Run (Vertex Gemini, grounded).`;
+    document.getElementById('foot').innerHTML=`5 signals · ${ml} trained ML (K-Means), 4 rules/statistics/search — all pre-computed, labeled, evaluated (<a target="_blank" href="https://wandb.ai/alynch-zeroshot/healthcare-l15-signals">W&amp;B</a>); agent calls traced in Langfuse. Live on Cloud Run · Vertex Gemini, grounded.`;
     render(DATA.cases[0]);
   })();
 </script>

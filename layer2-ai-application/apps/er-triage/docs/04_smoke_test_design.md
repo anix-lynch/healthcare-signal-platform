@@ -1,6 +1,6 @@
 # Smoke Test Design — The Regression Gate
 
-> **Source:** [`mj/docs/autotagging_llm_as_classifier_intake_automation.md`](file:///Users/anixlynch/dev/mj/docs/autotagging_llm_as_classifier_intake_automation.md)
+> **Source:** `mj/docs/autotagging_llm_as_classifier_intake_automation.md`
 
 ## The contract
 

@@ -212,10 +212,10 @@ PHASE 7 · CAPACITY PLANNING  ← Crystal Ball (LoS regression)
 
 ## 📚 Cross-references
 
-- **Concept lessons (per-pattern):** [`mj/docs/`](file:///Users/anixlynch/dev/mj/docs/) (parked, but the 7-pattern + Nora Bing docs are the conceptual canon)
-- **6-pillar Nora Bing framework:** [`mj/docs/nora_bing_metric.md`](file:///Users/anixlynch/dev/mj/docs/nora_bing_metric.md)
-- **Role-KPI reverse map:** [`fail-fwd/possibletitle/genai_role_kpi_trees.md`](file:///Users/anixlynch/dev/FWD/fail-fwd/possibletitle/genai_role_kpi_trees.md)
-- **Live MVP (Phase 1):** [`ER2/`](file:///Users/anixlynch/dev/ER2/)
+- **Concept lessons (per-pattern):** `mj/docs/` (parked, but the 7-pattern + Nora Bing docs are the conceptual canon)
+- **6-pillar Nora Bing framework:** `mj/docs/nora_bing_metric.md`
+- **Role-KPI reverse map:** `fail-fwd/possibletitle/genai_role_kpi_trees.md`
+- **Live MVP (Phase 1):** `ER2/`
 - **Sister repo (multi-agent CRM):** Alice/Tag/Janice — covers Workflow / FDE / Founder lanes
 
 ---

@@ -117,6 +117,6 @@ healthcare-rag-guardrails (GitHub)
 ## Cross-references
 
 - **Source repo (archived):** github.com/anix-lynch/healthcare-rag-guardrails
-- **6-pillar dashboard:** [`README.md`](file:///Users/anixlynch/dev/ER3/README.md)
-- **Seven-lens dashboard:** [`docs/05_seven_lens_dashboard.md`](file:///Users/anixlynch/dev/ER3/docs/05_seven_lens_dashboard.md)
+- **6-pillar dashboard:** `README.md`
+- **Seven-lens dashboard:** `docs/05_seven_lens_dashboard.md`
 - **Foldability decision matrix:** session log 2026-05-09 chat

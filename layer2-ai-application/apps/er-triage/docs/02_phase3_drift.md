@@ -1,6 +1,6 @@
 # Phase 3 — Drift Monitor + Anomaly Flagger
 
-> **Concept source:** [`mj/docs/05_smoke_detector.md`](file:///Users/anixlynch/dev/mj/docs/05_smoke_detector.md)
+> **Concept source:** `mj/docs/05_smoke_detector.md`
 
 ## Two complementary functions
 
