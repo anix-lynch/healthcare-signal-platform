@@ -20,9 +20,9 @@ mortality_risk_indicator  →  "death aura meter วันนี้"
 Each Layer 2 app needs different numbers off the same patient:
 
 ```
-apps/er-triage              → uses los + mortality (bed planning + escalation)
-apps/ops-capacity-assistant → uses los + readmission (discharge routing)
-apps/executive-dashboard    → uses los rollup + readmission rate (KPI)
+the triage app (broader platform)              → uses los + mortality (bed planning + escalation)
+the ops app (broader platform) → uses los + readmission (discharge routing)
+the exec app (broader platform)    → uses los rollup + readmission rate (KPI)
 ```
 
 Three apps. One forecaster. That's why forecast lives in `shared/`, not
@@ -237,6 +237,6 @@ Output (truncated):
 
 ## Cross-references
 
-- 7-pattern map: `../../../README.md`
+- Repo overview: `../../../README.md`
 - Layer 1 enrichment script: `../../../layer1-data-backbone/scripts/enrich_clinical_narrative.py`
 - Sibling pattern outputs (retrieval, classifier, etc.): `../retrieval/`, `../classify/`, ...

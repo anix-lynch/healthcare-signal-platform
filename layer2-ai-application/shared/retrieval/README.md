@@ -22,9 +22,9 @@ Without retrieval, every downstream chart note hallucinates.
 Every L2 app that summarises, decides, or briefs needs to cite something:
 
 ```
-apps/er-triage              → cite similar past triages on escalation rationale
-apps/ops-capacity-assistant → cite similar past LoS patterns for routing
-apps/executive-dashboard    → cite KPI guidelines + past briefings
+the triage app (broader platform)              → cite similar past triages on escalation rationale
+the ops app (broader platform) → cite similar past LoS patterns for routing
+the exec app (broader platform)    → cite KPI guidelines + past briefings
 services/rag-api            → wraps retrieval as /v1/search
 shared/generate   → consumes retrieval hits as grounding context
 ```
@@ -248,6 +248,5 @@ REAL (real EHR)                hybrid + cross-encoder rerank
 
 ## Cross-references
 
-- 7-pattern map: `../../../README.md`
+- Repo overview: `../../../README.md`
 - Sibling patterns: `../classify/`, `../regress/`
-- generation (consumes retrieval hits): `../generate/`

@@ -22,8 +22,8 @@ single sentence of LLM prose.
 Two layers consume classifier:
 
 ```
-apps/er-triage              → drives the NOW/SOON/WAIT UI + escalation page
-apps/er-triage/safety       → applies hard-rules (ESI 1 always escalates)
+the triage app (broader platform)              → drives the NOW/SOON/WAIT UI + escalation page
+the triage app's safety rules       → applies hard-rules (ESI 1 always escalates)
 services/rag-api            → wraps classifier as /v1/classify-tier
 shared/generate   → consumes tier as context when grounding a note
 ```
@@ -49,7 +49,7 @@ shared/classify/
 ├── eval.py            per-class F1 + confusion + down-triage-rate + calibration
 └── README.md          you are here
 
-apps/er-triage/classify/   ← app-side, uses shared/classify under the hood
+the triage app   ← app-side, uses shared/classify under the hood
 ├── esi_classifier.py  LLM-as-classifier wrapper (3.3 KB)
 └── prompts.py         clinical rubric prompts
 ```
@@ -233,6 +233,6 @@ REAL (real EHR)                ensemble of rules + LLM + LightGBM
 
 ## Cross-references
 
-- 7-pattern map: `../../../README.md`
+- Repo overview: `../../../README.md`
 - Sibling patterns: `../retrieval/`, `../regress/`
-- App that consumes classifier: `../../apps/er-triage/`
+- App that consumes classifier: `../../the triage app (broader platform)/`
