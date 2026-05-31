@@ -123,24 +123,9 @@ healthcare-genai-fullstack/
 ├── README.md                          ← you are here (3-layer hero)
 ├── Makefile                           ← top-level: orchestrates per-layer
 │
-├── docs/                              ← read these for "why each layer + who owns it"
-│   ├── 00_mission.md                     Layer 1=trusted data · Layer 2=useful AI ·
-│   │                                      Layer 3=safe AI (15-second pitch)
-│   ├── 01_layer_purpose_and_ownership.md why each layer · audience · ownership ·
-│   │                                      role-to-folder map (RECRUITER ENTRY POINT)
-│   ├── 02_operational_realism.md          retry · timeout · fallback · audit ·
-│   │                                      AI Crime Report (13 named failure modes)
-│   ├── 03_implementation_phases.md        what's shipped vs scaffold vs queued
-│   └── 04_why_three_layers.md            architect vs junior split — the line
-│                                          that wins interviews
-│
 ├── diagrams/                          ← ASCII architecture (no external image deps)
 │   ├── full_system_flow.md               patient → triage → ops → dashboard → audit
 │   └── layer_diagrams.md                  per-layer internal structure (3 diagrams)
-│
-│   ├── 05_patient_lifecycle.md            12-step operational walkthrough +
-│   │                                      failure scenarios per step
-│   └── 06_demos_planned.md                evidence + screenshots scaffold
 │
 ├── layer1-data-backbone/              🟦 dbt + Power BI + Fabric + ml-pipeline
 │   ├── data/raw/                      55K-row synthetic patient dataset
@@ -248,15 +233,6 @@ DEPLOYMENT          ❌ Phase5 Each layer deploys independently today; unified k
 That row 3 (DATA) and row 7 (DEPLOYMENT) are honest gaps. **Don't claim more
 than is shipped.** When asked: "they integrate by mission and design today;
 the live data pipeline between Layer 1 and Layer 2 is queued for Phase 5."
-
----
-
-## 🧭 Cross-references
-
-- **Title-to-layer map:** `fail-fwd/possibletitle/3layer_architecture_title_map.md`
-- **Role-KPI tree:** `fail-fwd/possibletitle/genai_role_kpi_trees.md`
-- **Cookie-cutter framework:** `fail-fwd/cookiecutter_by_role.md`
-- **6-pillar Nora Bing:** `mj/docs/nora_bing_metric.md`
 
 ---
 
