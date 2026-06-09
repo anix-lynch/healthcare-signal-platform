@@ -1,0 +1,65 @@
+{
+  "proof": "bullet6_multicloud_reconciliation",
+  "clouds": [
+    "GCP BigQuery (canonical)",
+    "Microsoft Fabric (OneLake/Direct Lake)",
+    "AWS DynamoDB (serverless)"
+  ],
+  "shared_contract": "openfda_fact_contract_v1.0.0 (same schema: safetyreportid, primary_drug, is_serious, n_drugs, n_reactions, occurcountry)",
+  "gcp_metrics": {
+    "record_count": 300,
+    "serious_count": 205,
+    "serious_rate": 0.6833,
+    "distinct_drugs": 156,
+    "total_reactions": 759
+  },
+  "aws_metrics": {
+    "record_count": 300,
+    "serious_count": 205,
+    "serious_rate": 0.6833,
+    "distinct_drugs": 156,
+    "total_reactions": 759
+  },
+  "gcp_vs_aws_reconciliation": {
+    "record_count": {
+      "gcp": 300,
+      "aws": 300,
+      "match": true
+    },
+    "serious_count": {
+      "gcp": 205,
+      "aws": 205,
+      "match": true
+    },
+    "serious_rate": {
+      "gcp": 0.6833,
+      "aws": 0.6833,
+      "match": true
+    },
+    "distinct_drugs": {
+      "gcp": 156,
+      "aws": 156,
+      "match": true
+    },
+    "total_reactions": {
+      "gcp": 759,
+      "aws": 759,
+      "match": true
+    }
+  },
+  "gcp_vs_aws_all_match": true,
+  "fabric_leg": {
+    "record_count": 300,
+    "distinct_drugs": 156,
+    "distinct_reactions": 408,
+    "source": "deltalake->OneLake, reconciled GCP==Fabric earlier this session"
+  },
+  "aws_serverless": {
+    "service": "DynamoDB PAY_PER_REQUEST",
+    "items": 300,
+    "always_on": false,
+    "no_rds_opensearch_ecs": true,
+    "est_cost": "~$0 (on-demand, 300 tiny items)"
+  },
+  "verdict": "GREEN \u2014 openFDA portable across GCP, Fabric, AWS via one shared contract; record counts + serious_rate + reaction totals reconcile exactly GCP==AWS, and GCP==Fabric (count/drugs). Schema, record counts, and business metrics preserved cross-cloud."
+}

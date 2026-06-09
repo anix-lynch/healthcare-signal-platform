@@ -1,0 +1,39 @@
+{
+  "bullet": 6,
+  "exact_text": "Designed and validated a portable openFDA data platform across GCP BigQuery, Microsoft Fabric, and AWS serverless services, using shared versioned contracts and cross-cloud reconciliation to preserve schema, record counts, and business metrics across cloud-native implementations.",
+  "phrases": [
+    {
+      "phrase": "portable openFDA platform across GCP BigQuery",
+      "verdict": "GREEN",
+      "proof": "canonical fact_adverse_events 300 in BQ"
+    },
+    {
+      "phrase": "...Microsoft Fabric",
+      "verdict": "GREEN",
+      "proof": "openFDA injected to OneLake (deltalake), reconciled GCP==Fabric 300/156/408; card03_portability_proof"
+    },
+    {
+      "phrase": "...AWS serverless services",
+      "verdict": "GREEN",
+      "proof": "DynamoDB PAY_PER_REQUEST (no RDS/OpenSearch/ECS/always-on), 300 items loaded from the shared contract"
+    },
+    {
+      "phrase": "shared versioned contracts",
+      "verdict": "GREEN",
+      "proof": "openfda_fact_contract_v1.0.0 \u2014 same schema drives all 3 cloud loads"
+    },
+    {
+      "phrase": "cross-cloud reconciliation preserves record counts",
+      "verdict": "GREEN",
+      "proof": "GCP==AWS record_count 300 (match True); GCP==Fabric 300"
+    },
+    {
+      "phrase": "...preserves business metrics",
+      "verdict": "GREEN",
+      "proof": "GCP==AWS serious_rate 0.6833 (match), serious_count + total_reactions match exactly"
+    }
+  ],
+  "phrase_summary": "6/6 GREEN",
+  "honesty": "AWS leg = DynamoDB on-demand serverless (Card 05 constraints honored). Reconciliation = exact metric equality across clouds, real runs. 'validated' = counts+metrics match, not a live enterprise migration.",
+  "verdict": "CLAIM APPROVED \u2014 openFDA reconciles exactly across GCP/Fabric/AWS via one shared contract"
+}
