@@ -25,12 +25,12 @@
     {
       "phrase": "cross-cloud reconciliation preserves record counts",
       "verdict": "GREEN",
-      "proof": "GCP==AWS record_count 300 (match True); GCP==Fabric 300"
+      "proof": "record_count 300 identical GCP==Fabric==AWS (proof_3cloud_business.json) + S3 landing 300"
     },
     {
       "phrase": "...preserves business metrics",
       "verdict": "GREEN",
-      "proof": "GCP==AWS serious_rate 0.6833 (match), serious_count + total_reactions match exactly"
+      "proof": "serious_count/serious_rate(0.6833)/distinct_drugs/total_reactions reconcile EXACTLY across GCP, Fabric (OneLake), AWS \u2014 computed independently on each; schema fingerprint 689ddeb815c39b32 identical; proof_3cloud_business.json"
     },
     {
       "phrase": "cloud-native deployment patterns (IaC per cloud)",

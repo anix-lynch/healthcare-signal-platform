@@ -29,16 +29,16 @@
     },
     {
       "phrase": "reducing unnecessary model calls",
-      "verdict": "GREEN",
-      "proof": "25.0% fewer LLM calls; cost $0.063->$0.0472"
+      "verdict": "YELLOW",
+      "proof": "MEASURED cost-quality tradeoff (curve in proof): at the agreed >=0.95 serious-recall floor the reduction is 0% \u2014 on n=300/68%-serious the signals are not strong enough to cut calls without dropping serious reports. Honest tradeoff, not a free-lunch reduction."
     },
     {
       "phrase": "preserving decision quality",
-      "verdict": "GREEN",
-      "proof": "recall of serious among routed = 0.854 (serious reports not dropped)"
+      "verdict": "YELLOW",
+      "proof": "serious-recall is HELD at the 0.95 floor by routing 100% at that floor; deeper cuts drop serious recall (curve shows it). 'preserving quality while cutting calls' is NOT achieved here \u2014 reframed as a measured tradeoff."
     }
   ],
-  "phrase_summary": "7/7 GREEN",
-  "honesty": "n=300, imbalanced (68% serious); metrics are real and modest, reported as results not targets. With/without ablation + cost are estimates (gemini-2.5-flash token price).",
-  "verdict": "CLAIM APPROVED \u2014 every phrase backed by a real evaluated signal run (honest small-n metrics)"
+  "phrase_summary": "5/7 GREEN",
+  "honesty": "n=300, 68% serious. The 5 signals + router + tradeoff CURVE are real. classify F1=0.846 (just under a 0.85 brag bar \u2014 reported as-is). The router MEASURES cost\u2194quality; it does NOT cut LLM calls while preserving >=95% serious recall on this data. 'reducing calls while preserving quality' downgraded to YELLOW per honest curve.",
+  "verdict": "PARTIAL / YELLOW \u2014 5/7 GREEN. Signal platform + 5 evaluated signals + measured cost-quality tradeoff = real. The bullet's 'reducing unnecessary model calls while preserving decision quality' is a measured tradeoff, not an achieved win at a 95% quality floor."
 }

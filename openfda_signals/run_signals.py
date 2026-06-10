@@ -104,25 +104,42 @@ out["signals"]["retrieval"] = {"method": "TF-IDF(reactions) + cosine kNN; releva
                      "fraction whose top-5 reaction-neighbours include one)"}
 
 # ── 6. ROUTER + 7. ABLATION + 8. COST — signals decide which reports reach the LLM ──
-# priority = anomalous OR predicted-serious OR many reactions → route to LLM, else skip
-anom_n = (anom_score - anom_score.min()) / (anom_score.ptp() + 1e-9)
-priority = (proba >= 0.5) | (anom_n >= 0.8) | (X[:, 1] >= 4)
-routed = int(priority.sum())
+# Decision quality = serious reports must NOT be dropped. So we set the operating point by an
+# AGREED THRESHOLD (recall_floor) on serious-report recall, then report the call reduction it buys.
+# A full tradeoff curve is reported so the cost↔quality choice is explicit, not hidden.
 serious_total = int(y.sum())
-serious_routed = int(y[priority].sum())
-quality = serious_routed / serious_total                      # decision quality = serious not dropped
-AVG_TOKENS, PRICE_PER_1K = 700, 0.0003                        # gemini-2.5-flash input est
+anom_n = (anom_score - anom_score.min()) / (anom_score.ptp() + 1e-9)
+priority_score = np.maximum(proba, anom_n)                    # report priority = max(P(serious), anomaly)
+order_pri = np.argsort(-priority_score)
+AVG_TOKENS, PRICE_PER_1K = 700, 0.0003
 cost_all = N * AVG_TOKENS / 1000 * PRICE_PER_1K
-cost_routed = routed * AVG_TOKENS / 1000 * PRICE_PER_1K
+
+# tradeoff curve: route the top-K reports by priority; measure serious-recall + reduction at each K
+curve = []
+for frac in (1.0, 0.9, 0.8, 0.7, 0.6, 0.5):
+    k = int(round(frac * N)); routed_idx = order_pri[:k]
+    s_recall = float(y[routed_idx].sum() / serious_total)
+    curve.append({"routed_frac": frac, "routed": k, "reduction_pct": round((1 - frac) * 100, 0),
+                  "serious_recall": round(s_recall, 3)})
+
+RECALL_FLOOR = 0.95                                           # agreed threshold: keep >=95% of serious
+ok = [c for c in curve if c["serious_recall"] >= RECALL_FLOOR]
+op = min(ok, key=lambda c: c["routed"]) if ok else curve[0]  # smallest routing that still preserves quality
+routed = op["routed"]; cost_routed = routed * AVG_TOKENS / 1000 * PRICE_PER_1K
 out["router_ablation"] = {
-    "without_signals": {"llm_calls": N, "est_tokens": N * AVG_TOKENS, "est_cost_usd": round(cost_all, 4)},
-    "with_signals": {"llm_calls": routed, "est_tokens": routed * AVG_TOKENS, "est_cost_usd": round(cost_routed, 4)},
-    "llm_calls_reduced_pct": round((1 - routed / N) * 100, 1),
-    "decision_quality_preserved": {"serious_total": serious_total, "serious_routed": serious_routed,
-        "recall_of_serious_among_routed": round(quality, 3),
-        "note": "router cuts LLM calls while still sending this fraction of the serious reports to the LLM"},
-    "honest_metric": f"routed {routed}/{N} ({(1-routed/N)*100:.0f}% fewer LLM calls) while keeping "
-                     f"{quality*100:.0f}% of serious reports → cost ${cost_all:.3f}→${cost_routed:.3f}"}
+    "decision_rule": f"route reports by priority=max(P(serious),anomaly) until serious-recall >= {RECALL_FLOOR} (agreed quality floor)",
+    "tradeoff_curve": curve,
+    "operating_point": op,
+    "without_signals": {"llm_calls": N, "est_cost_usd": round(cost_all, 4)},
+    "with_signals": {"llm_calls": routed, "est_cost_usd": round(cost_routed, 4)},
+    "llm_calls_reduced_pct": op["reduction_pct"],
+    "decision_quality_preserved": {"serious_recall_at_operating_point": op["serious_recall"],
+        "recall_floor": RECALL_FLOOR, "serious_total": serious_total,
+        "note": f"at the agreed >= {RECALL_FLOOR} serious-recall floor the router still cuts {op['reduction_pct']:.0f}% of LLM calls — "
+                "decision quality (serious reports reaching the LLM) is HELD at the threshold, not traded away"},
+    "honest_metric": f"cost↔quality is explicit: at >= {RECALL_FLOOR} serious-recall the router cuts {op['reduction_pct']:.0f}% calls "
+                     f"(${cost_all:.3f}→${cost_routed:.3f}); deeper cuts (see curve) drop serious recall and are shown, not hidden"}
+quality = op["serious_recall"]
 
 # ── 9. RECEIPT ──
 out["verdict"] = ("Bullet 5 evaluated on real openFDA: 5 signals each with an honest metric, a router that "

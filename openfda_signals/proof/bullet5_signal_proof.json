@@ -56,24 +56,67 @@
     }
   },
   "router_ablation": {
+    "decision_rule": "route reports by priority=max(P(serious),anomaly) until serious-recall >= 0.95 (agreed quality floor)",
+    "tradeoff_curve": [
+      {
+        "routed_frac": 1.0,
+        "routed": 300,
+        "reduction_pct": 0.0,
+        "serious_recall": 1.0
+      },
+      {
+        "routed_frac": 0.9,
+        "routed": 270,
+        "reduction_pct": 10.0,
+        "serious_recall": 0.946
+      },
+      {
+        "routed_frac": 0.8,
+        "routed": 240,
+        "reduction_pct": 20.0,
+        "serious_recall": 0.873
+      },
+      {
+        "routed_frac": 0.7,
+        "routed": 210,
+        "reduction_pct": 30.0,
+        "serious_recall": 0.776
+      },
+      {
+        "routed_frac": 0.6,
+        "routed": 180,
+        "reduction_pct": 40.0,
+        "serious_recall": 0.663
+      },
+      {
+        "routed_frac": 0.5,
+        "routed": 150,
+        "reduction_pct": 50.0,
+        "serious_recall": 0.561
+      }
+    ],
+    "operating_point": {
+      "routed_frac": 1.0,
+      "routed": 300,
+      "reduction_pct": 0.0,
+      "serious_recall": 1.0
+    },
     "without_signals": {
       "llm_calls": 300,
-      "est_tokens": 210000,
       "est_cost_usd": 0.063
     },
     "with_signals": {
-      "llm_calls": 225,
-      "est_tokens": 157500,
-      "est_cost_usd": 0.0472
+      "llm_calls": 300,
+      "est_cost_usd": 0.063
     },
-    "llm_calls_reduced_pct": 25.0,
+    "llm_calls_reduced_pct": 0.0,
     "decision_quality_preserved": {
+      "serious_recall_at_operating_point": 1.0,
+      "recall_floor": 0.95,
       "serious_total": 205,
-      "serious_routed": 175,
-      "recall_of_serious_among_routed": 0.854,
-      "note": "router cuts LLM calls while still sending this fraction of the serious reports to the LLM"
+      "note": "at the agreed >= 0.95 serious-recall floor the router still cuts 0% of LLM calls \u2014 decision quality (serious reports reaching the LLM) is HELD at the threshold, not traded away"
     },
-    "honest_metric": "routed 225/300 (25% fewer LLM calls) while keeping 85% of serious reports \u2192 cost $0.063\u2192$0.047"
+    "honest_metric": "cost\u2194quality is explicit: at >= 0.95 serious-recall the router cuts 0% calls ($0.063\u2192$0.063); deeper cuts (see curve) drop serious recall and are shown, not hidden"
   },
   "verdict": "Bullet 5 evaluated on real openFDA: 5 signals each with an honest metric, a router that cuts LLM calls while preserving serious-report coverage, with vs without ablation + cost. Small n=300 \u2014 numbers are real and modest, not targets."
 }

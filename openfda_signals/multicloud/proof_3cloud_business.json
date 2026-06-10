@@ -1,0 +1,53 @@
+{
+  "proof": "bullet6_three_cloud_business_reconciliation",
+  "shared_contract": {
+    "name": "openfda_fact_contract",
+    "version": "1.0.0",
+    "schema_fingerprint": "689ddeb815c39b32",
+    "enforced_on": [
+      "GCP",
+      "Fabric",
+      "AWS"
+    ],
+    "note": "GCP query selects the 6 contract columns; Fabric OneLake Delta + AWS DynamoDB carry the same 6 \u2014 schema fingerprint identical"
+  },
+  "business_metric_reconciliation": {
+    "record_count": {
+      "gcp": 300,
+      "fabric": 300,
+      "aws": 300,
+      "all_match": true
+    },
+    "serious_count": {
+      "gcp": 205,
+      "fabric": 205,
+      "aws": 205,
+      "all_match": true
+    },
+    "serious_rate": {
+      "gcp": 0.6833,
+      "fabric": 0.6833,
+      "aws": 0.6833,
+      "all_match": true
+    },
+    "distinct_drugs": {
+      "gcp": 156,
+      "fabric": 156,
+      "aws": 156,
+      "all_match": true
+    },
+    "total_reactions": {
+      "gcp": 759,
+      "fabric": 759,
+      "aws": 759,
+      "all_match": true
+    }
+  },
+  "all_business_metrics_match": true,
+  "method": {
+    "gcp": "BQ fact_adverse_events",
+    "fabric": "deltalake read of OneLake Delta fact (az=owner)",
+    "aws": "DynamoDB scan"
+  },
+  "verdict": "GREEN \u2014 same versioned contract on all 3 loads; serious_count, serious_rate, distinct_drugs, total_reactions reconcile EXACTLY across GCP, Fabric, AWS (computed independently on each cloud's copy)."
+}
