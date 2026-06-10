@@ -1,16 +1,67 @@
 {
-  "proof": "bullet6_three_cloud_business_reconciliation",
-  "shared_contract": {
-    "name": "openfda_fact_contract",
-    "version": "1.0.0",
-    "schema_fingerprint": "689ddeb815c39b32",
-    "enforced_on": [
-      "GCP",
-      "Fabric",
-      "AWS"
-    ],
-    "note": "GCP query selects the 6 contract columns; Fabric OneLake Delta + AWS DynamoDB carry the same 6 \u2014 schema fingerprint identical"
+  "proof": "bullet6_three_cloud_actual_schema_reconciliation",
+  "contract_source": "openfda_fact_contract_v1.0.0.json (canonical, read from file); slice uses a 6-column projection",
+  "projection_columns": [
+    "safetyreportid",
+    "primary_drug",
+    "is_serious",
+    "n_drugs",
+    "n_reactions",
+    "occurcountry"
+  ],
+  "projection_fingerprint": "689ddeb815c39b32",
+  "per_cloud": {
+    "GCP": {
+      "cloud": "GCP",
+      "projection_fingerprint": "689ddeb815c39b32",
+      "missing_contract_cols": [],
+      "type_mismatches": {},
+      "benign_extra_cols": [],
+      "contract_columns_valid": true,
+      "metrics": {
+        "record_count": 300,
+        "serious_count": 205,
+        "serious_rate": 0.6833,
+        "distinct_drugs": 156,
+        "total_reactions": 759
+      }
+    },
+    "Fabric": {
+      "cloud": "Fabric",
+      "projection_fingerprint": "689ddeb815c39b32",
+      "missing_contract_cols": [],
+      "type_mismatches": {},
+      "benign_extra_cols": [
+        "received_date"
+      ],
+      "contract_columns_valid": true,
+      "metrics": {
+        "record_count": 300,
+        "serious_count": 205,
+        "serious_rate": 0.6833,
+        "distinct_drugs": 156,
+        "total_reactions": 759
+      }
+    },
+    "AWS_S3": {
+      "cloud": "AWS-S3",
+      "projection_fingerprint": "689ddeb815c39b32",
+      "missing_contract_cols": [],
+      "type_mismatches": {},
+      "benign_extra_cols": [],
+      "contract_columns_valid": true,
+      "metrics": {
+        "record_count": 300,
+        "serious_count": 205,
+        "serious_rate": 0.6833,
+        "distinct_drugs": 156,
+        "total_reactions": 759
+      }
+    }
   },
+  "schema_mechanism": "each cloud's ACTUAL schema read from real data (BQ schema / OneLake Delta arrow / S3 Parquet); the 6 contract columns validated present + correctly typed; benign extra columns reported (Fabric carries received_date)",
+  "projection_fingerprints_identical_all_clouds": true,
+  "all_contract_columns_valid": true,
   "business_metric_reconciliation": {
     "record_count": {
       "gcp": 300,
@@ -44,10 +95,5 @@
     }
   },
   "all_business_metrics_match": true,
-  "method": {
-    "gcp": "BQ fact_adverse_events",
-    "fabric": "deltalake read of OneLake Delta fact (az=owner)",
-    "aws": "DynamoDB scan"
-  },
-  "verdict": "GREEN \u2014 same versioned contract on all 3 loads; serious_count, serious_rate, distinct_drugs, total_reactions reconcile EXACTLY across GCP, Fabric, AWS (computed independently on each cloud's copy)."
+  "verdict": "GREEN \u2014 the 6 canonical-contract columns are present + identically typed across GCP/Fabric/AWS (actual schemas, fp 689ddeb815c39b32); Fabric carries a benign received_date extra; serious_count/serious_rate/distinct_drugs/total_reactions reconcile exactly."
 }

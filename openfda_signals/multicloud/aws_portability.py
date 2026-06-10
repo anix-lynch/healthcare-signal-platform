@@ -63,7 +63,10 @@ def build():
             s3.create_bucket(Bucket=BUCKET, CreateBucketConfiguration={"LocationConstraint": REGION})
     except s3.exceptions.BucketAlreadyOwnedByYou:
         pass
-    buf = io.BytesIO(); pd.DataFrame(rows).astype(str).to_parquet(buf, index=False); buf.seek(0)
+    df = pd.DataFrame(rows)
+    df = df.astype({"safetyreportid": "string", "primary_drug": "string", "occurcountry": "string",
+                    "is_serious": "boolean", "n_drugs": "int64", "n_reactions": "int64"}, errors="ignore")
+    buf = io.BytesIO(); df.to_parquet(buf, index=False); buf.seek(0)  # typed, not lossy str
     key = f"{PREFIX}/openfda.parquet"
     s3.put_object(Bucket=BUCKET, Key=key, Body=buf.getvalue())
     # reconcile from S3: read the parquet back and count
