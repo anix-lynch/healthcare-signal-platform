@@ -16,7 +16,7 @@ os.environ.setdefault("GOOGLE_APPLICATION_CREDENTIALS",
                       os.path.expanduser("~/.config/secrets/bchan-genai-deploy.json"))
 
 # ── GCP canonical: pull fact + the business metrics ──
-bq = bigquery.Client(project="bchan-genai-lab")
+bq = bigquery.Client(project="PROJECT")
 rows = [dict(r) for r in bq.query(
     "SELECT safetyreportid, primary_drug, is_serious, n_drugs, n_reactions, occurcountry "
     "FROM healthcare_analytics.fact_adverse_events WHERE safetyreportid IS NOT NULL").result()]
