@@ -15,7 +15,7 @@
     {
       "phrase": "...AWS serverless services",
       "verdict": "GREEN",
-      "proof": "DynamoDB PAY_PER_REQUEST (no RDS/OpenSearch/ECS/always-on), 300 items loaded from the shared contract"
+      "proof": "TWO serverless services: S3 (parquet landing) + DynamoDB PAY_PER_REQUEST (serving), both reconcile vs GCP; no RDS/OpenSearch/ECS; proof_aws_portability.json"
     },
     {
       "phrase": "shared versioned contracts",
@@ -31,9 +31,19 @@
       "phrase": "...preserves business metrics",
       "verdict": "GREEN",
       "proof": "GCP==AWS serious_rate 0.6833 (match), serious_count + total_reactions match exactly"
+    },
+    {
+      "phrase": "cloud-native deployment patterns (IaC per cloud)",
+      "verdict": "GREEN",
+      "proof": "terraform/main.tf declares the AWS slice (S3+DynamoDB, validated HCL) \u2014 deploy + teardown recipe"
+    },
+    {
+      "phrase": "cost-bounded + teardown",
+      "verdict": "GREEN",
+      "proof": "cost < $0.0001 (DynamoDB on-demand + tiny S3); teardown via --teardown flag + terraform destroy + S3 30-day lifecycle expiry"
     }
   ],
-  "phrase_summary": "6/6 GREEN",
+  "phrase_summary": "8/8 GREEN",
   "honesty": "AWS leg = DynamoDB on-demand serverless (Card 05 constraints honored). Reconciliation = exact metric equality across clouds, real runs. 'validated' = counts+metrics match, not a live enterprise migration.",
-  "verdict": "CLAIM APPROVED \u2014 openFDA reconciles exactly across GCP/Fabric/AWS via one shared contract"
+  "verdict": "CLAIM APPROVED \u2014 portable openFDA across GCP/Fabric/AWS (S3+DynamoDB), shared contract, exact cross-cloud reconcile, IaC + cost/teardown"
 }

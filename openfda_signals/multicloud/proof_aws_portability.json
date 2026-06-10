@@ -1,0 +1,67 @@
+{
+  "proof": "bullet6_aws_serverless_portability_v2",
+  "aws_account": "340752826866",
+  "region": "us-east-1",
+  "serverless_services": [
+    "S3 (landing, parquet)",
+    "DynamoDB PAY_PER_REQUEST (serving)"
+  ],
+  "no_rds_opensearch_ecs_always_on": true,
+  "shared_contract": "openfda_fact_contract_v1.0.0",
+  "gcp_metrics": {
+    "record_count": 300,
+    "serious_count": 205,
+    "serious_rate": 0.6833,
+    "distinct_drugs": 156,
+    "total_reactions": 759
+  },
+  "aws_dynamodb_metrics": {
+    "record_count": 300,
+    "serious_count": 205,
+    "serious_rate": 0.6833,
+    "distinct_drugs": 156,
+    "total_reactions": 759
+  },
+  "reconciliation": {
+    "record_count": {
+      "gcp": 300,
+      "aws_dynamodb": 300,
+      "match": true
+    },
+    "serious_count": {
+      "gcp": 205,
+      "aws_dynamodb": 205,
+      "match": true
+    },
+    "serious_rate": {
+      "gcp": 0.6833,
+      "aws_dynamodb": 0.6833,
+      "match": true
+    },
+    "distinct_drugs": {
+      "gcp": 156,
+      "aws_dynamodb": 156,
+      "match": true
+    },
+    "total_reactions": {
+      "gcp": 759,
+      "aws_dynamodb": 759,
+      "match": true
+    },
+    "s3_landing_row_count": {
+      "gcp": 300,
+      "aws_s3": 300,
+      "match": true
+    }
+  },
+  "all_match": true,
+  "cost_receipt": {
+    "dynamodb": "PAY_PER_REQUEST: 300 writes ~$0.0000375 + scan ~$0; storage <1MB ~$0",
+    "s3": "1 object <1MB: PUT ~$0.000005 + storage ~$0.00002/mo",
+    "total_est_usd": "< $0.0001",
+    "verified_low": true,
+    "no_always_on": true,
+    "teardown": "python aws_portability.py --teardown (or terraform destroy)"
+  },
+  "verdict": "GREEN \u2014 openFDA lands in S3 + serves from DynamoDB (2 serverless services) under the shared contract; row counts + serious_rate + reactions reconcile exactly vs GCP. IaC in terraform/. Cost < $0.0001, teardown documented."
+}
