@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
 
-R = json.load(open("/tmp/signal/openfda_reports.json"))
+R = json.load(open("openfda_signals/data/openfda_reports.json"))
 N = len(R)
 rng = np.random.RandomState(42)
 
@@ -145,7 +145,7 @@ quality = op["serious_recall"]
 out["verdict"] = ("Bullet 5 evaluated on real openFDA: 5 signals each with an honest metric, a router that "
                   "cuts LLM calls while preserving serious-report coverage, with vs without ablation + cost. "
                   "Small n=300 — numbers are real and modest, not targets.")
-json.dump(out, open("/tmp/signal/bullet5_signal_proof.json", "w"), indent=2)
+json.dump(out, open("openfda_signals/proof/bullet5_signal_proof.json", "w"), indent=2)
 
 print("=== BULLET 5 SIGNAL PLATFORM — honest metrics on 300 real openFDA reports ===")
 print(f"  anomaly   : flag {out['signals']['anomaly']['flagged']} | rx flagged vs normal {out['signals']['anomaly']['mean_reactions_flagged_vs_normal']}")
@@ -154,4 +154,4 @@ print(f"  classify  : F1(serious) {out['signals']['classify']['f1_serious']} | r
 print(f"  rank      : P@30 {out['signals']['rank']['precision_at_30']} vs random {out['signals']['rank']['precision_at_30_random']} | NDCG@30 {out['signals']['rank']['ndcg_at_30']}")
 print(f"  retrieval : Recall@5 {out['signals']['retrieval']['recall_at_5']}")
 print(f"  ROUTER    : {out['router_ablation']['llm_calls_reduced_pct']}% fewer LLM calls, {quality*100:.0f}% serious kept, ${cost_all:.3f}→${cost_routed:.3f}")
-print("WROTE /tmp/signal/bullet5_signal_proof.json")
+print("WROTE openfda_signals/proof/bullet5_signal_proof.json")

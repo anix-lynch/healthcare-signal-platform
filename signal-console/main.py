@@ -8,7 +8,7 @@ data. Serves a console UI (/) + JSON (/api/signals) + a live Gemini decision
 
 Signal metrics are the real numbers from the eval harness
 (layer2-ai-application/shared/evaluation/*_eval.py); see signals.json provenance.
-Runtime auth = Cloud Run service identity (bchan-genai-deploy@, Vertex AI User).
+Runtime auth = Cloud Run service identity (deploy-sa@, Vertex AI User).
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ BASE = Path(__file__).resolve().parent
 SIGNALS = json.loads((BASE / "signals.json").read_text())
 CASES = {c["id"]: c for c in SIGNALS["cases"]}
 
-_PROJECT = os.environ.get("GCP_PROJECT_ID", "bchan-genai-lab")
+_PROJECT = os.environ.get("GCP_PROJECT_ID", "deploy-sa-lab")
 _LOCATION = os.environ.get("GCP_LOCATION", "us-central1")
 _MODEL = os.environ.get("SIGNAL_MODEL", "gemini-2.5-flash")
 

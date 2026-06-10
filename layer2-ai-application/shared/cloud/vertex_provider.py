@@ -1,4 +1,4 @@
-"""Vertex AI provider (default for ER3 — uses Bchan's $900 GCP credit).
+"""Vertex AI provider (default for ER3 — uses the's $900 GCP credit).
 
 Service mapping:
     Embeddings        → Vertex `textembedding-gecko` / `text-embedding-005`

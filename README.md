@@ -1,5 +1,17 @@
 # healthcare-signal-platform
 
+> **openFDA evaluated signal platform (Bullet 5) + cross-cloud portability (Bullet 6).**
+> Five cheap signals (anomaly · cluster · classify · rank · retrieval) score real openFDA
+> adverse-event reports and a router measures the cost–quality tradeoff of sending fewer
+> reports to the LLM. The portability slice proves the same contract reconciles across
+> GCP · Fabric · AWS. Run: `python3 openfda_signals/run_signals.py`.
+>
+> openFDA work: `openfda_signals/` (signals + proofs) · `openfda_signals/multicloud/` (3-cloud reconcile).
+> The legacy `signal-console/` is the earlier synthetic interactive demo (kept for reference).
+
+---
+
+
 > **L1.25 + L1.5 healthcare AI platform.** Patient features and *evaluated* signals — anomaly, cluster, classify, rank, retrieval — computed **before** the agent and fed in as labeled facts. Trusted data → features → signals → the signals measurably change the agent's decision → an accountable human signs off.
 
 ### ▶︎ Flagship — the live Signal Console
