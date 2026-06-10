@@ -13,7 +13,7 @@ from google.cloud import bigquery
 REGION = "us-east-1"
 TABLE = "openfda-adverse-events"
 os.environ.setdefault("GOOGLE_APPLICATION_CREDENTIALS",
-                      os.path.expanduser("~/.config/secrets/bchan-genai-deploy.json"))
+                      os.path.expanduser("~/.config/secrets/sa-key.json"))
 
 # ── GCP canonical: pull fact + the business metrics ──
 bq = bigquery.Client(project="PROJECT")
