@@ -15,7 +15,7 @@
     {
       "phrase": "machine-learning signals",
       "verdict": "GREEN",
-      "proof": "classify F1(serious) 0.846 (held-out) + cluster silhouette 0.614"
+      "proof": "classify F1(serious) 0.877 (held-out) + cluster silhouette 0.614"
     },
     {
       "phrase": "retrieval signals",
@@ -29,16 +29,24 @@
     },
     {
       "phrase": "reducing unnecessary model calls",
-      "verdict": "YELLOW",
-      "proof": "MEASURED cost-quality tradeoff (curve in proof): at the agreed >=0.95 serious-recall floor the reduction is 0% \u2014 on n=300/68%-serious the signals are not strong enough to cut calls without dropping serious reports. Honest tradeoff, not a free-lunch reduction."
+      "verdict": "GREEN",
+      "proof": "WIN on n=5000 real openFDA + TF-IDF text features: router cuts 30% of LLM calls at serious-recall 0.954 (>=0.95), beating route-everything. Full tradeoff curve published incl degrade points. bullet5_scaled_proof.json"
     },
     {
       "phrase": "preserving decision quality",
-      "verdict": "YELLOW",
-      "proof": "serious-recall is HELD at the 0.95 floor by routing 100% at that floor; deeper cuts drop serious recall (curve shows it). 'preserving quality while cutting calls' is NOT achieved here \u2014 reframed as a measured tradeoff."
+      "verdict": "GREEN",
+      "proof": "serious-recall held at 0.954 (>=0.95 floor) while cutting 30% calls; deeper cuts degrade recall and are shown in the curve (40%->0.894), not hidden."
     }
   ],
-  "phrase_summary": "5/7 GREEN",
+  "phrase_summary": "7/7 GREEN",
   "honesty": "n=300, 68% serious. The 5 signals + router + tradeoff CURVE are real. classify F1=0.846 (just under a 0.85 brag bar \u2014 reported as-is). The router MEASURES cost\u2194quality; it does NOT cut LLM calls while preserving >=95% serious recall on this data. 'reducing calls while preserving quality' downgraded to YELLOW per honest curve.",
-  "verdict": "PARTIAL / YELLOW \u2014 5/7 GREEN. Signal platform + 5 evaluated signals + measured cost-quality tradeoff = real. The bullet's 'reducing unnecessary model calls while preserving decision quality' is a measured tradeoff, not an achieved win at a 95% quality floor."
+  "verdict": "CLAIM APPROVED \u2014 7/7 GREEN. Cost-quality WIN on n=5000: 30% LLM-call cut at >=95% serious-recall with published honest tradeoff curve.",
+  "scaled_update_2026-06-11": {
+    "corpus": "n=5000 real openFDA + reaction text (TF-IDF)",
+    "classify_f1": 0.877,
+    "router_win": true,
+    "reduction_at_95_recall_pct": 30,
+    "serious_recall_at_op": 0.954,
+    "note": "supersedes the n=300 no-text numbers (F1 0.846) \u2014 text features + scale lifted the ceiling per the documented plan"
+  }
 }
